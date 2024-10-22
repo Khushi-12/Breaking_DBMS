@@ -1,0 +1,1 @@
+This repository is for our final project of the course CS5200 DBMS.
