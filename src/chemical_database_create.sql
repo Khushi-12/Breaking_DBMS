@@ -1,5 +1,4 @@
--- shane
--- tash
+
 DROP DATABASE Chemical_database;
 CREATE DATABASE Chemical_database;
 USE Chemical_database;
