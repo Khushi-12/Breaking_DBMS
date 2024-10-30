@@ -73,7 +73,55 @@ CREATE TABLE certification(
 	name VARCHAR(30) PRIMARY KEY NOT NULL,
     institution VARCHAR(30) NOT NULL,
     expiration_date DATE NOT NULL
-)
+);
+
+
+CREATE TABLE chemical(
+	scientific_name VARCHAR(30) NOT NULL,
+    common_name VARCHAR(30) NOT NULL,
+    moleculatar_formula VARCHAR(30) NOT NULL,
+    structure VARCHAR(30) NOT NULL,
+    charge INT NOT NULL,
+    solubility INT NOT NULL
+);
+
+
+CREATE TABLE hazard(
+	hazard_description VARCHAR(300) NOT NULL,
+    safety_instruction VARCHAR(500)
+);
+
+
+CREATE TABLE classification(
+	class_name VARCHAR(30) NOT NULL,
+    properties VARCHAR(30)
+);
+
+
+CREATE TABLE medication(
+	scientific_name VARCHAR(30) NOT NULL,
+    common_name VARCHAR(30),
+    brand_name VARCHAR(30),
+    dosage INT NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    expiration_date DATE,
+    warnings VARCHAR(30) NOT NULL,   -- Link to hazard
+    contact VARCHAR(30),
+    ingredients VARCHAR(30),  -- Link to chemicals 
+    PRIMARY KEY (scientific_name, brand_name, dosage)
+);
+
+CREATE TABLE uses(
+	use_id INT PRIMARY KEY,
+    use_case VARCHAR(30) NOT NULL,
+    body_part VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE insurance_company(
+	name VARCHAR(30) PRIMARY KEY,
+    contact VARCHAR(30)
+);
+
 
 -- Relationships
 
