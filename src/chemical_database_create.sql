@@ -124,4 +124,52 @@ CREATE TABLE insurance_company(
 
 
 -- Relationships
+CREATE TABLE works_at( -- pharmacist to pharmacy store
+);
+
+CREATE TABLE has( -- for pharmacist and doctor to credentials
+);
+
+CREATE TABLE in_network( -- pharmacy store to insurance_company
+);
+
+CREATE TABLE insured_by( -- customer to insurance company
+);
+
+CREATE TABLE covers( -- customer to insurance company
+);
+
+CREATE TABLE contains( -- order to medication
+);
+
+CREATE TABLE sells( -- pharmacy store to medication
+);
+
+CREATE TABLE perscribes( -- doctor to medication
+);
+
+CREATE TABLE composed_of( -- medication to chemcial
+);
+
+CREATE TABLE med_usage( -- medication to use; think of diff name for this since we cant use has
+);
+
+CREATE TABLE classified_as( -- chemical to classification
+);
+
+CREATE TABLE contains( -- chemical to hazard; need to change name?  not sure
+);
+
+CREATE TABLE sells( -- pharmacy store to medication
+);
+
+CREATE TABLE places( -- doctor to order
+);
+
+CREATE TABLE picks_up( -- customer, pharmacy, order
+);
+
+CREATE TABLE diagnoses( -- customer, illness, doctor
+);
+
 
