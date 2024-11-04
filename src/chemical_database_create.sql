@@ -1,4 +1,3 @@
-
 DROP DATABASE Chemical_database;
 CREATE DATABASE Chemical_database;
 USE Chemical_database;
@@ -124,52 +123,183 @@ CREATE TABLE insurance_company(
 
 
 -- Relationships
-CREATE TABLE works_at( -- pharmacist to pharmacy store
+CREATE TABLE works_at ( -- pharmacist to pharmacy store
+    staff_id INT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    address_street_name VARCHAR(30) NOT NULL,
+    address_street_num INT NOT NULL,
+    address_town VARCHAR(30) NOT NULL,
+    address_state VARCHAR(30) NOT NULL,
+    address_zipcode CHAR(5) NOT NULL,
+    PRIMARY KEY (staff_id, name, address_street_name, address_street_num, address_town, address_state, address_zipcode),
+    FOREIGN KEY (staff_id) REFERENCES pharmacist(staff_id),
+    FOREIGN KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-CREATE TABLE has( -- for pharmacist and doctor to credentials
+CREATE TABLE recieves ( -- for pharmacist and doctor to credentials
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    certification_name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (dfirst_name, last_name, certification_name),
+    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
+    FOREIGN KEY (first_name, last_name) REFERENCES pharmacist(first_name, last_name),
+    FOREIGN KEY (certification_name) REFERENCES certification(name)
 );
 
-CREATE TABLE in_network( -- pharmacy store to insurance_company
+CREATE TABLE in_network ( -- pharmacy store to insurance_company
+    insurance_company_name VARCHAR(30) NOT NULL,
+    pharmacy_store_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_num INT NOT NULL,
+    pharmacy_address_town VARCHAR(30) NOT NULL,
+    pharmacy_address_state VARCHAR(30) NOT NULL,
+    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    PRIMARY KEY (insurance_company_name, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
+    FOREIGN KEY (insurance_company_name) REFERENCES insurance_company(name),
+    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-CREATE TABLE insured_by( -- customer to insurance company
+CREATE TABLE insured_by ( -- customer to insurance company
+    insurance_id INT NOT NULL,
+    company_name VARCHAR(30) NOT NULL,
+    policy_number VARCHAR(30) NOT NULL,
+    PRIMARY KEY (insurance_id, company_name),
+    FOREIGN KEY (insurance_id) REFERENCES customer(insurance_id),
+    FOREIGN KEY (company_name) REFERENCES insurance_company(name)
 );
 
-CREATE TABLE covers( -- customer to insurance company
+
+CREATE TABLE covers ( -- medication to insurance company
+    insurance_company_name VARCHAR(30) NOT NULL,
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    PRIMARY KEY (insurance_company_name, medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (insurance_company_name) REFERENCES insurance_company(name),
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
+        REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
-CREATE TABLE contains( -- order to medication
+CREATE TABLE contains ( -- order to medication, need diff name?
+    order_id INT NOT NULL,
+    scientific_name VARCHAR(30) NOT NULL,
+    brand_name VARCHAR(30) NOT NULL,
+    dosage INT NOT NULL,
+    PRIMARY KEY (order_id, scientific_name, brand_name, dosage),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (scientific_name, brand_name, dosage) REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
-CREATE TABLE sells( -- pharmacy store to medication
+CREATE TABLE sells ( -- pharmacy store to medication
+    store_name VARCHAR(30) NOT NULL,
+    store_address_street_name VARCHAR(30) NOT NULL,
+    store_address_street_num INT NOT NULL,
+    store_address_town VARCHAR(30) NOT NULL,
+    store_address_state VARCHAR(30) NOT NULL,
+    store_address_zipcode CHAR(5) NOT NULL,
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    PRIMARY KEY (store_name, store_address_street_name, store_address_street_num, 
+                 store_address_town, store_address_state, store_address_zipcode, 
+                 medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (store_name, store_address_street_name, store_address_street_num, 
+                 store_address_town, store_address_state, store_address_zipcode) 
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, 
+                                  address_town, address_state, address_zipcode),
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
+        REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
-CREATE TABLE perscribes( -- doctor to medication
+CREATE TABLE prescribes ( -- doctor to medication
+    doctor_first_name VARCHAR(30) NOT NULL,
+    doctor_last_name VARCHAR(30) NOT NULL,
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    PRIMARY KEY (doctor_first_name, doctor_last_name, medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
-CREATE TABLE composed_of( -- medication to chemcial
+
+CREATE TABLE composed_of ( -- medication to chemcial
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    chemical_scientific_name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (medication_scientific_name, medication_brand_name, medication_dosage, chemical_scientific_name),
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
+        REFERENCES medication(scientific_name, brand_name, dosage),
+    FOREIGN KEY (chemical_scientific_name) 
+        REFERENCES chemical(scientific_name)
 );
 
-CREATE TABLE med_usage( -- medication to use; think of diff name for this since we cant use has
+CREATE TABLE has ( -- medication to use, need diff name?
+    use_id INT NOT NULL,
+    scientific_name VARCHAR(30) NOT NULL,
+    brand_name VARCHAR(30) NOT NULL,
+    dosage INT NOT NULL,
+    PRIMARY KEY (use_id, scientific_name, brand_name, dosage),
+    FOREIGN KEY (use_id) REFERENCES uses(use_id),
+    FOREIGN KEY (scientific_name, brand_name, dosage) REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
-CREATE TABLE classified_as( -- chemical to classification
+CREATE TABLE classified_as ( -- chemical to classification
+    class_name VARCHAR(30) NOT NULL,
+    scientific_name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (class_name, scientific_name),
+    FOREIGN KEY (class_name) REFERENCES classification(class_name),
+    FOREIGN KEY (scientific_name) REFERENCES chemical(scientific_name)
 );
 
-CREATE TABLE contains( -- chemical to hazard; need to change name?  not sure
+
+CREATE TABLE contains (-- chemical to hazard; need to change name?  not sure
+    hazard_description VARCHAR(300) NOT NULL,
+    scientific_name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (hazard_description, scientific_name),
+    FOREIGN KEY (hazard_description) REFERENCES hazard(hazard_description),
+    FOREIGN KEY (scientific_name) REFERENCES chemical(scientific_name)
 );
 
-CREATE TABLE sells( -- pharmacy store to medication
+CREATE TABLE places ( -- doctor to order
+    doctor_first_name VARCHAR(30) NOT NULL,
+    doctor_last_name VARCHAR(30) NOT NULL,
+    order_id INT NOT NULL,
+    PRIMARY KEY (doctor_first_name, doctor_last_name, order_id),
+    FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
-CREATE TABLE places( -- doctor to order
+CREATE TABLE picks_up ( -- customer, pharmacy, order
+    customer_id INT NOT NULL,
+    order_id INT NOT NULL,
+    pharmacy_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_num INT NOT NULL,
+    pharmacy_address_town VARCHAR(30) NOT NULL,
+    pharmacy_address_state VARCHAR(30) NOT NULL,
+    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    PRIMARY KEY (customer_id, order_id, pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
+    FOREIGN KEY (customer_id) REFERENCES customer(insurance_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-CREATE TABLE picks_up( -- customer, pharmacy, order
+CREATE TABLE diagnoses ( -- customer, illness, doctor
+    diagnosis_id INT PRIMARY KEY,
+    customer_insurance_id INT NOT NULL,
+    doctor_first_name VARCHAR(30) NOT NULL,
+    doctor_last_name VARCHAR(30) NOT NULL,
+    illness_name VARCHAR(30) NOT NULL,
+    diagnosis_date DATE NOT NULL,
+    FOREIGN KEY (customer_insurance_id) REFERENCES customer(insurance_id),
+    FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
+    FOREIGN KEY (illness_name) REFERENCES illness(name)
 );
 
-CREATE TABLE diagnoses( -- customer, illness, doctor
-);
 
 
