@@ -125,15 +125,15 @@ CREATE TABLE insurance_company(
 -- Relationships
 CREATE TABLE works_at ( -- pharmacist to pharmacy store
     staff_id INT NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    address_street_name VARCHAR(30) NOT NULL,
-    address_street_num INT NOT NULL,
-    address_town VARCHAR(30) NOT NULL,
-    address_state VARCHAR(30) NOT NULL,
-    address_zipcode CHAR(5) NOT NULL,
-    PRIMARY KEY (staff_id, name, address_street_name, address_street_num, address_town, address_state, address_zipcode),
+    pharmacy_store_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_num INT NOT NULL,
+    pharmacy_address_town VARCHAR(30) NOT NULL,
+    pharmacy_address_state VARCHAR(30) NOT NULL,
+    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    PRIMARY KEY (staff_id, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
     FOREIGN KEY (staff_id) REFERENCES pharmacist(staff_id),
-    FOREIGN KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+     FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE recieves ( -- for pharmacist and doctor to credentials
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     certification_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (dfirst_name, last_name, certification_name),
+    PRIMARY KEY (first_name, last_name, certification_name),
     FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (first_name, last_name) REFERENCES pharmacist(first_name, last_name),
     FOREIGN KEY (certification_name) REFERENCES certification(name)
@@ -164,7 +164,7 @@ CREATE TABLE in_network ( -- pharmacy store to insurance_company
 CREATE TABLE insured_by ( -- customer to insurance company
     insurance_id INT NOT NULL,
     company_name VARCHAR(30) NOT NULL,
-    policy_number VARCHAR(30) NOT NULL,
+    policy_number VARCHAR(30) NOT NULL, -- can this be randomly generated? idk
     PRIMARY KEY (insurance_id, company_name),
     FOREIGN KEY (insurance_id) REFERENCES customer(insurance_id),
     FOREIGN KEY (company_name) REFERENCES insurance_company(name)
@@ -184,29 +184,28 @@ CREATE TABLE covers ( -- medication to insurance company
 
 CREATE TABLE contains ( -- order to medication, need diff name?
     order_id INT NOT NULL,
-    scientific_name VARCHAR(30) NOT NULL,
-    brand_name VARCHAR(30) NOT NULL,
-    dosage INT NOT NULL,
-    PRIMARY KEY (order_id, scientific_name, brand_name, dosage),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (scientific_name, brand_name, dosage) REFERENCES medication(scientific_name, brand_name, dosage)
-);
-
-CREATE TABLE sells ( -- pharmacy store to medication
-    store_name VARCHAR(30) NOT NULL,
-    store_address_street_name VARCHAR(30) NOT NULL,
-    store_address_street_num INT NOT NULL,
-    store_address_town VARCHAR(30) NOT NULL,
-    store_address_state VARCHAR(30) NOT NULL,
-    store_address_zipcode CHAR(5) NOT NULL,
     medication_scientific_name VARCHAR(30) NOT NULL,
     medication_brand_name VARCHAR(30) NOT NULL,
     medication_dosage INT NOT NULL,
-    PRIMARY KEY (store_name, store_address_street_name, store_address_street_num, 
-                 store_address_town, store_address_state, store_address_zipcode, 
-                 medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (store_name, store_address_street_name, store_address_street_num, 
-                 store_address_town, store_address_state, store_address_zipcode) 
+    PRIMARY KEY (order_id, medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
+);
+
+CREATE TABLE sells ( -- pharmacy store to medication
+    pharmacy_store_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_num INT NOT NULL,
+    pharmacy_address_town VARCHAR(30) NOT NULL,
+    pharmacy_address_state VARCHAR(30) NOT NULL,
+    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    PRIMARY KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town,
+				pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town,
+				pharmacy_address_state, pharmacy_address_zipcode) 
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, 
                                   address_town, address_state, address_zipcode),
     FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
@@ -214,13 +213,13 @@ CREATE TABLE sells ( -- pharmacy store to medication
 );
 
 CREATE TABLE prescribes ( -- doctor to medication
-    doctor_first_name VARCHAR(30) NOT NULL,
-    doctor_last_name VARCHAR(30) NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
     medication_scientific_name VARCHAR(30) NOT NULL,
     medication_brand_name VARCHAR(30) NOT NULL,
     medication_dosage INT NOT NULL,
-    PRIMARY KEY (doctor_first_name, doctor_last_name, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
+    PRIMARY KEY (first_name, last_name, medication_scientific_name, medication_brand_name, medication_dosage),
+    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
@@ -239,12 +238,12 @@ CREATE TABLE composed_of ( -- medication to chemcial
 
 CREATE TABLE has ( -- medication to use, need diff name?
     use_id INT NOT NULL,
-    scientific_name VARCHAR(30) NOT NULL,
-    brand_name VARCHAR(30) NOT NULL,
-    dosage INT NOT NULL,
-    PRIMARY KEY (use_id, scientific_name, brand_name, dosage),
+    medication_scientific_name VARCHAR(30) NOT NULL,
+    medication_brand_name VARCHAR(30) NOT NULL,
+    medication_dosage INT NOT NULL,
+    PRIMARY KEY (use_id, medication_scientific_name, medication_brand_name, medication_dosage),
     FOREIGN KEY (use_id) REFERENCES uses(use_id),
-    FOREIGN KEY (scientific_name, brand_name, dosage) REFERENCES medication(scientific_name, brand_name, dosage)
+    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
 );
 
 CREATE TABLE classified_as ( -- chemical to classification
@@ -258,18 +257,18 @@ CREATE TABLE classified_as ( -- chemical to classification
 
 CREATE TABLE contains (-- chemical to hazard; need to change name?  not sure
     hazard_description VARCHAR(300) NOT NULL,
-    scientific_name VARCHAR(30) NOT NULL,
+    chemical_scientific_name VARCHAR(30) NOT NULL,
     PRIMARY KEY (hazard_description, scientific_name),
     FOREIGN KEY (hazard_description) REFERENCES hazard(hazard_description),
-    FOREIGN KEY (scientific_name) REFERENCES chemical(scientific_name)
+    FOREIGN KEY (chemical_scientific_name) REFERENCES chemical(scientific_name)
 );
 
 CREATE TABLE places ( -- doctor to order
-    doctor_first_name VARCHAR(30) NOT NULL,
-    doctor_last_name VARCHAR(30) NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
     order_id INT NOT NULL,
-    PRIMARY KEY (doctor_first_name, doctor_last_name, order_id),
-    FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
+    PRIMARY KEY (first_name, last_name, order_id),
+    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
