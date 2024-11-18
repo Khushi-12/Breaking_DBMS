@@ -19,6 +19,8 @@ CREATE TABLE customer(
     phone CHAR(10) NOT NULL
 );
 
+-- test
+
 INSERT INTO customer VALUES 
 (123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 111-111-1111),
 (112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 222-222-2222),
