@@ -110,6 +110,159 @@ CREATE TABLE certification(
     institution VARCHAR(30) NOT NULL,
     expiration_date DATE NOT NULL
 );
+-- Dummy values for pharmacist and doctor licenses
+INSERT INTO certification (name, institution, expiration_date)
+VALUES
+('Pharmacist License', 'National Pharmacy Council', '2026-12-31'),
+('Doctor License', 'Medical Licensing Authority', '2027-08-15'),
+('Specialist Pharmacist Certification', 'Pharmacy Specialization Board', '2025-05-20'),
+('General Practitioner License', 'State Medical Board', '2028-03-01'),
+('Pharmacist Internship Completion', 'National Pharmacy Association', '2024-10-10'),
+('Surgeon License', 'Board of Surgical Specialties', '2029-01-15'),
+('Clinical Pharmacist Certification', 'International Pharmacy Council', '2026-07-01'),
+('Pediatrician License', 'Board of Pediatric Medicine', '2027-11-12');
+
+
+CREATE TABLE chemical(
+	scientific_name VARCHAR(30) NOT NULL,
+    common_name VARCHAR(30) NOT NULL,
+    moleculatar_formula VARCHAR(30) NOT NULL,
+    structure VARCHAR(30) NOT NULL,
+    charge INT NOT NULL,
+    solubility INT NOT NULL
+);
+INSERT INTO chemical (scientific_name, common_name, moleculatar_formula, structure, charge, solubility)
+VALUES
+('Methotrexate', 'Trexall', 'C20H22N8O5', 'Complex Ring', 0, 2),
+('Sodium Bicarbonate', 'Baking Soda', 'NaHCO3', 'Crystalline Structure', 1, 5),
+('Glucose', 'Sugar', 'C6H12O6', 'Ring Structure', 0, 5),
+('Caffeine', 'Coffee Extract', 'C8H10N4O2', 'Heterocyclic Ring', 0, 4),
+('Hydrochloric Acid', 'Muriatic Acid', 'HCl', 'Simple Molecule', -1, 5),
+('Ascorbic Acid', 'Vitamin C', 'C6H8O6', 'Ring Structure', 0, 4),
+('Cholecalciferol', 'Vitamin D3', 'C27H44O', 'Linear Chain', 0, 1),
+('Folic Acid', 'Vitamin B9', 'C19H19N7O6', 'Complex Ring', 0, 3),
+('Warfarin', 'Coumadin', 'C19H16O4', 'Aromatic Ring', 0, 2),
+('Metformin', 'Glucophage', 'C4H11N5', 'Simple Chain', 0, 4),
+('Omeprazole', 'Prilosec', 'C17H19N3O3S', 'Complex Ring', 0, 3),
+('Simvastatin', 'Zocor', 'C25H38O5', 'Linear Chain', 0, 2),
+('Clopidogrel', 'Plavix', 'C16H16ClNO2S', 'Complex Ring', 0, 2),
+('Ranitidine', 'Zantac', 'C13H22N4O3S', 'Complex Chain', 0, 4),
+('Diclofenac', 'Voltaren', 'C14H11Cl2NO2', 'Aromatic Ring', 0, 2),
+('Loratadine', 'Claritin', 'C22H23ClN2O2', 'Complex Chain', 0, 2),
+('Epinephrine', 'Adrenaline', 'C9H13NO3', 'Linear Chain', 0, 3),
+('Ketamine', 'Ketalar', 'C13H16ClNO', 'Aromatic Ring', 0, 2),
+('Dexamethasone', 'Decadron', 'C22H29FO5', 'Complex Ring', 0, 3),
+('Atorvastatin', 'Lipitor', 'C33H35FN2O5', 'Complex Chain', 0, 2);
+
+
+CREATE TABLE hazard(
+	hazard_description VARCHAR(300) NOT NULL,
+    safety_instruction VARCHAR(500)
+);
+
+-- Dummy values for the hazard table
+INSERT INTO hazard (hazard_description, safety_instruction)
+VALUES
+('Highly flammable liquid and vapor.', 'Keep away from heat, sparks, open flames, and hot surfaces. Use explosion-proof equipment. Store in a cool, well-ventilated area.'),
+('Causes severe skin burns and eye damage.', 'Wear protective gloves, goggles, and face shields. Wash thoroughly after handling. In case of contact, rinse immediately with plenty of water.'),
+('May cause respiratory irritation.', 'Avoid breathing vapors or dust. Use with adequate ventilation. If inhaled, remove to fresh air and seek medical attention if symptoms persist.'),
+('Toxic if swallowed.', 'Do not eat, drink, or smoke when using this product. Wash hands thoroughly after handling. If ingested, rinse mouth and seek immediate medical attention.'),
+('Harmful if inhaled.', 'Use in a well-ventilated area or under a fume hood. Wear a respirator if necessary. Seek medical attention if breathing difficulty occurs.'),
+('May cause cancer.', 'Avoid prolonged exposure. Wear appropriate personal protective equipment (PPE). Follow proper disposal protocols.'),
+('May damage fertility or the unborn child.', 'Avoid exposure, especially during pregnancy. Use proper PPE and consult a supervisor before handling.'),
+('May cause allergic skin reaction.', 'Avoid direct contact with skin. Wear protective gloves and wash exposed skin thoroughly. Use barrier creams if necessary.'),
+('Harmful to aquatic life with long-lasting effects.', 'Avoid release to the environment. Dispose of contents/container in accordance with local regulations.'),
+('Releases toxic gas when in contact with acids.', 'Avoid mixing with acidic materials. Store separately from acids in labeled containers.'),
+('May cause drowsiness or dizziness.', 'Avoid operating machinery or driving after exposure. Use in well-ventilated areas.'),
+('Explosive when dry.', 'Store under a protective liquid. Avoid friction, shock, and heat. Use non-sparking tools.'),
+('Corrosive to metals.', 'Store in corrosion-resistant containers with a resistant inner liner. Keep away from metal objects.'),
+('Oxidizing agent, may intensify fire.', 'Keep away from flammable and combustible materials. Store in a cool, dry place away from heat sources.'),
+('Fatal if absorbed through the skin.', 'Wear chemical-resistant gloves and protective clothing. Avoid contact with skin at all costs. Seek immediate medical attention in case of exposure.'),
+('Irritating to eyes and mucous membranes.', 'Wear safety goggles or face shields. Ensure adequate ventilation. Rinse eyes immediately if exposed and seek medical attention.'),
+('Can cause frostbite.', 'Handle with insulated gloves. Avoid direct contact with skin. If frostbite occurs, immerse affected area in lukewarm water and seek medical attention.'),
+('Emits toxic fumes when heated.', 'Avoid heating. Use in well-ventilated areas or under a fume hood. Store away from heat sources.'),
+('Causes liver and kidney damage on prolonged exposure.', 'Minimize exposure duration. Use appropriate PPE and follow safety guidelines for handling hazardous materials.'),
+('Carcinogenic in laboratory animals.', 'Limit exposure. Wear PPE including lab coats and gloves. Dispose of material according to safety regulations.');
+
+CREATE TABLE classification(
+	class_name VARCHAR(30) NOT NULL,
+    properties VARCHAR(30)
+);
+
+
+CREATE TABLE medication(
+	scientific_name VARCHAR(30) NOT NULL,
+    common_name VARCHAR(30),
+    brand_name VARCHAR(30),
+    dosage INT NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    expiration_date DATE,
+    warnings VARCHAR(30) NOT NULL,   -- Link to hazard
+    contact VARCHAR(30),
+    ingredients VARCHAR(30),  -- Link to chemicals 
+    PRIMARY KEY (scientific_name, brand_name, dosage)
+);
+-- Dummy values for the medication table
+INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
+VALUES
+('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 500, 'Tablet', '2025-12-31', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
+('Paracetamol', 'Acetaminophen', 'Tylenol', 500, 'Tablet', '2026-08-15', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
+('Ibuprofen', 'Advil', 'Advil', 400, 'Capsule', '2026-05-01', 'May cause stomach irritation.', 'Pfizer', 'C13H18O2'),
+('Amoxicillin', 'Amoxil', 'Amoxil', 250, 'Capsule', '2024-10-10', 'Allergic reactions may occur.', 'GlaxoSmithKline', 'C16H19N3O5S'),
+('Metformin', 'Glucophage', 'Glucophage', 850, 'Tablet', '2026-03-01', 'May cause lactic acidosis.', 'Merck', 'C4H11N5'),
+('Omeprazole', 'Prilosec', 'Prilosec', 20, 'Capsule', '2025-07-15', 'Long-term use may cause vitamin deficiency.', 'AstraZeneca', 'C17H19N3O3S'),
+('Clopidogrel', 'Plavix', 'Plavix', 75, 'Tablet', '2026-02-20', 'Risk of excessive bleeding.', 'Sanofi', 'C16H16ClNO2S'),
+('Simvastatin', 'Zocor', 'Zocor', 20, 'Tablet', '2025-11-30', 'May cause muscle pain or weakness.', 'Merck', 'C25H38O5'),
+('Ranitidine', 'Zantac', 'Zantac', 150, 'Tablet', '2025-08-01', 'May increase risk of cancer.', 'Sanofi', 'C13H22N4O3S'),
+('Warfarin', 'Coumadin', 'Coumadin', 5, 'Tablet', '2024-12-31', 'Risk of severe bleeding.', 'Bristol-Myers Squibb', 'C19H16O4'),
+('Epinephrine', 'Adrenaline', 'EpiPen', 0.3, 'Injection', '2024-06-15', 'May cause rapid heart rate.', 'Mylan', 'C9H13NO3'),
+('Ketamine', 'Ketalar', 'Ketalar', 10, 'Injection', '2026-01-01', 'May cause hallucinations.', 'Pfizer', 'C13H16ClNO'),
+('Dexamethasone', 'Decadron', 'Decadron', 4, 'Tablet', '2025-04-01', 'May suppress immune response.', 'Merck', 'C22H29FO5'),
+('Loratadine', 'Claritin', 'Claritin', 10, 'Tablet', '2025-03-01', 'May cause drowsiness.', 'Bayer', 'C22H23ClN2O2'),
+('Methotrexate', 'Trexall', 'Trexall', 2.5, 'Tablet', '2026-07-01', 'Toxic to liver and bone marrow.', 'Pfizer', 'C20H22N8O5'),
+('Atorvastatin', 'Lipitor', 'Lipitor', 10, 'Tablet', '2026-09-01', 'May cause muscle breakdown.', 'Pfizer', 'C33H35FN2O5'),
+('Folic Acid', 'Vitamin B9', 'Folacare', 400, 'Tablet', '2026-12-31', 'May mask vitamin B12 deficiency.', 'Nature Made', 'C19H19N7O6'),
+('Ascorbic Acid', 'Vitamin C', 'C-1000', 1000, 'Tablet', '2025-08-15', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
+('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 650, 'Tablet', '2024-11-30', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
+('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 10, 'Solution', '2024-05-01', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
+
+CREATE TABLE uses(
+	use_id INT PRIMARY KEY,
+    use_case VARCHAR(30) NOT NULL,
+    body_part VARCHAR(30) NOT NULL
+);
+-- Dummy values for the uses table
+INSERT INTO uses (use_id, use_case, body_part)
+VALUES
+(1, 'Pain Relief', 'Head'),
+(2, 'Pain Relief', 'Back'),
+(3, 'Allergy Relief', 'Nose'),
+(4, 'Anti-Inflammatory', 'Joints'),
+(5, 'Cold and Flu', 'Sinuses'),
+(6, 'Digestive Health', 'Stomach'),
+(7, 'Skin Irritation', 'Skin'),
+(8, 'Blood Pressure Control', 'Heart'),
+(9, 'Bone Strengthening', 'Bones'),
+(10, 'Eye Drops', 'Eyes'),
+(11, 'Muscle Relaxant', 'Muscles'),
+(12, 'Wound Healing', 'Skin'),
+(13, 'Antibiotic', 'Lungs'),
+(14, 'Cholesterol Control', 'Blood'),
+(15, 'Hair Growth', 'Scalp'),
+(16, 'Dental Care', 'Teeth'),
+(17, 'Antiseptic', 'Hands'),
+(18, 'Immune Support', 'Immune System'),
+(19, 'Joint Lubrication', 'Knees'),
+(20, 'Nerve Pain Relief', 'Nerves');
+
+
+CREATE TABLE insurance_company(
+	name VARCHAR(30) PRIMARY KEY,
+    contact VARCHAR(30)
+);
+<<<<<<< HEAD
+
+);
 
 
 CREATE TABLE chemical(
@@ -158,55 +311,31 @@ CREATE TABLE insurance_company(
     contact VARCHAR(30)
 );
 
-);
-
-
-CREATE TABLE chemical(
-	scientific_name VARCHAR(30) NOT NULL,
-    common_name VARCHAR(30) NOT NULL,
-    moleculatar_formula VARCHAR(30) NOT NULL,
-    structure VARCHAR(30) NOT NULL,
-    charge INT NOT NULL,
-    solubility INT NOT NULL
-);
-
-
-CREATE TABLE hazard(
-	hazard_description VARCHAR(300) NOT NULL,
-    safety_instruction VARCHAR(500)
-);
-
-
-CREATE TABLE classification(
-	class_name VARCHAR(30) NOT NULL,
-    properties VARCHAR(30)
-);
-
-
-CREATE TABLE medication(
-	scientific_name VARCHAR(30) NOT NULL,
-    common_name VARCHAR(30),
-    brand_name VARCHAR(30),
-    dosage INT NOT NULL,
-    type VARCHAR(30) NOT NULL,
-    expiration_date DATE,
-    warnings VARCHAR(30) NOT NULL,   -- Link to hazard
-    contact VARCHAR(30),
-    ingredients VARCHAR(30),  -- Link to chemicals 
-    PRIMARY KEY (scientific_name, brand_name, dosage)
-);
-
-CREATE TABLE uses(
-	use_id INT PRIMARY KEY,
-    use_case VARCHAR(30) NOT NULL,
-    body_part VARCHAR(30) NOT NULL
-);
-
-CREATE TABLE insurance_company(
-	name VARCHAR(30) PRIMARY KEY,
-    contact VARCHAR(30)
-);
-
+=======
+-- Dummy values for the insurance_company table
+INSERT INTO insurance_company (name, contact)
+VALUES
+('UnitedHealth Group', '1-800-328-5979'),
+('Anthem Blue Cross', '1-800-331-1476'),
+('Aetna', '1-855-372-8824'),
+('Cigna', '1-800-997-1654'),
+('Humana', '1-877-877-1051'),
+('Kaiser Permanente', '1-800-464-4000'),
+('Blue Shield of California', '1-888-256-3650'),
+('Molina Healthcare', '1-888-665-4621'),
+('Health Net', '1-800-522-0088'),
+('WellCare Health Plans', '1-866-999-3945'),
+('Centene Corporation', '1-800-392-2160'),
+('Oscar Health', '1-855-672-2788'),
+('United Healthcare of Texas', '1-800-357-0978'),
+('Blue Cross Blue Shield', '1-888-630-2583'),
+('CareFirst BlueCross BlueShield', '1-800-783-4582'),
+('Harvard Pilgrim Health Care', '1-888-888-4742'),
+('Highmark', '1-866-823-2573'),
+('Independence Blue Cross', '1-800-275-2583'),
+('EmblemHealth', '1-800-447-8255'),
+('Medica', '1-800-936-6880');
+>>>>>>> 5bf1d55 (Dummy data added for our database)
 
 -- Relationships
 CREATE TABLE works_at ( -- pharmacist to pharmacy store
