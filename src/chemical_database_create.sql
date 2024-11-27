@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 DROP DATABASE IF EXISTS Chemical_database;
+=======
+
+DROP DATABASE Chemical_database;
+>>>>>>> python_flask
 CREATE DATABASE Chemical_database;
 USE Chemical_database;
 
