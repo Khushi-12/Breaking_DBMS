@@ -1,5 +1,4 @@
-
-DROP DATABASE Chemical_database;
+DROP DATABASE IF EXISTS Chemical_database;
 CREATE DATABASE Chemical_database;
 USE Chemical_database;
 
