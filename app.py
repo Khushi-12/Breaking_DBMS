@@ -1,10 +1,22 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,request,jsonify
 
 app = Flask (__name__)
 
 @app.route('/')
 def intro():
+
     return render_template('login.html')
+
+@app.route('/login',methods = ['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if username == 'admin' and password == 'password123':
+        return jsonify({"message":"Valid Credentials"}), 200
+    else:
+        return jsonify({"message":"Invalid Credentials, Login Unsuccessful"}), 401
 
 
 if __name__ == '__main__':
