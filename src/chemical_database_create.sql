@@ -37,12 +37,11 @@ INSERT INTO customer VALUES
 (222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-10-10', 'pheavensbee@gmail.com', 1114441111),
 (222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111555111),
 (222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 7163414340),
-(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 6179592378), -- 9175683801‬), -- wtf
+(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 7819592378),
 (222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 8681932849),
 (222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392),
-(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), -- 5187793903‬),
-(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823) -- 1116661111‬)
-;
+(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), 
+(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823);
 
 CREATE TABLE orders(
 	order_id INT PRIMARY KEY,
@@ -50,6 +49,29 @@ CREATE TABLE orders(
     delivery_date DATE NOT NULL,
     quantity INT NOT NULL
 );
+
+INSERT INTO orders (order_id, medicine, delivery_date, quantity) VALUES
+(1, 'Paracetamol', '2024-12-01', 50),
+(2, 'Ibuprofen', '2024-12-02', 30),
+(3, 'Aspirin', '2024-12-03', 100),
+(4, 'Amoxicillin', '2024-12-04', 25),
+(5, 'Metformin', '2024-12-05', 40),
+(6, 'Simvastatin', '2024-12-06', 15),
+(7, 'Cetirizine', '2024-12-07', 60),
+(8, 'Lisinopril', '2024-12-08', 35),
+(9, 'Omeprazole', '2024-12-09', 50),
+(10, 'Metoprolol', '2024-12-10', 20),
+(11, 'Prednisone', '2024-12-11', 45),
+(12, 'Doxycycline', '2024-12-12', 30),
+(13, 'Losartan', '2024-12-13', 55),
+(14, 'Hydrochlorothiazide', '2024-12-14', 70),
+(15, 'Albuterol', '2024-12-15', 25),
+(16, 'Gabapentin', '2024-12-16', 40),
+(17, 'Fluoxetine', '2024-12-17', 20),
+(18, 'Furosemide', '2024-12-18', 60),
+(19, 'Clonazepam', '2024-12-19', 30),
+(20, 'Loratadine', '2024-12-20', 50);
+
 
 
 CREATE TABLE pharmacy_store(
@@ -63,8 +85,13 @@ CREATE TABLE pharmacy_store(
     PRIMARY KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-/*INSERT INTO pharmacy_store VALUES 
-();*/
+INSERT INTO pharmacy_store (name, address_street_name, address_street_num, address_town, address_state, address_zipcode, phone_numer) VALUES
+('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', '2175550123'),
+('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', '4025559876'),
+('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', '2125550321'),
+('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', '3125554678'),
+('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', '3035550987'),
+('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', '3235558432');
 
 
 CREATE TABLE pharmacist(
@@ -73,25 +100,42 @@ CREATE TABLE pharmacist(
     last_name VARCHAR(30) NOT NULL
 );
 
-/*INSERT INTO pharmacists VALUES 
+INSERT INTO pharmacist VALUES 
 (1, 'Jules', 'Sylvester'),
 (2, 'Edgar', 'Roman'),
 (3, 'Louisa', 'Wetzel'),
 (4, 'Gabby', 'Dipollito'),
-(5, 'Nakul', 'Rao');*/
+(5, 'Nakul', 'Rao');
 
 
 CREATE TABLE illness(
 	name VARCHAR(30) NOT NULL, 
     severity INT NOT NULL,
-    symptoms VARCHAR(30) NOT NULL,
+    symptoms VARCHAR(128) NOT NULL,
     state VARCHAR(30) NOT NULL
 );
+
+INSERT INTO illness (name, severity, symptoms, state) VALUES
+('Flu', 3, 'Fever, chills, fatigue', 'Active'),
+('Common Cold', 2, 'Runny nose, cough, sore throat', 'Active'),
+('Pneumonia', 5, 'Cough, difficulty breathing, chest pain', 'Critical'),
+('Migraine', 4, 'Severe headache, nausea, light sensitivity', 'Active'),
+('High Blood Pressure', 4, 'Headaches, dizziness, blurred vision', 'Chronic'),
+('Asthma', 3, 'Shortness of breath, wheezing, coughing', 'Controlled'),
+('Arthritis', 3, 'Joint pain, swelling, stiffness', 'Chronic'),
+('Allergy', 2, 'Sneezing, itchy eyes, congestion', 'Active'),
+('Diabetes', 4, 'Increased thirst, frequent urination, fatigue', 'Chronic'),
+('Acid Reflux', 2, 'Heartburn, regurgitation, chest pain', 'Controlled'),
+('Anxiety', 3, 'Nervousness, rapid heartbeat, restlessness', 'Active'),
+('Infection', 5, 'Fever, chills, redness, swelling', 'Active'),
+('Insomnia', 3, 'Difficulty falling asleep, fatigue', 'Active'),
+('Severe Cough', 4, 'Persistent cough, difficulty breathing', 'Active');
+
 
 CREATE TABLE doctor(
 	first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    office_name VARCHAR(30) NOT NULL,
+    office_name VARCHAR(128) NOT NULL,
     office_address_street_name VARCHAR(30) NOT NULL,
     office_address_street_num VARCHAR(30) NOT NULL,
     office_address_town VARCHAR(30) NOT NULL,
@@ -100,13 +144,14 @@ CREATE TABLE doctor(
     email VARCHAR(30) NOT NULL,
     phone CHAR(10) NOT NULL
 );
-/*INSERT INTO doctors VALUES 
-('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', 617-959-2378),
-('Shane', 'Holmes', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'holmes.sha@northeastern.edu', 401-573-0982‬),
-('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', 201-687-8959‬),
-('Grace', 'Cerrato', 'Massachusetts General Hospital' 'Fruit St', 55, 'Boston', 'Massachusetts', 02116, 'gcerr24@g.holycross.edu', 774-260-7096‬),
-('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', 382-382-4020);
-*/
+
+INSERT INTO doctor VALUES 
+('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', '6173782799'),
+('Shane', 'Holmes', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'holmes.sha@northeastern.edu', '6173782789'),
+('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', '8772419037'),
+('Grace', 'Cerrato', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'gcerr24@g.holycross.edu', '6173782799'),
+('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', '3823824020');
+
 
 CREATE TABLE certification(
 	name VARCHAR(128) PRIMARY KEY NOT NULL,
@@ -129,33 +174,33 @@ VALUES
 CREATE TABLE chemical(
 	scientific_name VARCHAR(30) NOT NULL,
     common_name VARCHAR(30) NOT NULL,
-    moleculatar_formula VARCHAR(30) NOT NULL,
+    molecular_formula VARCHAR(30) NOT NULL,
     structure VARCHAR(30) NOT NULL,
     charge INT NOT NULL,
     solubility INT NOT NULL
 );
-INSERT INTO chemical (scientific_name, common_name, moleculatar_formula, structure, charge, solubility)
-VALUES
-('Methotrexate', 'Trexall', 'C20H22N8O5', 'Complex Ring', 0, 2),
-('Sodium Bicarbonate', 'Baking Soda', 'NaHCO3', 'Crystalline Structure', 1, 5),
-('Glucose', 'Sugar', 'C6H12O6', 'Ring Structure', 0, 5),
-('Caffeine', 'Coffee Extract', 'C8H10N4O2', 'Heterocyclic Ring', 0, 4),
-('Hydrochloric Acid', 'Muriatic Acid', 'HCl', 'Simple Molecule', -1, 5),
-('Ascorbic Acid', 'Vitamin C', 'C6H8O6', 'Ring Structure', 0, 4),
-('Cholecalciferol', 'Vitamin D3', 'C27H44O', 'Linear Chain', 0, 1),
-('Folic Acid', 'Vitamin B9', 'C19H19N7O6', 'Complex Ring', 0, 3),
-('Warfarin', 'Coumadin', 'C19H16O4', 'Aromatic Ring', 0, 2),
-('Metformin', 'Glucophage', 'C4H11N5', 'Simple Chain', 0, 4),
-('Omeprazole', 'Prilosec', 'C17H19N3O3S', 'Complex Ring', 0, 3),
-('Simvastatin', 'Zocor', 'C25H38O5', 'Linear Chain', 0, 2),
-('Clopidogrel', 'Plavix', 'C16H16ClNO2S', 'Complex Ring', 0, 2),
-('Ranitidine', 'Zantac', 'C13H22N4O3S', 'Complex Chain', 0, 4),
-('Diclofenac', 'Voltaren', 'C14H11Cl2NO2', 'Aromatic Ring', 0, 2),
-('Loratadine', 'Claritin', 'C22H23ClN2O2', 'Complex Chain', 0, 2),
-('Epinephrine', 'Adrenaline', 'C9H13NO3', 'Linear Chain', 0, 3),
-('Ketamine', 'Ketalar', 'C13H16ClNO', 'Aromatic Ring', 0, 2),
-('Dexamethasone', 'Decadron', 'C22H29FO5', 'Complex Ring', 0, 3),
-('Atorvastatin', 'Lipitor', 'C33H35FN2O5', 'Complex Chain', 0, 2);
+
+INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure, charge, solubility) VALUES
+('Paracetamol', 'Acetaminophen', 'C8H9NO2', 'C6H4(OH)C(=O)NHCH3', 0, 2),
+('Ibuprofen', 'Ibuprofen', 'C13H18O2', 'CH3(CH2)3COOCH2C6H4CH3', 0, 3),
+('Aspirin', 'Acetylsalicylic acid', 'C9H8O4', 'CH3COOC6H4COOH', 0, 3),
+('Amoxicillin', 'Amoxicillin', 'C16H19N3O5S', 'C6H4COOH-CH2-CO-NH', -1, 4),
+('Metformin', 'Metformin', 'C4H11N5', 'C(=N)NH2', 0, 5),
+('Simvastatin', 'Simvastatin', 'C25H38O5', 'C6H4COOH-CH2-CO-NH', 0, 3),
+('Cetirizine', 'Cetirizine', 'C21H25ClN2O3', 'C6H4Cl-CH2-NH-COO', 0, 4),
+('Lisinopril', 'Lisinopril', 'C21H31N3O5', 'C6H5COOH-CH2-NH2', 0, 3),
+('Omeprazole', 'Omeprazole', 'C17H19N3O3S', 'C6H4COOH-CH2-NH2', 0, 3),
+('Metoprolol', 'Metoprolol', 'C15H25NO3', 'C6H5C(=O)NH-C2H4', 0, 4),
+('Prednisone', 'Prednisone', 'C21H26O5', 'C6H4COOH-C2H4', 0, 2),
+('Doxycycline', 'Doxycycline', 'C22H24N2O8', 'C6H4OH-NH2-COOH', -1, 4),
+('Losartan', 'Losartan', 'C22H23ClN6O', 'C6H4COOH-NH-C6H4', 0, 3),
+('Hydrochlorothiazide', 'Hydrochlorothiazide', 'C7H8ClN3O4S2', 'C6H4(OH)-C(=O)-NH2', -1, 3),
+('Albuterol', 'Albuterol', 'C13H21NO3', 'C6H4Cl-CH2-NH-COOH', 1, 4),
+('Gabapentin', 'Gabapentin', 'C9H17NO2', 'C8H5OH-CH2-NH2', 0, 5),
+('Fluoxetine', 'Fluoxetine', 'C17H18F3NO', 'C6H4COOH-CH2-NH2', 0, 3),
+('Furosemide', 'Furosemide', 'C12H11ClN2O5S', 'C6H4COOH-CH2-NH2', -1, 3),
+('Clonazepam', 'Clonazepam', 'C15H10ClN3O3', 'C6H4COOH-CH2-C6H4', 0, 2),
+('Loratadine', 'Loratadine', 'C22H23ClN2O2', 'C6H4COOH-C2H4-NH2', 0, 3);
 
 
 CREATE TABLE hazard(
@@ -188,9 +233,31 @@ VALUES
 ('Carcinogenic in laboratory animals.', 'Limit exposure. Wear PPE including lab coats and gloves. Dispose of material according to safety regulations.');
 
 CREATE TABLE classification(
-	class_name VARCHAR(30) NOT NULL,
-    properties VARCHAR(30)
+	class_name VARCHAR(128) NOT NULL,
+    properties VARCHAR(128)
 );
+
+INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly what i was thinking of but it technically works??
+('Analgesic', 'Pain relief'),
+('Analgesic', 'Nonsteroidal anti-inflammatory'),
+('Analgesic', 'Antipyretic'),
+('Antibiotic', 'Bactericidal'),
+('Antidiabetic', 'Oral medication'),
+('Cholesterol-lowering', 'Statin'),
+('Antihistamine', 'Allergy relief'),
+('Antihypertensive', 'ACE inhibitor'),
+('Proton pump inhibitor', 'Gastroesophageal reflux'),
+('Beta-blocker', 'Cardiovascular treatment'),
+('Corticosteroid', 'Anti-inflammatory'),
+('Antibiotic', 'Tetracycline'),
+('Antihypertensive', 'Angiotensin receptor blocker'),
+('Diuretic', 'Thiazide'),
+('Bronchodilator', 'Asthma relief'),
+('Anticonvulsant', 'Neuropathic pain'),
+('Antidepressant', 'Selective serotonin reuptake inhibitor'),
+('Diuretic', 'Loop'),
+('Benzodiazepine', 'Anxiolytic'),
+('Antihistamine', 'Non-sedative');
 
 
 CREATE TABLE medication(
@@ -200,13 +267,13 @@ CREATE TABLE medication(
     dosage INT NOT NULL,
     type VARCHAR(30) NOT NULL,
     expiration_date DATE,
-    warnings VARCHAR(30) NOT NULL,   -- Link to hazard
+    warnings VARCHAR(128) NOT NULL,   -- Link to hazard
     contact VARCHAR(30),
     ingredients VARCHAR(30),  -- Link to chemicals 
     PRIMARY KEY (scientific_name, brand_name, dosage)
 );
 -- Dummy values for the medication table
-/*INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
+INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
 VALUES
 ('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 500, 'Tablet', '2025-12-31', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
 ('Paracetamol', 'Acetaminophen', 'Tylenol', 500, 'Tablet', '2026-08-15', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
@@ -228,7 +295,7 @@ VALUES
 ('Ascorbic Acid', 'Vitamin C', 'C-1000', 1000, 'Tablet', '2025-08-15', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
 ('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 650, 'Tablet', '2024-11-30', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
 ('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 10, 'Solution', '2024-05-01', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
-*/
+
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY,
     use_case VARCHAR(30) NOT NULL,
