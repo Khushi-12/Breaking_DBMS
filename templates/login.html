@@ -118,7 +118,8 @@
                 const data = await response.json();
                 alert(data.message)
                 document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('logoutButton').style.display = 'block';
+                window.location.href = '/user';
+                // document.getElementById('logoutButton').style.display = 'block';
             }
             else{
                 const data = await response.json();
@@ -131,7 +132,7 @@
             }
         });
 
-        document.getElementById('logoutButton').addEventListener('click', function () {
+            document.getElementById('logoutButton').addEventListener('click', function () {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('logoutButton').style.display = 'none';
         });
