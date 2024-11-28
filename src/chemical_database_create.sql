@@ -34,8 +34,8 @@ INSERT INTO customer VALUES
 (234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 999-999-9999),
 (223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 111-222-1111),
 (222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 111-333-1111),
-(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2151--02', 'pheavensbee@gmail.com', 111-444-1111),
-(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151--02', 'lflickerman@gmail.com', 111-555-111),
+(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-17-10', 'pheavensbee@gmail.com', 111-444-1111),
+(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111-555-111),
 (222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 716-341-4340),
 (222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 917-568-3801‬),
 (222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 868-193-2849),
@@ -62,6 +62,9 @@ CREATE TABLE pharmacy_store(
     phone_numer CHAR(10) NOT NULL,
     PRIMARY KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
+
+INSERT INTO pharmacy_store VALUES 
+();
 
 
 CREATE TABLE pharmacist(
