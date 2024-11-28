@@ -43,7 +43,6 @@ INSERT INTO customer VALUES
 (333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), -- 5187793903‬),
 (323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823) -- 1116661111‬)
 ;
-*/
 
 CREATE TABLE orders(
 	order_id INT PRIMARY KEY,

@@ -3,10 +3,10 @@ import pymysql
 
 class sqlConnector:
 
-    host = "localhost"
-    user = "root"
-    password = "root"
-    database = "bus_schema"
+    host = ""
+    user = ""
+    password = ""
+    database = ""
 
     connection = None
 

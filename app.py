@@ -1,4 +1,5 @@
 from flask import Flask,render_template,request,jsonify
+from src import sql_connector
 
 app = Flask (__name__)
 
@@ -27,4 +28,9 @@ def user():
 
 if __name__ == '__main__':
 
-    app.run()
+    con = sql_connector.sqlConnector()
+    con.connect("root", "root", "localhost", "chemical_database")
+
+    print(con.query("SELECT * FROM chemical_database.customer;"))
+
+    #app.run()
