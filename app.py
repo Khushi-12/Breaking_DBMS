@@ -21,10 +21,8 @@ def login():
 
 
 @app.route('/user')
-def page():
-    return render_template("user_page.html")
-
-
+def user():
+    return render_template('pharmacy.html')
 
 if __name__ == '__main__':
     app.run()
