@@ -7,6 +7,7 @@ def intro():
 
     return render_template('login.html')
 
+
 @app.route('/login',methods = ['POST'])
 def login():
     data = request.get_json()
@@ -17,6 +18,12 @@ def login():
         return jsonify({"message":"Valid Credentials"}), 200
     else:
         return jsonify({"message":"Invalid Credentials, Login Unsuccessful"}), 401
+
+
+@app.route('/user')
+def page():
+    return render_template("user_page.html")
+
 
 
 if __name__ == '__main__':
