@@ -25,6 +25,10 @@ def login():
 def user():
     return render_template('pharmacy.html')
 
+@app.route('/user_setting')
+def setting():
+    return render_template('pharmacist_profile.html')
+
 
 if __name__ == '__main__':
 
