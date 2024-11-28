@@ -1,6 +1,12 @@
 from flask import Flask,render_template,request,jsonify
 from src import sql_connector
 
+
+# Define sql connector 
+con = sql_connector.sqlConnector()
+con.connect("root", "root", "localhost", "chemical_database")
+
+
 app = Flask (__name__)
 
 @app.route('/')
@@ -23,7 +29,21 @@ def login():
 
 @app.route('/user')
 def user():
-    return render_template('pharmacy.html')
+
+    customers = con.query("SELECT * FROM chemical_database.customer;")
+    
+    '''[
+        {'name' : 'yo', 'email' : 'eep'},
+        {'name' : 'nope', 'email' : 'sleep'},
+        {'name' : 'hell', 'email' : 'meep'}
+    ]'''
+
+    cus = con.query("SELECT * FROM chemical_database.customer;")
+
+    print(cus[0]['first_name'])
+
+    return render_template('pharmacy.html', customers=customers)
+
 
 @app.route('/user_setting')
 def setting():
@@ -31,10 +51,6 @@ def setting():
 
 
 if __name__ == '__main__':
+    
+    app.run()
 
-    con = sql_connector.sqlConnector()
-    con.connect("root", "root", "localhost", "chemical_database")
-
-    print(con.query("SELECT * FROM chemical_database.customer;"))
-
-    #app.run()

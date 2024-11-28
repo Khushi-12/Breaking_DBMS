@@ -116,7 +116,15 @@
             displayArea.innerHTML = `
                 <h2>${tableName} Table</h2>
                 <p>Details of the ${tableName} table will appear here.</p>
+
+                
+                {% for customer in customers %}
+                    <li>{{ customer.first_name }} - {{ customer.last_name }}</li>
+                {% endfor %}
+                
             `;
+            
+
         }
 
         // Placeholder functions for top bar actions
