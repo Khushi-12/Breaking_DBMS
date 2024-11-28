@@ -22,53 +22,26 @@ CREATE TABLE customer(
 -- test
 
 INSERT INTO customer VALUES 
-
-(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 111-111-1111),
-
-(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 222-222-2222),
-(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 333-333-3333),
-(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 111-111-1212),
-(111112345, 'Lucy Gray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 444-444-4444),
-(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 555-555-5555),
-(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 666-666-6666),
-(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 777-777-7777),
-(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 888-888-8888),
-
-(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 999-999-9999),
-(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 111-222-1111),
-(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 111-333-1111),
-
-(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-07-10', 'pheavensbee@gmail.com', 111-444-1111),
-(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111-555-111),
-(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 716-341-4340),
-
-(222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 868-193-2849),
-(222212223, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 819-832-0392)
--- (333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 518-779-3903‬),
--- (323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 111-666-1111‬);
-;
-
-/*
-(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 111-111-1111),
-(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 222-222-2222),
-(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 333-333-3333),
-(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 111-111-1212),
-(111112345, 'Lucy Gray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 444-444-4444),
-(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 555-555-5555),
-(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 666-666-6666),
-(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 777-777-7777),
-(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 888-888-8888),
-(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 999-999-9999),
-(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 111-222-1111),
-(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 111-333-1111),
-(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-17-10', 'pheavensbee@gmail.com', 111-444-1111),
-(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111-555-111),
-(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 716-341-4340),
-(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 917-568-3801‬),
-(222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 868-193-2849),
-(222222223, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 819-832-0392),
-(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 518-779-3903‬),
-(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 111-666-1111‬)
+(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111),
+(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222),
+(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 3333333333),
+(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 1111111212),
+(111112345, 'Lucy Gray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 4444444444),
+(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 5555555555),
+(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 6666666666),
+(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 7777777777),
+(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 8888888888),
+(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 9999999999),
+(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 1112221111),
+(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 1113331111),
+(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-10-10', 'pheavensbee@gmail.com', 1114441111),
+(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111555111),
+(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 7163414340),
+(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 9175683801‬), -- wtf
+(222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 8681932849),
+(222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392),
+(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 5187793903‬),
+(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 1116661111‬)
 ;
 */
 
@@ -91,8 +64,8 @@ CREATE TABLE pharmacy_store(
     PRIMARY KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-INSERT INTO pharmacy_store VALUES 
-();
+/*INSERT INTO pharmacy_store VALUES 
+();*/
 
 
 CREATE TABLE pharmacist(
@@ -101,12 +74,12 @@ CREATE TABLE pharmacist(
     last_name VARCHAR(30) NOT NULL
 );
 
-INSERT INTO pharmacists VALUES 
+/*INSERT INTO pharmacists VALUES 
 (1, 'Jules', 'Sylvester'),
 (2, 'Edgar', 'Roman'),
 (3, 'Louisa', 'Wetzel'),
 (4, 'Gabby', 'Dipollito'),
-(5, 'Nakul', 'Rao');
+(5, 'Nakul', 'Rao');*/
 
 
 CREATE TABLE illness(
@@ -128,17 +101,17 @@ CREATE TABLE doctor(
     email VARCHAR(30) NOT NULL,
     phone CHAR(10) NOT NULL
 );
-INSERT INTO doctors VALUES 
+/*INSERT INTO doctors VALUES 
 ('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', 617-959-2378),
 ('Shane', 'Holmes', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'holmes.sha@northeastern.edu', 401-573-0982‬),
 ('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', 201-687-8959‬),
 ('Grace', 'Cerrato', 'Massachusetts General Hospital' 'Fruit St', 55, 'Boston', 'Massachusetts', 02116, 'gcerr24@g.holycross.edu', 774-260-7096‬),
 ('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', 382-382-4020);
-
+*/
 
 CREATE TABLE certification(
-	name VARCHAR(30) PRIMARY KEY NOT NULL,
-    institution VARCHAR(30) NOT NULL,
+	name VARCHAR(128) PRIMARY KEY NOT NULL,
+    institution VARCHAR(128) NOT NULL,
     expiration_date DATE NOT NULL
 );
 -- Dummy values for pharmacist and doctor licenses
@@ -234,7 +207,7 @@ CREATE TABLE medication(
     PRIMARY KEY (scientific_name, brand_name, dosage)
 );
 -- Dummy values for the medication table
-INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
+/*INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
 VALUES
 ('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 500, 'Tablet', '2025-12-31', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
 ('Paracetamol', 'Acetaminophen', 'Tylenol', 500, 'Tablet', '2026-08-15', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
@@ -256,7 +229,7 @@ VALUES
 ('Ascorbic Acid', 'Vitamin C', 'C-1000', 1000, 'Tablet', '2025-08-15', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
 ('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 650, 'Tablet', '2024-11-30', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
 ('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 10, 'Solution', '2024-05-01', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
-
+*/
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY,
     use_case VARCHAR(30) NOT NULL,
