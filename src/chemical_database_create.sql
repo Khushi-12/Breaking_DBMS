@@ -72,8 +72,6 @@ INSERT INTO orders (order_id, medicine, delivery_date, quantity) VALUES
 (19, 'Clonazepam', '2024-12-19', 30),
 (20, 'Loratadine', '2024-12-20', 50);
 
-
-
 CREATE TABLE pharmacy_store(
 	name VARCHAR(30) NOT NULL,
     address_street_name VARCHAR(30) NOT NULL,
@@ -97,7 +95,8 @@ INSERT INTO pharmacy_store (name, address_street_name, address_street_num, addre
 CREATE TABLE pharmacist(
 	staff_id INT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL
+    last_name VARCHAR(30) NOT NULL,
+    CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name)
 );
 
 INSERT INTO pharmacist VALUES 
@@ -109,7 +108,7 @@ INSERT INTO pharmacist VALUES
 
 
 CREATE TABLE illness(
-	name VARCHAR(30) NOT NULL, 
+	name VARCHAR(30) PRIMARY KEY NOT NULL, 
     severity INT NOT NULL,
     symptoms VARCHAR(128) NOT NULL,
     state VARCHAR(30) NOT NULL
@@ -132,8 +131,8 @@ INSERT INTO illness (name, severity, symptoms, state) VALUES
 ('Severe Cough', 4, 'Persistent cough, difficulty breathing', 'Active');
 
 
-CREATE TABLE doctor(
-	first_name VARCHAR(30) NOT NULL,
+CREATE TABLE doctor (
+    first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     office_name VARCHAR(128) NOT NULL,
     office_address_street_name VARCHAR(30) NOT NULL,
@@ -142,8 +141,10 @@ CREATE TABLE doctor(
     office_address_state VARCHAR(30) NOT NULL,
     office_address_zipcode CHAR(10) NOT NULL,
     email VARCHAR(30) NOT NULL,
-    phone CHAR(10) NOT NULL
+    phone CHAR(10) NOT NULL,
+    CONSTRAINT unique_doctor_name UNIQUE (first_name, last_name)
 );
+
 
 INSERT INTO doctor VALUES 
 ('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', '6173782799'),
@@ -172,7 +173,7 @@ VALUES
 
 
 CREATE TABLE chemical(
-	scientific_name VARCHAR(30) NOT NULL,
+	scientific_name VARCHAR(30) PRIMARY KEY NOT NULL, -- check if this is valid for diagram
     common_name VARCHAR(30) NOT NULL,
     molecular_formula VARCHAR(30) NOT NULL,
     structure VARCHAR(30) NOT NULL,
@@ -204,7 +205,7 @@ INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure
 
 
 CREATE TABLE hazard(
-	hazard_description VARCHAR(300) NOT NULL,
+	hazard_description VARCHAR(300) PRIMARY KEY NOT NULL,
     safety_instruction VARCHAR(500)
 );
 
@@ -233,14 +234,12 @@ VALUES
 ('Carcinogenic in laboratory animals.', 'Limit exposure. Wear PPE including lab coats and gloves. Dispose of material according to safety regulations.');
 
 CREATE TABLE classification(
-	class_name VARCHAR(128) NOT NULL,
+	class_name VARCHAR(128) PRIMARY KEY NOT NULL,
     properties VARCHAR(128)
 );
 
 INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly what i was thinking of but it technically works??
 ('Analgesic', 'Pain relief'),
-('Analgesic', 'Nonsteroidal anti-inflammatory'),
-('Analgesic', 'Antipyretic'),
 ('Antibiotic', 'Bactericidal'),
 ('Antidiabetic', 'Oral medication'),
 ('Cholesterol-lowering', 'Statin'),
@@ -249,52 +248,68 @@ INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly wha
 ('Proton pump inhibitor', 'Gastroesophageal reflux'),
 ('Beta-blocker', 'Cardiovascular treatment'),
 ('Corticosteroid', 'Anti-inflammatory'),
-('Antibiotic', 'Tetracycline'),
-('Antihypertensive', 'Angiotensin receptor blocker'),
 ('Diuretic', 'Thiazide'),
 ('Bronchodilator', 'Asthma relief'),
 ('Anticonvulsant', 'Neuropathic pain'),
 ('Antidepressant', 'Selective serotonin reuptake inhibitor'),
-('Diuretic', 'Loop'),
-('Benzodiazepine', 'Anxiolytic'),
-('Antihistamine', 'Non-sedative');
+('Benzodiazepine', 'Anxiolytic');
 
+CREATE TABLE prescription(
+	val INT PRIMARY KEY AUTO_INCREMENT,
+    dosage INT NOT NULL,
+    expiration_date DATE
+);
+
+INSERT INTO prescription (dosage, expiration_date) VALUES
+(500, '2190-12-31'),
+(50, '2190-06-03'),
+(400, '2192-01-17'),
+(3.5, '2191-10-27'),
+(3.5, '2191-10-27'),
+(250, '2195-02-15'),
+(100, '2193-11-10'),
+(200, '2194-07-22'),
+(5, '2193-08-14'),
+(10, '2196-09-30'),
+(750, '2192-05-19'),
+(125, '2194-04-18'),
+(600, '2197-01-05'),
+(50, '2193-01-29'),
+(400, '2195-03-23');
 
 CREATE TABLE medication(
 	scientific_name VARCHAR(30) NOT NULL,
     common_name VARCHAR(30),
     brand_name VARCHAR(30),
-    dosage INT NOT NULL,
     type VARCHAR(30) NOT NULL,
-    expiration_date DATE,
     warnings VARCHAR(128) NOT NULL,   -- Link to hazard
     contact VARCHAR(30),
     ingredients VARCHAR(30),  -- Link to chemicals 
-    PRIMARY KEY (scientific_name, brand_name, dosage)
+    PRIMARY KEY (scientific_name, brand_name)
 );
 -- Dummy values for the medication table
-INSERT INTO medication (scientific_name, common_name, brand_name, dosage, type, expiration_date, warnings, contact, ingredients)
+INSERT INTO medication (scientific_name, common_name, brand_name, type, warnings, contact, ingredients)
 VALUES
-('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 500, 'Tablet', '2025-12-31', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
-('Paracetamol', 'Acetaminophen', 'Tylenol', 500, 'Tablet', '2026-08-15', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
-('Ibuprofen', 'Advil', 'Advil', 400, 'Capsule', '2026-05-01', 'May cause stomach irritation.', 'Pfizer', 'C13H18O2'),
-('Amoxicillin', 'Amoxil', 'Amoxil', 250, 'Capsule', '2024-10-10', 'Allergic reactions may occur.', 'GlaxoSmithKline', 'C16H19N3O5S'),
-('Metformin', 'Glucophage', 'Glucophage', 850, 'Tablet', '2026-03-01', 'May cause lactic acidosis.', 'Merck', 'C4H11N5'),
-('Omeprazole', 'Prilosec', 'Prilosec', 20, 'Capsule', '2025-07-15', 'Long-term use may cause vitamin deficiency.', 'AstraZeneca', 'C17H19N3O3S'),
-('Clopidogrel', 'Plavix', 'Plavix', 75, 'Tablet', '2026-02-20', 'Risk of excessive bleeding.', 'Sanofi', 'C16H16ClNO2S'),
-('Simvastatin', 'Zocor', 'Zocor', 20, 'Tablet', '2025-11-30', 'May cause muscle pain or weakness.', 'Merck', 'C25H38O5'),
-('Ranitidine', 'Zantac', 'Zantac', 150, 'Tablet', '2025-08-01', 'May increase risk of cancer.', 'Sanofi', 'C13H22N4O3S'),
-('Warfarin', 'Coumadin', 'Coumadin', 5, 'Tablet', '2024-12-31', 'Risk of severe bleeding.', 'Bristol-Myers Squibb', 'C19H16O4'),
-('Epinephrine', 'Adrenaline', 'EpiPen', 0.3, 'Injection', '2024-06-15', 'May cause rapid heart rate.', 'Mylan', 'C9H13NO3'),
-('Ketamine', 'Ketalar', 'Ketalar', 10, 'Injection', '2026-01-01', 'May cause hallucinations.', 'Pfizer', 'C13H16ClNO'),
-('Dexamethasone', 'Decadron', 'Decadron', 4, 'Tablet', '2025-04-01', 'May suppress immune response.', 'Merck', 'C22H29FO5'),
-('Loratadine', 'Claritin', 'Claritin', 10, 'Tablet', '2025-03-01', 'May cause drowsiness.', 'Bayer', 'C22H23ClN2O2'),
-('Methotrexate', 'Trexall', 'Trexall', 2.5, 'Tablet', '2026-07-01', 'Toxic to liver and bone marrow.', 'Pfizer', 'C20H22N8O5'),
-('Atorvastatin', 'Lipitor', 'Lipitor', 10, 'Tablet', '2026-09-01', 'May cause muscle breakdown.', 'Pfizer', 'C33H35FN2O5'),
-('Folic Acid', 'Vitamin B9', 'Folacare', 400, 'Tablet', '2026-12-31', 'May mask vitamin B12 deficiency.', 'Nature Made', 'C19H19N7O6'),
-('Ascorbic Acid', 'Vitamin C', 'C-1000', 1000, 'Tablet', '2025-08-15', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
-('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 650, 'Tablet', '2024-11-30', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
-('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 10, 'Solution', '2024-05-01', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
+('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 'Tablet', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
+('Paracetamol', 'Acetaminophen', 'Tylenol', 'Tablet', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
+('Ibuprofen', 'Advil', 'Advil', 'Capsule', 'May cause stomach irritation.', 'Pfizer', 'C13H18O2'),
+('Amoxicillin', 'Amoxil', 'Amoxil', 'Capsule', 'Allergic reactions may occur.', 'GlaxoSmithKline', 'C16H19N3O5S'),
+('Metformin', 'Glucophage', 'Glucophage', 'Tablet', 'May cause lactic acidosis.', 'Merck', 'C4H11N5'),
+('Omeprazole', 'Prilosec', 'Prilosec', 'Capsule', 'Long-term use may cause vitamin deficiency.', 'AstraZeneca', 'C17H19N3O3S'),
+('Clopidogrel', 'Plavix', 'Plavix', 'Tablet', 'Risk of excessive bleeding.', 'Sanofi', 'C16H16ClNO2S'),
+('Simvastatin', 'Zocor', 'Zocor', 'Tablet', 'May cause muscle pain or weakness.', 'Merck', 'C25H38O5'),
+('Ranitidine', 'Zantac', 'Zantac', 'Tablet', 'May increase risk of cancer.', 'Sanofi', 'C13H22N4O3S'),
+('Warfarin', 'Coumadin', 'Coumadin', 'Tablet', 'Risk of severe bleeding.', 'Bristol-Myers Squibb', 'C19H16O4'),
+('Epinephrine', 'Adrenaline', 'EpiPen', 'Injection', 'May cause rapid heart rate.', 'Mylan', 'C9H13NO3'),
+('Ketamine', 'Ketalar', 'Ketalar','Injection', 'May cause hallucinations.', 'Pfizer', 'C13H16ClNO'),
+('Dexamethasone', 'Decadron', 'Decadron', 'Tablet', 'May suppress immune response.', 'Merck', 'C22H29FO5'),
+('Loratadine', 'Claritin', 'Claritin', 'Tablet', 'May cause drowsiness.', 'Bayer', 'C22H23ClN2O2'),
+('Methotrexate', 'Trexall', 'Trexall', 'Tablet', 'Toxic to liver and bone marrow.', 'Pfizer', 'C20H22N8O5'),
+('Atorvastatin', 'Lipitor', 'Lipitor', 'Tablet', 'May cause muscle breakdown.', 'Pfizer', 'C33H35FN2O5'),
+('Folic Acid', 'Vitamin B9', 'Folacare', 'Tablet', 'May mask vitamin B12 deficiency.', 'Nature Made', 'C19H19N7O6'),
+('Ascorbic Acid', 'Vitamin C', 'C-1000', 'Tablet', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
+('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
+('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
 
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY,
@@ -369,7 +384,7 @@ CREATE TABLE works_at ( -- pharmacist to pharmacy store
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-/*CREATE TABLE recieves ( -- for pharmacist and doctor to credentials
+CREATE TABLE obtains ( -- for pharmacist and doctor to certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     certification_name VARCHAR(30) NOT NULL,
@@ -377,7 +392,7 @@ CREATE TABLE works_at ( -- pharmacist to pharmacy store
     FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (first_name, last_name) REFERENCES pharmacist(first_name, last_name),
     FOREIGN KEY (certification_name) REFERENCES certification(name)
-);*/
+);
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
@@ -402,106 +417,14 @@ CREATE TABLE insured_by ( -- customer to insurance company
     FOREIGN KEY (company_name) REFERENCES insurance_company(name)
 );
 
-CREATE TABLE covers ( -- medication to insurance company
-    insurance_company_name VARCHAR(30) NOT NULL,
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    PRIMARY KEY (insurance_company_name, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (insurance_company_name) REFERENCES insurance_company(name),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
-        REFERENCES medication(scientific_name, brand_name, dosage)
-);
-
-CREATE TABLE contains ( -- order to medication, need diff name?
-    order_id INT NOT NULL,
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    PRIMARY KEY (order_id, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
-);
-
-CREATE TABLE sells ( -- pharmacy store to medication
-    pharmacy_store_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_num INT NOT NULL,
-    pharmacy_address_town VARCHAR(30) NOT NULL,
-    pharmacy_address_state VARCHAR(30) NOT NULL,
-    pharmacy_address_zipcode CHAR(5) NOT NULL,
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    PRIMARY KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town,
-				pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town,
-				pharmacy_address_state, pharmacy_address_zipcode) 
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, 
-                                  address_town, address_state, address_zipcode),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
-        REFERENCES medication(scientific_name, brand_name, dosage)
-);
-
-/*CREATE TABLE prescribes ( -- doctor to medication
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    PRIMARY KEY (first_name, last_name, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
-);*/
-
-
-/*CREATE TABLE composed_of ( -- medication to chemcial
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    chemical_scientific_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (medication_scientific_name, medication_brand_name, medication_dosage, chemical_scientific_name),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) 
-        REFERENCES medication(scientific_name, brand_name, dosage),
-    FOREIGN KEY (chemical_scientific_name) 
-        REFERENCES chemical(scientific_name)
-);*/
-
-CREATE TABLE has ( -- medication to use, need diff name?
-    use_id INT NOT NULL,
-    medication_scientific_name VARCHAR(30) NOT NULL,
-    medication_brand_name VARCHAR(30) NOT NULL,
-    medication_dosage INT NOT NULL,
-    PRIMARY KEY (use_id, medication_scientific_name, medication_brand_name, medication_dosage),
-    FOREIGN KEY (use_id) REFERENCES uses(use_id),
-    FOREIGN KEY (medication_scientific_name, medication_brand_name, medication_dosage) REFERENCES medication(scientific_name, brand_name, dosage)
-);
-
-/*CREATE TABLE classified_as ( -- chemical to classification
-    class_name VARCHAR(30) NOT NULL,
-    scientific_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (class_name, scientific_name),
-    FOREIGN KEY (class_name) REFERENCES classification(class_name),
-    FOREIGN KEY (scientific_name) REFERENCES chemical(scientific_name)
-);*/
-
-
-/*CREATE TABLE contains (-- chemical to hazard; need to change name?  not sure
-    hazard_description VARCHAR(300) NOT NULL,
-    chemical_scientific_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (hazard_description, scientific_name),
-    FOREIGN KEY (hazard_description) REFERENCES hazard(hazard_description),
-    FOREIGN KEY (chemical_scientific_name) REFERENCES chemical(scientific_name)
-);*/
-
-/*CREATE TABLE places ( -- doctor to order
+CREATE TABLE places ( -- doctor to order
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     order_id INT NOT NULL,
     PRIMARY KEY (first_name, last_name, order_id),
     FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
-);*/
+);
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -519,7 +442,7 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-/*CREATE TABLE diagnoses ( -- customer, illness, doctor
+CREATE TABLE diagnoses ( -- customer, illness, doctor
     diagnosis_id INT PRIMARY KEY,
     customer_insurance_id INT NOT NULL,
     doctor_first_name VARCHAR(30) NOT NULL,
@@ -529,5 +452,111 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
     FOREIGN KEY (customer_insurance_id) REFERENCES customer(insurance_id),
     FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (illness_name) REFERENCES illness(name)
-);*/
+);
+
+CREATE TABLE contains ( -- order to prescription
+    order_id INT,              
+    prescription_id INT,              
+    quantity INT,                    
+    PRIMARY KEY (order_id, prescription_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE, 
+    FOREIGN KEY (prescription_id) REFERENCES prescription(val) ON DELETE CASCADE 
+);
+
+CREATE TABLE written_for ( -- prescription to medication
+    prescription_val INT,              
+    scientific_name VARCHAR(30),      
+    brand_name VARCHAR(30),          
+    quantity INT,                  
+    PRIMARY KEY (prescription_val, scientific_name, brand_name),
+    FOREIGN KEY (prescription_val) REFERENCES prescription(val) ON DELETE CASCADE,
+    FOREIGN KEY (scientific_name, brand_name) REFERENCES medication(scientific_name, brand_name) ON DELETE CASCADE
+);
+
+CREATE TABLE sells ( -- pharmacy store to medication
+    pharmacy_name VARCHAR(30),          
+    pharmacy_address_street_name VARCHAR(30), 
+    pharmacy_address_street_num INT,  
+    pharmacy_address_town VARCHAR(30),   
+    pharmacy_address_state VARCHAR(30), 
+    pharmacy_address_zipcode CHAR(5),  
+    medication_scientific_name VARCHAR(30),
+    medication_brand_name VARCHAR(30), 
+    quantity INT NOT NULL,         
+    PRIMARY KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name), -- Composite primary key
+    FOREIGN KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode) 
+        ON DELETE CASCADE,       
+    FOREIGN KEY (medication_scientific_name, medication_brand_name) 
+        REFERENCES medication(scientific_name, brand_name) 
+        ON DELETE CASCADE            
+);
+
+CREATE TABLE covers ( -- insurance to medication
+    scientific_name VARCHAR(30),        
+    brand_name VARCHAR(30),         
+    insurance_company_name VARCHAR(30),   
+    PRIMARY KEY (scientific_name, brand_name, insurance_company_name), 
+    FOREIGN KEY (scientific_name, brand_name) 
+        REFERENCES medication(scientific_name, brand_name) 
+        ON DELETE CASCADE,  
+    FOREIGN KEY (insurance_company_name) 
+        REFERENCES insurance_company(name) 
+        ON DELETE CASCADE 
+);
+
+CREATE TABLE composed_of ( -- medication to chemical
+    scientific_name VARCHAR(30), 
+    brand_name VARCHAR(30), 
+    chemical_scientific_name VARCHAR(30), 
+    PRIMARY KEY (scientific_name, brand_name, chemical_scientific_name),
+    FOREIGN KEY (scientific_name, brand_name) 
+        REFERENCES medication(scientific_name, brand_name) 
+        ON DELETE CASCADE,     
+    FOREIGN KEY (chemical_scientific_name) 
+        REFERENCES chemical(scientific_name) 
+        ON DELETE CASCADE    
+);
+
+CREATE TABLE used_for ( -- medication to uses
+    scientific_name VARCHAR(30),             
+    brand_name VARCHAR(30),         
+    use_id INT,               
+    PRIMARY KEY (scientific_name, brand_name, use_id), 
+    FOREIGN KEY (scientific_name, brand_name) 
+        REFERENCES medication(scientific_name, brand_name)
+        ON DELETE CASCADE,          
+    FOREIGN KEY (use_id) 
+        REFERENCES uses(use_id)
+        ON DELETE CASCADE            
+);
+
+
+CREATE TABLE classified_as ( -- chemical to classification
+    scientific_name VARCHAR(30), 
+    class_name VARCHAR(128),   
+    PRIMARY KEY (scientific_name, class_name), 
+    FOREIGN KEY (scientific_name) 
+        REFERENCES chemical(scientific_name)  
+        ON DELETE CASCADE,   
+    FOREIGN KEY (class_name) 
+        REFERENCES classification(class_name) 
+        ON DELETE CASCADE  
+);
+
+CREATE TABLE hazardous ( -- chemical to hazard 
+    scientific_name VARCHAR(30),
+    hazard_description VARCHAR(300),   
+    PRIMARY KEY (scientific_name, hazard_description),  
+    FOREIGN KEY (scientific_name) 
+        REFERENCES chemical(scientific_name) 
+        ON DELETE CASCADE,    
+    FOREIGN KEY (hazard_description) 
+        REFERENCES hazard(hazard_description) 
+        ON DELETE CASCADE        
+);
+
+
+
+
 
