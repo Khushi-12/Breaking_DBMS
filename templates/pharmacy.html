@@ -1,3 +1,136 @@
-<html>
-    <h1> "This is the user pagelkjrbghdrb"</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Database</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .top-bar button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .top-bar button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+
+        .left-box {
+            width: 20%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .left-box button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .left-box button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .right-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .right-box h2 {
+            color: #333;
+        }
+
+        .right-box p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div>
+            <button onclick="addNew()">Add New</button>
+            <button onclick="modify()">Modify</button>
+            <button onclick="deleteItem()">Delete</button>
+        </div>
+        <button onclick="window.location.href='/settings'">User Settings</button>
+        <button onclick="window.location.href='/'">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Box -->
+        <div class="left-box">
+            <button onclick="displayTable('Customers')">Customers</button>
+            <button onclick="displayTable('Doctors')">Orders</button>
+            <!-- <button onclick="displayTable('Inventory')">Inventory</button>
+            <button onclick="displayTable('Suppliers')">Suppliers</button> -->
+        </div>
+
+        <!-- Right Box -->
+        <div class="right-box" id="display-area">
+            <h2>Welcome to the Pharmacy Database</h2>
+            <p>Select a table from the left to display its content.</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to dynamically update the display area
+        function displayTable(tableName) {
+            const displayArea = document.getElementById('display-area');
+            displayArea.innerHTML = `
+                <h2>${tableName} Table</h2>
+                <p>Details of the ${tableName} table will appear here.</p>
+            `;
+        }
+
+        // Placeholder functions for top bar actions
+        function addNew() {
+            alert('Add New functionality triggered');
+        }
+
+        function modify() {
+            alert('Modify functionality triggered');
+        }
+
+        function deleteItem() {
+            alert('Delete functionality triggered');
+        }
+    </script>
+</body>
 </html>
