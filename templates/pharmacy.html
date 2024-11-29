@@ -111,34 +111,88 @@
 
     <script>
         // Function to dynamically update the display area
-        function displayTable(tableName) {
+        async function displayTable(tableName) {
             const displayArea = document.getElementById('display-area');
-            displayArea.innerHTML = `
-                <h2>${tableName} Table</h2>
-                <p>Details of the ${tableName} table will appear here.</p>
-
-                
-                {% for customer in customers %}
-                    <li>{{ customer.first_name }} - {{ customer.last_name }}</li>
-                {% endfor %}
-                
-            `;
-            
-
+    
+            if (tableName === "Customers") {
+                try {
+                    // Fetch the customer list from the backend
+                    const response = await fetch('/get_customers');
+                    if (!response.ok) throw new Error("Failed to fetch customer list");
+    
+                    const customers = await response.json();
+    
+                    // Build the dropdown dynamically with customer data
+                    const customerDropdown = `
+                    <label for="customerDropdown">Select a Customer:</label>
+                    <select id="customerDropdown" name="customerDropdown">
+                        ${customers.map(customer => `<option value="${customer.first_name + " " + customer.last_name}">${customer.first_name + " " + customer.last_name}</option>`).join('')}
+                    </select>
+                `;
+    
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Details of the ${tableName} table will appear here.</p>
+                        ${customerDropdown}
+                    `;
+                } catch (error) {
+                    console.error("Error fetching customer data:", error);
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Failed to load customer details.</p>
+                    `;
+                }
+            } 
+            else if (tableName === "Doctors") {
+                try {
+                    // Fetch the customer list from the backend
+                    const response = await fetch('/get_doctors');
+                    if (!response.ok) throw new Error("Failed to fetch doctors list");
+    
+                    const doctors = await response.json();
+    
+                    // Build the dropdown dynamically with customer data
+                    const customerDropdown = `
+                    <label for="customerDropdown">Select a Doctor:</label>
+                    <select id="customerDropdown" name="customerDropdown">
+                        ${doctors.map(doctor => `<option value="${doctor.first_name + " " + doctor.last_name}">${doctor.first_name + " " + doctor.last_name}</option>`).join('')}
+                    </select>
+                `;
+    
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Details of the ${tableName} table will appear here.</p>
+                        ${customerDropdown}
+                    `;
+                } catch (error) {
+                    console.error("Error fetching customer data:", error);
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Failed to load customer details.</p>
+                    `;
+                }
+            } else {
+                // Handle other tables (if any)
+                displayArea.innerHTML = `
+                    <h2>${tableName} Table</h2>
+                    <p>Details of the ${tableName} table will appear here.</p>
+                `;
+            }
         }
-
+    
         // Placeholder functions for top bar actions
         function addNew() {
             alert('Add New functionality triggered');
         }
-
+    
         function modify() {
             alert('Modify functionality triggered');
         }
-
+    
         function deleteItem() {
             alert('Delete functionality triggered');
         }
     </script>
+    
 </body>
 </html>

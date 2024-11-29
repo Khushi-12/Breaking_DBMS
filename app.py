@@ -32,11 +32,19 @@ def login():
 
 @app.route('/user')
 def user():
+    return render_template('pharmacy.html')
 
-    customers = con.query("SELECT * FROM chemical_database.customer;")
-    
-    return render_template('pharmacy.html', customers=customers)
+@app.route('/get_customers', methods=['GET'])
+def get_customers():
+    # Example customer list (replace with database query)
+    customers = con.query("SELECT * FROM chemical_database.customer order by first_name;")
+    return jsonify(customers)
 
+@app.route('/get_doctors', methods=['GET'])
+def get_doctors():
+    # Example customer list (replace with database query)
+    doctors = con.query("SELECT * FROM chemical_database.doctor order by first_name;")
+    return jsonify(doctors)
 
 @app.route('/user_setting')
 def setting():
