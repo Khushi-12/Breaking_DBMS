@@ -66,6 +66,20 @@ def get_customer_info():
 
 
 
+@app.route('/get_doctor_info', methods=['GET'])
+def get_doctor_info():
+
+    doctor_id = request.args.get('id').split()
+
+    doctor = con.query(f"SELECT * FROM chemical_database.doctor do WHERE do.first_name = '{doctor_id[0]}' and do.last_name = '{doctor_id[1]}';")
+
+    doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
+ 
+
+    return jsonify(doctor[0])
+
+
+
 @app.route('/user_setting')
 def setting():
     return render_template('pharmacist_profile.html')
