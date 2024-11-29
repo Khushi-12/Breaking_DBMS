@@ -6,9 +6,11 @@ import os
 load_dotenv()
 username = os.environ['USER_NAME']
 password = os.environ['PASSWORD']
+
+
 # Define sql connector 
 con = sql_connector.sqlConnector()
-con.connect(username,password, "localhost", "chemical_database")
+con.connect(username, password, "localhost", "chemical_database")
 
 
 app = Flask (__name__)
@@ -45,6 +47,24 @@ def get_doctors():
     # Example customer list (replace with database query)
     doctors = con.query("SELECT * FROM chemical_database.doctor order by first_name;")
     return jsonify(doctors)
+
+
+def addDashesToPhoneNumber(number: str):
+    return number[:3] + '-' + number[3:6] + '-' + number[6:] 
+
+
+@app.route('/get_customer_info', methods=['GET'])
+def get_customer_info():
+
+    customer_id = request.args.get('id').split()
+
+    customer = con.query(f"SELECT * FROM chemical_database.customer cu WHERE cu.first_name = '{customer_id[0]}' and cu.last_name = '{customer_id[1]}';")
+
+    customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
+ 
+    return jsonify(customer[0])
+
+
 
 @app.route('/user_setting')
 def setting():

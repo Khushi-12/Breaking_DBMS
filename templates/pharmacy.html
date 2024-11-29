@@ -78,6 +78,21 @@
         .right-box p {
             color: #555;
         }
+
+        .info-card {
+            position: relative;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -128,13 +143,18 @@
                     <select id="customerDropdown" name="customerDropdown">
                         ${customers.map(customer => `<option value="${customer.first_name + " " + customer.last_name}">${customer.first_name + " " + customer.last_name}</option>`).join('')}
                     </select>
-                `;
+                    `;
     
                     displayArea.innerHTML = `
                         <h2>${tableName} Table</h2>
                         <p>Details of the ${tableName} table will appear here.</p>
                         ${customerDropdown}
+                        <div id="info-card" class="info-card hidden"></div>
                     `;
+
+                    // Add event listener for dropdown change
+                    document.getElementById('customerDropdown').addEventListener('change', displayCustomerInfo);
+
                 } catch (error) {
                     console.error("Error fetching customer data:", error);
                     displayArea.innerHTML = `
@@ -179,6 +199,41 @@
                 `;
             }
         }
+
+
+        // Function to display customer information
+        async function displayCustomerInfo(event) {
+            const customerId = event.target.value;
+            const infoCard = document.getElementById('info-card');
+
+            if (customerId) {
+                try {
+                    const response = await fetch(`/get_customer_info?id=${encodeURIComponent(customerId)}`);
+                    if (!response.ok) throw new Error("Failed to fetch customer info");
+
+                    const customerInfo = await response.json();
+
+                    infoCard.innerHTML = `
+                        <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
+                        <p>DOB: ${customerInfo.dob}</p>
+                        <p>Insurance #: ${customerInfo.insurance_id}</p>
+                        <p>Email: ${customerInfo.email}</p>
+                        <p>Phone: ${customerInfo.phone}</p>
+                        <p>Address: ${customerInfo.address_street_name} ${customerInfo.address_street_num}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
+
+                    `;
+                    infoCard.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Error fetching customer info:", error);
+                    infoCard.innerHTML = "<p>Failed to load customer details.</p>";
+                    infoCard.classList.remove('hidden');
+                }
+            } else {
+                infoCard.classList.add('hidden');
+            }
+        }
+
+
     
         // Placeholder functions for top bar actions
         function addNew() {
