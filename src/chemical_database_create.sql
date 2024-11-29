@@ -106,7 +106,6 @@ INSERT INTO pharmacist VALUES
 (4, 'Gabby', 'Dipollito'),
 (5, 'Nakul', 'Rao');
 
-
 CREATE TABLE illness(
 	name VARCHAR(30) PRIMARY KEY NOT NULL, 
     severity INT NOT NULL,
@@ -166,8 +165,6 @@ VALUES
 ('Doctor License', 'Medical Licensing Authority', '2027-08-15'),
 ('Specialist Pharmacist Certification', 'Pharmacy Specialization Board', '2025-05-20'),
 ('General Practitioner License', 'State Medical Board', '2028-03-01'),
-('Pharmacist Internship Completion', 'National Pharmacy Association', '2024-10-10'),
-('Surgeon License', 'Board of Surgical Specialties', '2029-01-15'),
 ('Clinical Pharmacist Certification', 'International Pharmacy Council', '2026-07-01'),
 ('Pediatrician License', 'Board of Pediatric Medicine', '2027-11-12');
 
@@ -340,7 +337,6 @@ VALUES
 (19, 'Joint Lubrication', 'Knees'),
 (20, 'Nerve Pain Relief', 'Nerves');
 
-
 CREATE TABLE insurance_company(
 	name VARCHAR(30) PRIMARY KEY,
     contact VARCHAR(30)
@@ -384,15 +380,47 @@ CREATE TABLE works_at ( -- pharmacist to pharmacy store
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-CREATE TABLE obtains ( -- for pharmacist and doctor to certification
+INSERT INTO works_at (staff_id, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
+VALUES
+(1, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(2, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(3, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
+
+
+CREATE TABLE obtains (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     certification_name VARCHAR(30) NOT NULL,
+    role VARCHAR(20) NOT NULL,
     PRIMARY KEY (first_name, last_name, certification_name),
-    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
-    FOREIGN KEY (first_name, last_name) REFERENCES pharmacist(first_name, last_name),
-    FOREIGN KEY (certification_name) REFERENCES certification(name)
+    FOREIGN KEY (first_name, last_name) 
+        REFERENCES doctor(first_name, last_name) 
+        ON DELETE CASCADE,
+    FOREIGN KEY (first_name, last_name) 
+        REFERENCES pharmacist(first_name, last_name) 
+        ON DELETE CASCADE,
+    FOREIGN KEY (certification_name) 
+        REFERENCES certification(name) 
+        ON DELETE CASCADE
 );
+
+/*
+-- Insert data into the obtains table with role
+INSERT INTO obtains (first_name, last_name, certification_name, role)
+VALUES
+('Natasha', 'Nicholas', 'Doctor License', 'doctor'),
+('Shane', 'Holmes', 'General Practitioner License', 'doctor'),
+('Khushi', 'Neema', 'Pediatrician License', 'doctor'),
+('Grace', 'Cerrato', 'Doctor License', 'doctor'),
+('Kathleen', 'Durant', 'General Practitioner License', 'doctor'),
+('Jules', 'Sylvester', 'Pharmacist License', 'pharmacist'),
+('Edgar', 'Roman', 'Specialist Pharmacist Certification', 'pharmacist'),
+('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
+('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
+('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
+*/
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
@@ -555,6 +583,12 @@ CREATE TABLE hazardous ( -- chemical to hazard
         REFERENCES hazard(hazard_description) 
         ON DELETE CASCADE        
 );
+
+SELECT * from works_at
+where staff_id = 1;
+
+SELECT * from obtains
+where first_name = "grace";
 
 
 
