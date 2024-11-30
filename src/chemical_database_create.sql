@@ -91,10 +91,7 @@ INSERT INTO orders (order_id, medicine, delivery_date) VALUES
 (40, 'Pregabalin', '2025-01-09'),
 (41, 'Diclofenac', '2025-01-10'),
 (42, 'Mupirocin', '2025-01-11'),
-(43, 'Sildenafil', '2025-01-12')
-;
-
-
+(43, 'Sildenafil', '2025-01-12');
 
 CREATE TABLE pharmacy_store(
 	name VARCHAR(30) NOT NULL,
@@ -115,19 +112,19 @@ INSERT INTO pharmacy_store (name, address_street_name, address_street_num, addre
 ('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', '3035550987'),
 ('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', '3235558432');
 
-CREATE TABLE pharmacist(
-	staff_id INT PRIMARY KEY,
+CREATE TABLE pharmacist (
+	staff_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name)
 );
 
-INSERT INTO pharmacist VALUES 
-(1, 'Jules', 'Sylvester'),
-(2, 'Edgar', 'Roman'),
-(3, 'Louisa', 'Wetzel'),
-(4, 'Gabby', 'Dipollito'),
-(5, 'Nakul', 'Rao');
+INSERT INTO pharmacist (first_name, last_name) VALUES
+('Jules', 'Sylvester'),
+('Edgar', 'Roman'),
+('Louisa', 'Wetzel'),
+('Gabby', 'Dipollito'),
+('Nakul', 'Rao');
 
 CREATE TABLE illness(
 	name VARCHAR(30) PRIMARY KEY NOT NULL, 
@@ -164,17 +161,16 @@ CREATE TABLE doctor (
     office_address_zipcode CHAR(10) NOT NULL,
     email VARCHAR(30) NOT NULL,
     phone CHAR(10) NOT NULL,
-    CONSTRAINT unique_doctor_name UNIQUE (first_name, last_name)
+    specialty VARCHAR(30),
+    CONSTRAINT unique_doctor_name UNIQUE (first_name, last_name, specialty)
 );
 
-
 INSERT INTO doctor VALUES 
-('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', '6173782799'),
-('Shane', 'Holmes', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'holmes.sha@northeastern.edu', '6173782789'),
-('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', '8772419037'),
-('Grace', 'Cerrato', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'gcerr24@g.holycross.edu', '6173782799'),
-('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', '3823824020');
-
+('Natasha', 'Nicholas', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'nicholas.n@northeastern.edu', '6173782799', 'Pediatrics'),
+('Shane', 'Holmes', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'holmes.sha@northeastern.edu', '6173782789', 'Family Medicine'),
+('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', '8772419037', 'Psychiatrist'),
+('Grace', 'Cerrato', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'gcerr24@g.holycross.edu', '6173782799', 'Neurology'),
+('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', '3823824020', 'Family Medicine');
 
 CREATE TABLE certification(
 	name VARCHAR(128) PRIMARY KEY NOT NULL,
@@ -306,39 +302,38 @@ CREATE TABLE medication(
     type VARCHAR(30) NOT NULL,
     warnings VARCHAR(128) NOT NULL,   -- Link to hazard
     contact VARCHAR(30),
-    ingredients VARCHAR(30),  -- Link to chemicals 
     PRIMARY KEY (scientific_name, brand_name)
 );
 
-INSERT INTO medication (scientific_name, common_name, brand_name, type, warnings, contact, ingredients)
+INSERT INTO medication (scientific_name, common_name, brand_name, type, warnings, contact)
 VALUES
-('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 'Tablet', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
-('Paracetamol', 'Acetaminophen', 'Tylenol', 'Tablet', 'Overdose can cause liver damage.', 'Johnson & Johnson', 'C8H9NO2'),
-('Ibuprofen', 'Advil', 'Advil', 'Capsule', 'May cause stomach irritation.', 'Pfizer', 'C13H18O2'),
-('Amoxicillin', 'Amoxil', 'Amoxil', 'Capsule', 'Allergic reactions may occur.', 'GlaxoSmithKline', 'C16H19N3O5S'),
-('Metformin', 'Glucophage', 'Glucophage', 'Tablet', 'May cause lactic acidosis.', 'Merck', 'C4H11N5'),
-('Omeprazole', 'Prilosec', 'Prilosec', 'Capsule', 'Long-term use may cause vitamin deficiency.', 'AstraZeneca', 'C17H19N3O3S'),
-('Clopidogrel', 'Plavix', 'Plavix', 'Tablet', 'Risk of excessive bleeding.', 'Sanofi', 'C16H16ClNO2S'),
-('Simvastatin', 'Zocor', 'Zocor', 'Tablet', 'May cause muscle pain or weakness.', 'Merck', 'C25H38O5'),
-('Ranitidine', 'Zantac', 'Zantac', 'Tablet', 'May increase risk of cancer.', 'Sanofi', 'C13H22N4O3S'),
-('Warfarin', 'Coumadin', 'Coumadin', 'Tablet', 'Risk of severe bleeding.', 'Bristol-Myers Squibb', 'C19H16O4'),
-('Epinephrine', 'Adrenaline', 'EpiPen', 'Injection', 'May cause rapid heart rate.', 'Mylan', 'C9H13NO3'),
-('Ketamine', 'Ketalar', 'Ketalar','Injection', 'May cause hallucinations.', 'Pfizer', 'C13H16ClNO'),
-('Dexamethasone', 'Decadron', 'Decadron', 'Tablet', 'May suppress immune response.', 'Merck', 'C22H29FO5'),
-('Loratadine', 'Claritin', 'Claritin', 'Tablet', 'May cause drowsiness.', 'Bayer', 'C22H23ClN2O2'),
-('Methotrexate', 'Trexall', 'Trexall', 'Tablet', 'Toxic to liver and bone marrow.', 'Pfizer', 'C20H22N8O5'),
-('Atorvastatin', 'Lipitor', 'Lipitor', 'Tablet', 'May cause muscle breakdown.', 'Pfizer', 'C33H35FN2O5'),
-('Folic Acid', 'Vitamin B9', 'Folacare', 'Tablet', 'May mask vitamin B12 deficiency.', 'Nature Made', 'C19H19N7O6'),
-('Ascorbic Acid', 'Vitamin C', 'C-1000', 'Tablet', 'Excessive intake may cause kidney stones.', 'Nature Made', 'C6H8O6'),
-('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
-('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
-
+('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 'Tablet', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare'),
+('Paracetamol', 'Acetaminophen', 'Tylenol', 'Tablet', 'Overdose can cause liver damage.', 'Johnson & Johnson'),
+('Ibuprofen', 'Advil', 'Advil', 'Capsule', 'May cause stomach irritation.', 'Pfizer'),
+('Amoxicillin', 'Amoxil', 'Amoxil', 'Capsule', 'Allergic reactions may occur.', 'GlaxoSmithKline'),
+('Metformin', 'Glucophage', 'Glucophage', 'Tablet', 'May cause lactic acidosis.', 'Merck'),
+('Omeprazole', 'Prilosec', 'Prilosec', 'Capsule', 'Long-term use may cause vitamin deficiency.', 'AstraZeneca'),
+('Clopidogrel', 'Plavix', 'Plavix', 'Tablet', 'Risk of excessive bleeding.', 'Sanofi'),
+('Simvastatin', 'Zocor', 'Zocor', 'Tablet', 'May cause muscle pain or weakness.', 'Merck'),
+('Ranitidine', 'Zantac', 'Zantac', 'Tablet', 'May increase risk of cancer.', 'Sanofi'),
+('Warfarin', 'Coumadin', 'Coumadin', 'Tablet', 'Risk of severe bleeding.', 'Bristol-Myers Squibb'),
+('Epinephrine', 'Adrenaline', 'EpiPen', 'Injection', 'May cause rapid heart rate.', 'Mylan'),
+('Ketamine', 'Ketalar', 'Ketalar','Injection', 'May cause hallucinations.', 'Pfizer'),
+('Dexamethasone', 'Decadron', 'Decadron', 'Tablet', 'May suppress immune response.', 'Merck'),
+('Loratadine', 'Claritin', 'Claritin', 'Tablet', 'May cause drowsiness.', 'Bayer'),
+('Methotrexate', 'Trexall', 'Trexall', 'Tablet', 'Toxic to liver and bone marrow.', 'Pfizer'),
+('Atorvastatin', 'Lipitor', 'Lipitor', 'Tablet', 'May cause muscle breakdown.', 'Pfizer'),
+('Folic Acid', 'Vitamin B9', 'Folacare', 'Tablet', 'May mask vitamin B12 deficiency.', 'Nature Made'),
+('Ascorbic Acid', 'Vitamin C', 'C-1000', 'Tablet', 'Excessive intake may cause kidney stones.', 'Nature Made'),
+('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer'),
+('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer');
 
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY AUTO_INCREMENT,
     use_case VARCHAR(30) NOT NULL,
     body_part VARCHAR(30) NOT NULL
 );
+
 INSERT INTO uses (use_case, body_part)
 VALUES
 ('Pain Relief', 'Head'),
@@ -391,29 +386,6 @@ VALUES
 ('Medica', '1-800-936-6880');
 
 -- Relationships
-CREATE TABLE works_at ( -- pharmacist to pharmacy store
-    staff_id INT NOT NULL,
-    pharmacy_store_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_num INT NOT NULL,
-    pharmacy_address_town VARCHAR(30) NOT NULL,
-    pharmacy_address_state VARCHAR(30) NOT NULL,
-    pharmacy_address_zipcode CHAR(5) NOT NULL,
-    PRIMARY KEY (staff_id, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
-    FOREIGN KEY (staff_id) REFERENCES pharmacist(staff_id),
-     FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
-);
-
-INSERT INTO works_at (staff_id, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
-VALUES
-(1, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(2, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(3, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
-
-
 CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -455,20 +427,13 @@ CREATE TABLE obtains_pharmacist ( -- pharm, certification
 -- Insert data into the obtains table with role
 INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
 VALUES
-('Natasha', 'Nicholas', 'Doctor License', 'doctor'),
-('Shane', 'Holmes', 'General Practitioner License', 'doctor'),
-('Khushi', 'Neema', 'Pediatrician License', 'doctor'),
-('Grace', 'Cerrato', 'Doctor License', 'doctor'),
-('Kathleen', 'Durant', 'General Practitioner License', 'doctor'),
-('Jules', 'Sylvester', 'Pharmacist License', 'pharmacist'),
-('Edgar', 'Roman', 'Specialist Pharmacist Certification', 'pharmacist'),
-('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
-('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
-('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
+('Jules', 'Sylvester', 'Pharmacist License'),
+('Edgar', 'Roman', 'Specialist Pharmacist Certification'),
+('Louisa', 'Wetzel', 'Pharmacist License'),
+('Gabby', 'Dipollito', 'Clinical Pharmacist Certification'),
+('Nakul', 'Rao', 'Pharmacist License');
 
 
-SELECT * from obtains
-where first_name = "grace";
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
@@ -497,73 +462,7 @@ VALUES
 ('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
 ('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
 
-
-
-CREATE TABLE insured_by ( -- customer to insurance company
-    insurance_id INT NOT NULL,
-    company_name VARCHAR(30) NOT NULL,
-    policy_number VARCHAR(30) NOT NULL, -- can this be randomly generated? idk
-    PRIMARY KEY (insurance_id, company_name),
-    FOREIGN KEY (insurance_id) REFERENCES customer(insurance_id),
-    FOREIGN KEY (company_name) REFERENCES insurance_company(name)
-);
-
-INSERT INTO insured_by (insurance_id, company_name, policy_number) 
-VALUES 
-(123456789, 'UnitedHealth Group', 'POLICY-1254'),
-(112345678, 'Anthem Blue Cross', 'POLICY-8321'),
-(111234567, 'Aetna', 'POLICY-9845'),
-(111123456, 'Cigna', 'POLICY-2041'),
-(111112345, 'Humana', 'POLICY-7412'),
-(111111234, 'Kaiser Permanente', 'POLICY-5678'),
-(111111123, 'Blue Shield of California', 'POLICY-4317'),
-(111111112, 'Molina Healthcare', 'POLICY-9832'),
-(111111111, 'Health Net', 'POLICY-3781'),
-(234567891, 'WellCare Health Plans', 'POLICY-5923'),
-(223456789, 'Centene Corporation', 'POLICY-6154'),
-(222345678, 'Oscar Health', 'POLICY-2904'),
-(222234567, 'United Healthcare of Texas', 'POLICY-8025'),
-(222223456, 'Blue Cross Blue Shield', 'POLICY-6673'),
-(222222345, 'CareFirst BlueCross BlueShield', 'POLICY-5409'),
-(222222234, 'Harvard Pilgrim Health Care', 'POLICY-8576'),
-(222222223, 'Highmark', 'POLICY-1102'),
-(222222293, 'Independence Blue Cross', 'POLICY-3492'),
-(333333333, 'EmblemHealth', 'POLICY-2265'),
-(323232323, 'Medica', 'POLICY-4128');
-
 -- Select * from insured_by;
-
-CREATE TABLE places ( -- doctor to order
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    order_id INT NOT NULL,
-    PRIMARY KEY (first_name, last_name, order_id),
-    FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
-);
-
-INSERT INTO places (first_name, last_name, order_id) VALUES
-('Natasha', 'Nicholas', 1),
-('Shane', 'Holmes', 2), 
-('Khushi', 'Neema', 3),  
-('Grace', 'Cerrato', 4),  
-('Kathleen', 'Durant', 5),  
-('Natasha', 'Nicholas', 6),
-('Shane', 'Holmes', 7),  
-('Khushi', 'Neema', 8), 
-('Grace', 'Cerrato', 9), 
-('Kathleen', 'Durant', 10), 
-('Natasha', 'Nicholas', 11), 
-('Shane', 'Holmes', 12), 
-('Khushi', 'Neema', 13),  
-('Grace', 'Cerrato', 14),  
-('Kathleen', 'Durant', 15), 
-('Natasha', 'Nicholas', 16), 
-('Shane', 'Holmes', 17),
-('Khushi', 'Neema', 18),  
-('Grace', 'Cerrato', 19),  
-('Kathleen', 'Durant', 20); 
-
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -754,36 +653,6 @@ VALUES
 (42, 4),
 (43, 13),
 (43, 7);
-
-
-CREATE TABLE written_for ( -- prescription to medication
-    prescription_val INT,              
-    scientific_name VARCHAR(30),      
-    brand_name VARCHAR(30),         
-    PRIMARY KEY (prescription_val, scientific_name, brand_name),
-    FOREIGN KEY (prescription_val) REFERENCES prescription(val) ON DELETE CASCADE,
-    FOREIGN KEY (scientific_name, brand_name) REFERENCES medication(scientific_name, brand_name) ON DELETE CASCADE
-);
-
-INSERT INTO written_for (prescription_val, scientific_name, brand_name) VALUES
-(1, 'Acetylsalicylic Acid', 'Bayer Aspirin'),
-(2, 'Paracetamol', 'Tylenol'),
-(3, 'Warfarin', 'Coumadin'),
-(4, 'Amoxicillin', 'Amoxil'),
-(5, 'Metformin', 'Glucophage'),
-(6, 'Omeprazole', 'Prilosec'),
-(7, 'Clopidogrel', 'Plavix'),
-(8, 'Simvastatin', 'Zocor'),
-(9, 'Ranitidine', 'Zantac'),
-(10, 'Warfarin', 'Coumadin'),
-(11, 'Epinephrine', 'EpiPen'),
-(12, 'Ketamine', 'Ketalar'),
-(13, 'Dexamethasone', 'Decadron'),
-(14, 'Clopidogrel', 'Plavix'),
-(15, 'Methotrexate', 'Trexall')
-
-;
-
 
 CREATE TABLE sells ( -- pharmacy store to medication
     pharmacy_name VARCHAR(30),          
@@ -978,7 +847,6 @@ INSERT INTO classified_as (scientific_name, class_name) VALUES
 ('Loratadine', 'Antihistamine');
 
 
--- wtf
 CREATE TABLE hazardous ( -- chemical to hazard
     scientific_name VARCHAR(30),
     hazard_id INT,
