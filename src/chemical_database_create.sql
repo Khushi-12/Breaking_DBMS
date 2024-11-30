@@ -350,7 +350,7 @@ VALUES
 ('Wound Healing', 'Skin'),
 ('Antibiotic', 'Lungs'),
 ('Cholesterol Control', 'Blood'),
-('Hair Growth', 'Scalp'),
+-- ('Hair Growth', 'Scalp'),
 ('Dental Care', 'Teeth'),
 ('Antiseptic', 'Hands'),
 ('Immune Support', 'Immune System'),
