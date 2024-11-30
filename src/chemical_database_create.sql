@@ -388,7 +388,7 @@ VALUES
 (4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
 (5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
 
-
+-- wtf
 CREATE TABLE obtains (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -436,6 +436,20 @@ CREATE TABLE in_network ( -- pharmacy store to insurance_company
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
+INSERT INTO in_network (insurance_company_name, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
+VALUES
+('UnitedHealth Group', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Anthem Blue Cross', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('Aetna', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Cigna', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+('Humana', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+('Kaiser Permanente', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+('Blue Shield of California', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Molina Healthcare', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
+
+
 CREATE TABLE insured_by ( -- customer to insurance company
     insurance_id INT NOT NULL,
     company_name VARCHAR(30) NOT NULL,
@@ -445,6 +459,30 @@ CREATE TABLE insured_by ( -- customer to insurance company
     FOREIGN KEY (company_name) REFERENCES insurance_company(name)
 );
 
+INSERT INTO insured_by (insurance_id, company_name, policy_number) 
+VALUES 
+(123456789, 'UnitedHealth Group', 'POLICY-1254'),
+(112345678, 'Anthem Blue Cross', 'POLICY-8321'),
+(111234567, 'Aetna', 'POLICY-9845'),
+(111123456, 'Cigna', 'POLICY-2041'),
+(111112345, 'Humana', 'POLICY-7412'),
+(111111234, 'Kaiser Permanente', 'POLICY-5678'),
+(111111123, 'Blue Shield of California', 'POLICY-4317'),
+(111111112, 'Molina Healthcare', 'POLICY-9832'),
+(111111111, 'Health Net', 'POLICY-3781'),
+(234567891, 'WellCare Health Plans', 'POLICY-5923'),
+(223456789, 'Centene Corporation', 'POLICY-6154'),
+(222345678, 'Oscar Health', 'POLICY-2904'),
+(222234567, 'United Healthcare of Texas', 'POLICY-8025'),
+(222223456, 'Blue Cross Blue Shield', 'POLICY-6673'),
+(222222345, 'CareFirst BlueCross BlueShield', 'POLICY-5409'),
+(222222234, 'Harvard Pilgrim Health Care', 'POLICY-8576'),
+(222222223, 'Highmark', 'POLICY-1102'),
+(222222293, 'Independence Blue Cross', 'POLICY-3492'),
+(333333333, 'EmblemHealth', 'POLICY-2265'),
+(323232323, 'Medica', 'POLICY-4128');
+
+
 CREATE TABLE places ( -- doctor to order
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -453,6 +491,29 @@ CREATE TABLE places ( -- doctor to order
     FOREIGN KEY (first_name, last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+
+INSERT INTO places (first_name, last_name, order_id) VALUES
+('Natasha', 'Nicholas', 1),
+('Shane', 'Holmes', 2), 
+('Khushi', 'Neema', 3),  
+('Grace', 'Cerrato', 4),  
+('Kathleen', 'Durant', 5),  
+('Natasha', 'Nicholas', 6),
+('Shane', 'Holmes', 7),  
+('Khushi', 'Neema', 8), 
+('Grace', 'Cerrato', 9), 
+('Kathleen', 'Durant', 10), 
+('Natasha', 'Nicholas', 11), 
+('Shane', 'Holmes', 12), 
+('Khushi', 'Neema', 13),  
+('Grace', 'Cerrato', 14),  
+('Kathleen', 'Durant', 15), 
+('Natasha', 'Nicholas', 16), 
+('Shane', 'Holmes', 17),
+('Khushi', 'Neema', 18),  
+('Grace', 'Cerrato', 19),  
+('Kathleen', 'Durant', 20); 
+
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -470,6 +531,30 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
+INSERT INTO picks_up (customer_id, order_id, pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
+VALUES
+(123456789, 1, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(112345678, 2, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(111234567, 3, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(111123456, 4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(111112345, 5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(111111234, 6, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(111111123, 7, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(111111112, 8, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(111111111, 9, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(234567891, 10, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(223456789, 11, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(222345678, 12, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(222234567, 13, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(222223456, 14, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(222222345, 15, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(222222234, 16, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(222222223, 17, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(222222293, 18, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(333333333, 19, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(323232323, 20, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502');
+
+-- wtf
 CREATE TABLE diagnoses ( -- customer, illness, doctor
     diagnosis_id INT PRIMARY KEY,
     customer_insurance_id INT NOT NULL,
@@ -482,15 +567,17 @@ CREATE TABLE diagnoses ( -- customer, illness, doctor
     FOREIGN KEY (illness_name) REFERENCES illness(name)
 );
 
-CREATE TABLE contains ( -- order to prescription
+-- wtf
+CREATE TABLE contains ( -- order to prescription 
     order_id INT,              
     prescription_id INT,              
     quantity INT,                    
     PRIMARY KEY (order_id, prescription_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE, 
     FOREIGN KEY (prescription_id) REFERENCES prescription(val) ON DELETE CASCADE 
-);
+); 
 
+-- wtf
 CREATE TABLE written_for ( -- prescription to medication
     prescription_val INT,              
     scientific_name VARCHAR(30),      
@@ -500,6 +587,30 @@ CREATE TABLE written_for ( -- prescription to medication
     FOREIGN KEY (prescription_val) REFERENCES prescription(val) ON DELETE CASCADE,
     FOREIGN KEY (scientific_name, brand_name) REFERENCES medication(scientific_name, brand_name) ON DELETE CASCADE
 );
+
+/*
+INSERT INTO written_for (prescription_val, scientific_name, brand_name, quantity) VALUES
+(1, 'Acetylsalicylic Acid', 'Bayer Aspirin', 10),
+(2, 'Paracetamol', 'Tylenol', 15),
+(3, 'Ibuprofen', 'Advil', 12),
+(4, 'Amoxicillin', 'Amoxil', 25),
+(5, 'Metformin', 'Glucophage', 30),
+(6, 'Omeprazole', 'Prilosec', 20),
+(7, 'Clopidogrel', 'Plavix', 15),
+(8, 'Simvastatin', 'Zocor', 10),
+(9, 'Ranitidine', 'Zantac', 30),
+(10, 'Warfarin', 'Coumadin', 25),
+(11, 'Epinephrine', 'EpiPen', 5),
+(12, 'Ketamine', 'Ketalar', 3),
+(13, 'Dexamethasone', 'Decadron', 20),
+(14, 'Loratadine', 'Claritin', 50),
+(15, 'Methotrexate', 'Trexall', 5),
+(16, 'Atorvastatin', 'Lipitor', 10),
+(17, 'Folic Acid', 'Folacare', 40),
+(18, 'Ascorbic Acid', 'C-1000', 100),
+(19, 'Sodium Bicarbonate', 'Sodibic', 30),
+(20, 'Hydrochloric Acid', 'Acidol', 10);
+*/
 
 CREATE TABLE sells ( -- pharmacy store to medication
     pharmacy_name VARCHAR(30),          
@@ -520,6 +631,27 @@ CREATE TABLE sells ( -- pharmacy store to medication
         ON DELETE CASCADE            
 );
 
+INSERT INTO sells (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name, quantity)
+VALUES
+('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Acetylsalicylic Acid', 'Bayer Aspirin', 100),
+('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Paracetamol', 'Tylenol', 200),
+('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', 'Ibuprofen', 'Advil', 150),
+('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Amoxicillin', 'Amoxil', 120),
+('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Metformin', 'Glucophage', 80),
+('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Omeprazole', 'Prilosec', 90),
+('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Simvastatin', 'Zocor', 60),
+('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Clopidogrel', 'Plavix', 150),
+('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Ranitidine', 'Zantac', 75),
+('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Warfarin', 'Coumadin', 130),
+('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Epinephrine', 'EpiPen', 50),
+('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Ketamine', 'Ketalar', 30),
+('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', 'Dexamethasone', 'Decadron', 110),
+('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Loratadine', 'Claritin', 200),
+('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Methotrexate', 'Trexall', 40),
+('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Atorvastatin', 'Lipitor', 90),
+('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Folic Acid', 'Folacare', 150);
+
+
 CREATE TABLE covers ( -- insurance to medication
     scientific_name VARCHAR(30),        
     brand_name VARCHAR(30),         
@@ -532,6 +664,30 @@ CREATE TABLE covers ( -- insurance to medication
         REFERENCES insurance_company(name) 
         ON DELETE CASCADE 
 );
+
+INSERT INTO covers (scientific_name, brand_name, insurance_company_name)
+VALUES
+('Acetylsalicylic Acid', 'Bayer Aspirin', 'UnitedHealth Group'),
+('Paracetamol', 'Tylenol', 'Anthem Blue Cross'),
+('Ibuprofen', 'Advil', 'Aetna'),
+('Amoxicillin', 'Amoxil', 'Cigna'),
+('Metformin', 'Glucophage', 'Humana'),
+('Omeprazole', 'Prilosec', 'Kaiser Permanente'),
+('Clopidogrel', 'Plavix', 'Blue Shield of California'),
+('Simvastatin', 'Zocor', 'Molina Healthcare'),
+('Ranitidine', 'Zantac', 'Health Net'),
+('Warfarin', 'Coumadin', 'WellCare Health Plans'),
+('Epinephrine', 'EpiPen', 'Centene Corporation'),
+('Ketamine', 'Ketalar', 'Oscar Health'),
+('Dexamethasone', 'Decadron', 'United Healthcare of Texas'),
+('Loratadine', 'Claritin', 'Blue Cross Blue Shield'),
+('Methotrexate', 'Trexall', 'CareFirst BlueCross BlueShield'),
+('Atorvastatin', 'Lipitor', 'Harvard Pilgrim Health Care'),
+('Folic Acid', 'Folacare', 'Highmark'),
+('Ascorbic Acid', 'C-1000', 'Independence Blue Cross'),
+('Sodium Bicarbonate', 'Sodibic', 'EmblemHealth'),
+('Hydrochloric Acid', 'Acidol', 'Medica');
+
 
 CREATE TABLE composed_of ( -- medication to chemical
     scientific_name VARCHAR(30), 
@@ -546,6 +702,30 @@ CREATE TABLE composed_of ( -- medication to chemical
         ON DELETE CASCADE    
 );
 
+/*INSERT INTO composed_of (scientific_name, brand_name, chemical_scientific_name)
+VALUES
+('Acetylsalicylic Acid', 'Bayer Aspirin', 'Aspirin'),
+('Paracetamol', 'Tylenol', 'Paracetamol'),
+('Ibuprofen', 'Advil', 'Ibuprofen'),
+('Amoxicillin', 'Amoxil', 'Amoxicillin'),
+('Metformin', 'Glucophage', 'Metformin'),
+('Omeprazole', 'Prilosec', 'Omeprazole'),
+('Clopidogrel', 'Plavix', 'Cetirizine'),
+('Simvastatin', 'Zocor', 'Simvastatin'),
+('Ranitidine', 'Zantac', 'Ranitidine'),
+('Warfarin', 'Coumadin', 'Warfarin'),
+('Epinephrine', 'EpiPen', 'Epinephrine'),
+('Ketamine', 'Ketalar', 'Ketamine'),
+('Dexamethasone', 'Decadron', 'Dexamethasone'),
+('Loratadine', 'Claritin', 'Loratadine'),
+('Methotrexate', 'Trexall', 'Methotrexate'),
+('Atorvastatin', 'Lipitor', 'Atorvastatin'),
+('Folic Acid', 'Folacare', 'Folic Acid'),
+('Ascorbic Acid', 'C-1000', 'Ascorbic Acid'),
+('Sodium Bicarbonate', 'Sodibic', 'Sodium Bicarbonate'),
+('Hydrochloric Acid', 'Acidol', 'Hydrochloric Acid');
+*/
+
 CREATE TABLE used_for ( -- medication to uses
     scientific_name VARCHAR(30),             
     brand_name VARCHAR(30),         
@@ -558,7 +738,33 @@ CREATE TABLE used_for ( -- medication to uses
         REFERENCES uses(use_id)
         ON DELETE CASCADE            
 );
-
+INSERT INTO used_for (scientific_name, brand_name, use_id)
+VALUES
+('Acetylsalicylic Acid', 'Bayer Aspirin', 1),
+('Acetylsalicylic Acid', 'Bayer Aspirin', 2),
+('Acetylsalicylic Acid', 'Bayer Aspirin', 4),
+('Paracetamol', 'Tylenol', 1),
+('Paracetamol', 'Tylenol', 2),
+('Paracetamol', 'Tylenol', 5),
+('Ibuprofen', 'Advil', 2),
+('Ibuprofen', 'Advil', 4),
+('Amoxicillin', 'Amoxil', 13),
+('Omeprazole', 'Prilosec', 6),
+('Simvastatin', 'Zocor', 14),
+('Ranitidine', 'Zantac', 6),
+('Ranitidine', 'Zantac', 5),
+('Warfarin', 'Coumadin', 8),
+('Epinephrine', 'EpiPen', 3),
+('Ketamine', 'Ketalar', 11),
+('Dexamethasone', 'Decadron', 4),
+('Dexamethasone', 'Decadron', 7),
+('Loratadine', 'Claritin', 3),
+('Loratadine', 'Claritin', 7),
+('Atorvastatin', 'Lipitor', 14),
+('Folic Acid', 'Folacare', 9),
+('Ascorbic Acid', 'C-1000', 18),
+('Sodium Bicarbonate', 'Sodibic', 6),
+('Hydrochloric Acid', 'Acidol', 7);
 
 CREATE TABLE classified_as ( -- chemical to classification
     scientific_name VARCHAR(30), 
@@ -572,6 +778,29 @@ CREATE TABLE classified_as ( -- chemical to classification
         ON DELETE CASCADE  
 );
 
+INSERT INTO classified_as (scientific_name, class_name) VALUES
+('Paracetamol', 'Analgesic'),
+('Ibuprofen', 'Analgesic'),
+('Aspirin', 'Analgesic'),
+('Amoxicillin', 'Antibiotic'),
+('Metformin', 'Antidiabetic'),
+('Simvastatin', 'Cholesterol-lowering'),
+('Cetirizine', 'Antihistamine'),
+('Lisinopril', 'Antihypertensive'),
+('Omeprazole', 'Proton pump inhibitor'),
+('Metoprolol', 'Beta-blocker'),
+('Prednisone', 'Corticosteroid'),
+('Doxycycline', 'Antibiotic'),
+('Losartan', 'Antihypertensive'),
+('Hydrochlorothiazide', 'Diuretic'),
+('Albuterol', 'Bronchodilator'),
+('Gabapentin', 'Anticonvulsant'),
+('Fluoxetine', 'Antidepressant'),
+('Furosemide', 'Diuretic'),
+('Clonazepam', 'Benzodiazepine'),
+('Loratadine', 'Antihistamine');
+
+
 CREATE TABLE hazardous ( -- chemical to hazard 
     scientific_name VARCHAR(30),
     hazard_description VARCHAR(300),   
@@ -584,6 +813,30 @@ CREATE TABLE hazardous ( -- chemical to hazard
         ON DELETE CASCADE        
 );
 
+/*
+INSERT INTO hazardous (scientific_name, hazard_description)
+VALUES
+('Paracetamol', 'Toxic if swallowed.'),
+('Ibuprofen', 'May cause drowsiness or dizziness.'),
+('Aspirin', 'May cause respiratory irritation.'),
+('Amoxicillin', 'Harmful if inhaled.'),
+('Metformin', 'May cause drowsiness or dizziness.'),
+('Simvastatin', 'May cause drowsiness or dizziness.'),
+('Cetirizine', 'May cause allergic skin reaction.'),
+('Lisinopril', 'May cause respiratory irritation.'),
+('Omeprazole', 'May cause drowsiness or dizziness.'),
+('Metoprolol', 'May cause drowsiness or dizziness.'),
+('Prednisone', 'May cause respiratory irritation.'),
+('Doxycycline', 'Harmful if swallowed.'),
+('Losartan', 'May cause respiratory irritation.'),
+('Hydrochlorothiazide', 'May cause drowsiness or dizziness.'),
+('Albuterol', 'May cause drowsiness or dizziness.'),
+('Gabapentin', 'May cause drowsiness or dizziness.'),
+('Fluoxetine', 'May cause drowsiness or dizziness.'),
+('Furosemide', 'May cause drowsiness or dizziness.'),
+('Clonazepam', 'May cause drowsiness or dizziness.'),
+('Loratadine', 'May cause allergic skin reaction.');
+*/
 SELECT * from works_at
 where staff_id = 1;
 
