@@ -209,36 +209,6 @@ VALUES
 ('Pediatrician License', 'Board of Pediatric Medicine', '2027-11-12');
 
 
-CREATE TABLE chemical(
-	scientific_name VARCHAR(30) PRIMARY KEY NOT NULL, -- check if this is valid for diagram
-    common_name VARCHAR(30) NOT NULL,
-    molecular_formula VARCHAR(30) NOT NULL,
-    structure VARCHAR(30) NOT NULL,
-    charge INT NOT NULL,
-    solubility INT NOT NULL
-);
-
-INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure, charge, solubility) VALUES
-('Paracetamol', 'Acetaminophen', 'C8H9NO2', 'C6H4(OH)C(=O)NHCH3', 0, 2),
-('Ibuprofen', 'Ibuprofen', 'C13H18O2', 'CH3(CH2)3COOCH2C6H4CH3', 0, 3),
-('Aspirin', 'Acetylsalicylic acid', 'C9H8O4', 'CH3COOC6H4COOH', 0, 3),
-('Amoxicillin', 'Amoxicillin', 'C16H19N3O5S', 'C6H4COOH-CH2-CO-NH', -1, 4),
-('Metformin', 'Metformin', 'C4H11N5', 'C(=N)NH2', 0, 5),
-('Simvastatin', 'Simvastatin', 'C25H38O5', 'C6H4COOH-CH2-CO-NH', 0, 3),
-('Cetirizine', 'Cetirizine', 'C21H25ClN2O3', 'C6H4Cl-CH2-NH-COO', 0, 4),
-('Lisinopril', 'Lisinopril', 'C21H31N3O5', 'C6H5COOH-CH2-NH2', 0, 3),
-('Omeprazole', 'Omeprazole', 'C17H19N3O3S', 'C6H4COOH-CH2-NH2', 0, 3),
-('Metoprolol', 'Metoprolol', 'C15H25NO3', 'C6H5C(=O)NH-C2H4', 0, 4),
-('Prednisone', 'Prednisone', 'C21H26O5', 'C6H4COOH-C2H4', 0, 2),
-('Doxycycline', 'Doxycycline', 'C22H24N2O8', 'C6H4OH-NH2-COOH', -1, 4),
-('Losartan', 'Losartan', 'C22H23ClN6O', 'C6H4COOH-NH-C6H4', 0, 3),
-('Hydrochlorothiazide', 'Hydrochlorothiazide', 'C7H8ClN3O4S2', 'C6H4(OH)-C(=O)-NH2', -1, 3),
-('Albuterol', 'Albuterol', 'C13H21NO3', 'C6H4Cl-CH2-NH-COOH', 1, 4),
-('Gabapentin', 'Gabapentin', 'C9H17NO2', 'C8H5OH-CH2-NH2', 0, 5),
-('Fluoxetine', 'Fluoxetine', 'C17H18F3NO', 'C6H4COOH-CH2-NH2', 0, 3),
-('Furosemide', 'Furosemide', 'C12H11ClN2O5S', 'C6H4COOH-CH2-NH2', -1, 3),
-('Clonazepam', 'Clonazepam', 'C15H10ClN3O3', 'C6H4COOH-CH2-C6H4', 0, 2),
-('Loratadine', 'Loratadine', 'C22H23ClN2O2', 'C6H4COOH-C2H4-NH2', 0, 3);
 
 
 CREATE TABLE hazard(
@@ -291,6 +261,42 @@ INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly wha
 ('Anticonvulsant', 'Neuropathic pain'),
 ('Antidepressant', 'Selective serotonin reuptake inhibitor'),
 ('Benzodiazepine', 'Anxiolytic');
+
+CREATE TABLE chemical(
+	scientific_name VARCHAR(30) PRIMARY KEY NOT NULL, -- check if this is valid for diagram
+    common_name VARCHAR(30) NOT NULL,
+    molecular_formula VARCHAR(30) NOT NULL,
+    structure VARCHAR(30) NOT NULL,
+    charge INT NOT NULL,
+    solubility INT NOT NULL,
+    classified_class_name VARCHAR(120),
+    FOREIGN KEY (classified_class_name) REFERENCES classification(class_name)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure, charge, solubility,classified_class_name) VALUES
+('Paracetamol', 'Acetaminophen', 'C8H9NO2', 'C6H4(OH)C(=O)NHCH3', 0, 2,'Analgesic'),
+('Ibuprofen', 'Ibuprofen', 'C13H18O2', 'CH3(CH2)3COOCH2C6H4CH3', 0, 3,'Analgesic'),
+('Aspirin', 'Acetylsalicylic acid', 'C9H8O4', 'CH3COOC6H4COOH', 0, 3,'Analgesic'),
+('Amoxicillin', 'Amoxicillin', 'C16H19N3O5S', 'C6H4COOH-CH2-CO-NH', -1, 4,'Antibiotic'),
+('Metformin', 'Metformin', 'C4H11N5', 'C(=N)NH2', 0, 5,'Antidiabetic'),
+('Simvastatin', 'Simvastatin', 'C25H38O5', 'C6H4COOH-CH2-CO-NH', 0, 3,'Cholesterol-lowering'),
+('Cetirizine', 'Cetirizine', 'C21H25ClN2O3', 'C6H4Cl-CH2-NH-COO', 0, 4,'Antihistamine'),
+('Lisinopril', 'Lisinopril', 'C21H31N3O5', 'C6H5COOH-CH2-NH2', 0, 3,'Antihypertensive'),
+('Omeprazole', 'Omeprazole', 'C17H19N3O3S', 'C6H4COOH-CH2-NH2', 0, 3,'Proton pump inhibitor'),
+('Metoprolol', 'Metoprolol', 'C15H25NO3', 'C6H5C(=O)NH-C2H4', 0, 4,'Beta-blocker'),
+('Prednisone', 'Prednisone', 'C21H26O5', 'C6H4COOH-C2H4', 0, 2,'Corticosteroid'),
+('Doxycycline', 'Doxycycline', 'C22H24N2O8', 'C6H4OH-NH2-COOH', -1, 4,'Antibiotic'),
+('Losartan', 'Losartan', 'C22H23ClN6O', 'C6H4COOH-NH-C6H4', 0, 3,'Antihypertensive'),
+('Hydrochlorothiazide', 'Hydrochlorothiazide', 'C7H8ClN3O4S2', 'C6H4(OH)-C(=O)-NH2', -1, 3,'Diuretic'),
+('Albuterol', 'Albuterol', 'C13H21NO3', 'C6H4Cl-CH2-NH-COOH', 1, 4,'Bronchodilator'),
+('Gabapentin', 'Gabapentin', 'C9H17NO2', 'C8H5OH-CH2-NH2', 0, 5,'Anticonvulsant'),
+('Fluoxetine', 'Fluoxetine', 'C17H18F3NO', 'C6H4COOH-CH2-NH2', 0, 3,'Antidepressant'),
+('Furosemide', 'Furosemide', 'C12H11ClN2O5S', 'C6H4COOH-CH2-NH2', -1, 3,'Diuretic'),
+('Clonazepam', 'Clonazepam', 'C15H10ClN3O3', 'C6H4COOH-CH2-C6H4', 0, 2,'Benzodiazepine'),
+('Loratadine', 'Loratadine', 'C22H23ClN2O2', 'C6H4COOH-C2H4-NH2', 0, 3, 'Antihistamine');
+
+
 
 CREATE TABLE medication(
 	scientific_name VARCHAR(30) NOT NULL,
@@ -840,39 +846,9 @@ VALUES
 ;
 
 
-CREATE TABLE classified_as ( -- chemical to classification
-    scientific_name VARCHAR(30), 
-    class_name VARCHAR(128),   
-    PRIMARY KEY (scientific_name, class_name), 
-    FOREIGN KEY (scientific_name) 
-        REFERENCES chemical(scientific_name)  
-        ON DELETE CASCADE,   
-    FOREIGN KEY (class_name) 
-        REFERENCES classification(class_name) 
-        ON DELETE CASCADE  
-);
 
-INSERT INTO classified_as (scientific_name, class_name) VALUES
-('Paracetamol', 'Analgesic'),
-('Ibuprofen', 'Analgesic'),
-('Aspirin', 'Analgesic'),
-('Amoxicillin', 'Antibiotic'),
-('Metformin', 'Antidiabetic'),
-('Simvastatin', 'Cholesterol-lowering'),
-('Cetirizine', 'Antihistamine'),
-('Lisinopril', 'Antihypertensive'),
-('Omeprazole', 'Proton pump inhibitor'),
-('Metoprolol', 'Beta-blocker'),
-('Prednisone', 'Corticosteroid'),
-('Doxycycline', 'Antibiotic'),
-('Losartan', 'Antihypertensive'),
-('Hydrochlorothiazide', 'Diuretic'),
-('Albuterol', 'Bronchodilator'),
-('Gabapentin', 'Anticonvulsant'),
-('Fluoxetine', 'Antidepressant'),
-('Furosemide', 'Diuretic'),
-('Clonazepam', 'Benzodiazepine'),
-('Loratadine', 'Antihistamine');
+
+
 
 
 CREATE TABLE hazardous ( -- chemical to hazard
