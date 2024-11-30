@@ -256,7 +256,7 @@ CREATE TABLE prescription(
 	quantity INT NOT NULL
 );
 
-INSERT INTO prescription (dosage, expiration_date) VALUES
+INSERT INTO prescription (dosage, expiration_date, quantity) VALUES
 (500, '2190-12-31', 50),
 (50, '2190-06-03', 30),
 (400, '2192-01-17', 100),
