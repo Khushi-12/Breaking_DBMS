@@ -18,7 +18,6 @@ CREATE TABLE customer(
     phone CHAR(10) NOT NULL
 );
 
--- test
 INSERT INTO customer VALUES 
 (123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111),
 (112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222),
@@ -40,8 +39,6 @@ INSERT INTO customer VALUES
 (222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392),
 (333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), 
 (323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823);
-
-
 
 
 CREATE TABLE pharmacy_store(
@@ -77,7 +74,6 @@ CREATE TABLE pharmacist (
     CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name),
     FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
         REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
-    
 );
 
 INSERT INTO pharmacist (first_name, last_name,pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) VALUES
@@ -134,6 +130,7 @@ INSERT INTO doctor VALUES
 ('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', '8772419037', 'Psychiatrist'),
 ('Grace', 'Cerrato', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'gcerr24@g.holycross.edu', '6173782799', 'Neurology'),
 ('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', '3823824020', 'Family Medicine');
+
 
 CREATE TABLE orders(
 	order_id INT PRIMARY KEY,
@@ -192,7 +189,6 @@ INSERT INTO orders (order_id, medicine, delivery_date, doctor_first_name, doctor
 (43, 'Sildenafil', '2025-01-12','Natasha', 'Nicholas','Pediatrics');
 
 
-
 CREATE TABLE certification(
 	name VARCHAR(128) PRIMARY KEY NOT NULL,
     institution VARCHAR(128) NOT NULL,
@@ -209,14 +205,11 @@ VALUES
 ('Pediatrician License', 'Board of Pediatric Medicine', '2027-11-12');
 
 
-
-
 CREATE TABLE hazard(
 	hazard_id INT PRIMARY KEY AUTO_INCREMENT,
 	hazard_description VARCHAR(300) NOT NULL,
     safety_instruction VARCHAR(500)
 );
-
 -- Dummy values for the hazard table
 INSERT INTO hazard (hazard_description, safety_instruction)
 VALUES
@@ -241,6 +234,7 @@ VALUES
 ('Causes liver and kidney damage on prolonged exposure.', 'Minimize exposure duration. Use appropriate PPE and follow safety guidelines for handling hazardous materials.'),
 ('Carcinogenic in laboratory animals.', 'Limit exposure. Wear PPE including lab coats and gloves. Dispose of material according to safety regulations.');
 
+
 CREATE TABLE classification(
 	class_name VARCHAR(128) PRIMARY KEY NOT NULL,
     properties VARCHAR(128)
@@ -261,6 +255,7 @@ INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly wha
 ('Anticonvulsant', 'Neuropathic pain'),
 ('Antidepressant', 'Selective serotonin reuptake inhibitor'),
 ('Benzodiazepine', 'Anxiolytic');
+
 
 CREATE TABLE chemical(
 	scientific_name VARCHAR(30) PRIMARY KEY NOT NULL, -- check if this is valid for diagram
@@ -297,7 +292,6 @@ INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure
 ('Loratadine', 'Loratadine', 'C22H23ClN2O2', 'C6H4COOH-C2H4-NH2', 0, 3, 'Antihistamine');
 
 
-
 CREATE TABLE medication(
 	scientific_name VARCHAR(30) NOT NULL,
     common_name VARCHAR(30),
@@ -331,6 +325,7 @@ VALUES
 ('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer'),
 ('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer');
 
+
 CREATE TABLE prescription(
 	val INT PRIMARY KEY AUTO_INCREMENT,
     dosage INT NOT NULL,
@@ -360,9 +355,6 @@ INSERT INTO prescription (dosage, expiration_date, quantity, scientific_name, br
 (400, '2195-03-23', 20,'Ibuprofen', 'Advil');
 
 
-
-
-
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY AUTO_INCREMENT,
     use_case VARCHAR(30) NOT NULL,
@@ -388,8 +380,8 @@ VALUES
 ('Dental Care', 'Teeth'), 
 ('Antiseptic', 'Hands'),
 ('Immune Support', 'Immune System'),
-('Nerve Pain Relief', 'Nerves')
-;
+('Nerve Pain Relief', 'Nerves');
+
 
 CREATE TABLE insurance_company(
 	name VARCHAR(30) PRIMARY KEY,
@@ -419,6 +411,8 @@ VALUES
 ('EmblemHealth', '1-800-447-8255'),
 ('Medica', '1-800-936-6880');
 
+
+
 -- Relationships
 CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
@@ -434,6 +428,7 @@ CREATE TABLE obtains_doctor ( -- doc, certification
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
+
 INSERT INTO obtains_doctor (first_name, last_name, certification_name)
 VALUES
 ('Natasha', 'Nicholas', 'Doctor License'),
@@ -457,7 +452,6 @@ CREATE TABLE obtains_pharmacist ( -- pharm, certification
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
-    
 -- Insert data into the obtains table with role
 INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
 VALUES
@@ -466,7 +460,6 @@ VALUES
 ('Louisa', 'Wetzel', 'Pharmacist License'),
 ('Gabby', 'Dipollito', 'Clinical Pharmacist Certification'),
 ('Nakul', 'Rao', 'Pharmacist License');
-
 
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
@@ -543,7 +536,6 @@ VALUES
 (323232323, 'Medica', 'POLICY-4128');
 
 -- Select * from insured_by;
-
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
     order_id INT NOT NULL,
@@ -605,7 +597,6 @@ VALUES
 (112345678, 41, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
 (222222234, 42, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
 (111123456, 43, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701');
-;
 
 
 CREATE TABLE diagnoses ( -- customer, illness, doctor
@@ -642,6 +633,7 @@ VALUES
 (18, 222222293, 'Khushi', 'Neema', 'Migraine', '2024-07-22'),
 (19, 333333333, 'Grace', 'Cerrato', 'High Blood Pressure', '2024-08-29'),
 (20, 323232323, 'Kathleen', 'Durant', 'Asthma', '2024-09-12');
+
 
 CREATE TABLE contains ( -- order to prescription 
     order_id INT,              
@@ -734,6 +726,7 @@ VALUES
 (43, 13),
 (43, 7);
 
+
 CREATE TABLE sells ( -- pharmacy store to medication
     pharmacy_name VARCHAR(30),          
     pharmacy_address_street_name VARCHAR(30), 
@@ -823,6 +816,7 @@ CREATE TABLE composed_of ( -- medication to chemical
         REFERENCES chemical(scientific_name) 
         ON DELETE CASCADE    
 );
+
 INSERT INTO composed_of (scientific_name, brand_name, chemical_scientific_name)
 VALUES
 ('Acetylsalicylic Acid', 'Bayer Aspirin', 'Aspirin'),
@@ -844,9 +838,7 @@ VALUES
 ('Folic Acid', 'Folacare', 'Loratadine'),
 ('Ascorbic Acid', 'C-1000', 'Simvastatin'),
 ('Sodium Bicarbonate', 'Sodibic', 'Simvastatin'),
-('Hydrochloric Acid', 'Acidol', 'Aspirin')
-;
-
+('Hydrochloric Acid', 'Acidol', 'Aspirin');
 
 
 CREATE TABLE used_for ( -- medication to uses
@@ -888,13 +880,7 @@ VALUES
 ('Folic Acid', 'Folacare', 10),
 ('Ascorbic Acid', 'C-1000', 18),
 ('Sodium Bicarbonate', 'Sodibic', 14),
-('Hydrochloric Acid', 'Acidol', 16)
-;
-
-
-
-
-
+('Hydrochloric Acid', 'Acidol', 16);
 
 
 CREATE TABLE hazardous ( -- chemical to hazard
