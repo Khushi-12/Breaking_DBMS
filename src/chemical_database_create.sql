@@ -455,13 +455,20 @@ CREATE TABLE obtains_pharmacist ( -- pharm, certification
 -- Insert data into the obtains table with role
 INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
 VALUES
-('Jules', 'Sylvester', 'Pharmacist License'),
-('Edgar', 'Roman', 'Specialist Pharmacist Certification'),
-('Louisa', 'Wetzel', 'Pharmacist License'),
-('Gabby', 'Dipollito', 'Clinical Pharmacist Certification'),
-('Nakul', 'Rao', 'Pharmacist License');
+('Natasha', 'Nicholas', 'Doctor License', 'doctor'),
+('Shane', 'Holmes', 'General Practitioner License', 'doctor'),
+('Khushi', 'Neema', 'Pediatrician License', 'doctor'),
+('Grace', 'Cerrato', 'Doctor License', 'doctor'),
+('Kathleen', 'Durant', 'General Practitioner License', 'doctor'),
+('Jules', 'Sylvester', 'Pharmacist License', 'pharmacist'),
+('Edgar', 'Roman', 'Specialist Pharmacist Certification', 'pharmacist'),
+('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
+('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
+('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
 
 
+SELECT * from obtains
+where first_name = "grace";
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
