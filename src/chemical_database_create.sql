@@ -464,7 +464,7 @@ VALUES
 ('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
 ('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
 ('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
-*/
+
 
 SELECT * from obtains
 where first_name = "grace";
