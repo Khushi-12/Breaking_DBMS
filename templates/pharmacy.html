@@ -188,6 +188,31 @@
             font-size: 14px;
         }
 
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+        }
+        .tab-button.active {
+            background-color: #ddd;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .tab-content:not(.hidden) {
+            display: block;
+        }
+
 
     </style>
 </head>
@@ -300,7 +325,7 @@
         }
 
 
-        // Function to display customer information
+        // Function to dynamically update the display area
         async function displayCustomerInfo(event) {
             const customerId = event.target.value;
             const infoCard = document.getElementById('info-card');
@@ -313,158 +338,71 @@
                     const customerInfo = await response.json();
 
                     infoCard.innerHTML = `
-                        <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
-                        <p>DOB: ${customerInfo.dob}</p>
-                        <p>Insurance #: ${customerInfo.insurance_id}</p>
-                        <p>Email: ${customerInfo.email}</p>
-                        <p>Phone: ${customerInfo.phone}</p>
-                        <p>Address: ${customerInfo.address_street_name} ${customerInfo.address_street_num}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
-
-                        <div class="scroll-container">
-                            <!-- Order boxes go here -->
-                            <div class="box">
-                                <h3>Order #1</h3>
-                                <p><strong>Expiration Date:</strong> 2024-12-01</p>
-                                <p><strong>Illness:</strong> Common Cold</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. John Smith</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Amoxicillin</p>
-                                        <p><strong>Dosage:</strong> 500 mg</p>
-                                        <p><strong>Frequency:</strong> Twice a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 2</h4>
-                                        <p><strong>Medication:</strong> Ibuprofen</p>
-                                        <p><strong>Dosage:</strong> 200 mg</p>
-                                        <p><strong>Frequency:</strong> Every 6 hours</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="box">
-                                <h3>Order #2</h3>
-                                <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                <p><strong>Illness:</strong> Allergies</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 2</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 3</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="box">
-                                <h3>Order #3</h3>
-                                <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                <p><strong>Illness:</strong> Allergies</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="box">
-                                <h3>Order #4</h3>
-                                <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                <p><strong>Illness:</strong> Allergies</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="box">
-                                <h3>Order #5</h3>
-                                <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                <p><strong>Illness:</strong> Allergies</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="box">
-                                <h3>Order #6</h3>
-                                <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                <p><strong>Illness:</strong> Allergies</p>
-                                <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                <div class="prescription-container">
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                    <div class="prescription-box">
-                                        <h4>Prescription 1</h4>
-                                        <p><strong>Medication:</strong> Cetirizine</p>
-                                        <p><strong>Dosage:</strong> 10 mg</p>
-                                        <p><strong>Frequency:</strong> Once a day</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        
+                        <div class="tabs">
+                            <button class="tab-button active" data-tab="tab1">Info</button>
+                            <button class="tab-button" data-tab="tab2">Orders</button>
                         </div>
 
+                        <div class="tab-content" id="tab1">
+                            <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
+                            <p>DOB: ${customerInfo.dob}</p>
+                            <p>Insurance #: ${customerInfo.insurance_id}</p>
+                            <p>Email: ${customerInfo.email}</p>
+                            <p>Phone: ${customerInfo.phone}</p>
+                            <p>Address: ${customerInfo.address_street_name} ${customerInfo.address_street_num}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
+                        </div>
+
+                        <div class="tab-content hidden" id="tab2">
+                            
+                            <div class="scroll-container">
+                                
+                                {% for order in orders %}
+                                    <div class="box">
+                                        <h3>Order #{{ order.order_id }}</h3>
+                                        <p><strong>Expiration Date:</strong> {{ order.expiration_date }}</p>
+                                        <p><strong>Illness:</strong> {{ order.illness }}</p>
+                                        <p><strong>Prescribing Doctor:</strong> {{ order.doctor }}</p>
+                                        <div class="prescription-container">
+                                            {% for prescription in order.prescriptions %}
+                                                <div class="prescription-box">
+                                                    <h4>Prescription {{ loop.index }}</h4>
+                                                    <p><strong>Medication:</strong> {{ prescription.name }}</p>
+                                                    <p><strong>Dosage:</strong> {{ prescription.dosage }}</p>
+                                                    <p><strong>Frequency:</strong> {{ prescription.frequency }}</p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    ndfor %}
+                        
+                            
+                            </div>
+
+                        </div>
                     `;
                     infoCard.classList.remove('hidden');
+
+                    // Add event listeners for tabs
+                    const tabs = document.querySelectorAll(".tab-button");
+                    const tabContents = document.querySelectorAll(".tab-content");
+                    
+                    tabs.forEach((tab) => {
+                        tab.addEventListener("click", () => {
+                            // Remove 'active' class from all tabs
+                            tabs.forEach((t) => t.classList.remove("active"));
+                        
+                            // Hide all tab contents
+                            tabContents.forEach((content) => content.classList.add("hidden"));
+                        
+                            // Add 'active' class to the clicked tab
+                            tab.classList.add("active");
+                        
+                            // Show the corresponding tab content
+                            const target = tab.dataset.tab;
+                            document.getElementById(target).classList.remove("hidden");
+                        });
+                    });
+
                 } catch (error) {
                     console.error("Error fetching customer info:", error);
                     infoCard.innerHTML = "<p>Failed to load customer details.</p>";
@@ -475,36 +413,9 @@
             }
         }
 
-
-        // Similar function for doctors
-        async function displayDoctorInfo(event) {
-            const doctorId = event.target.value;
-            const infoCard = document.getElementById('info-card');
-
-            if (doctorId) {
-                try {
-                    const response = await fetch(`/get_doctor_info?id=${encodeURIComponent(doctorId)}`);
-                    if (!response.ok) throw new Error("Failed to fetch doctor info");
-
-                    const doctorInfo = await response.json();
-
-                    infoCard.innerHTML = `
-                        <h3>${doctorInfo.first_name} ${doctorInfo.last_name}</h3>
-                        <p>Email: ${doctorInfo.email}</p>
-                        <p>Phone: ${doctorInfo.phone}</p>
-                        <p>Phone: ${doctorInfo.office_name}</p>
-                        <p>Office Address: ${doctorInfo.office_address_street_name} ${doctorInfo.office_address_street_num}, ${doctorInfo.office_address_town}, ${doctorInfo.office_address_state}, ${doctorInfo.office_address_zipcode}</p>
-                    `;
-                    infoCard.classList.remove('hidden');
-                } catch (error) {
-                    console.error("Error fetching doctor info:", error);
-                    infoCard.innerHTML = "<p>Failed to load doctor details.</p>";
-                    infoCard.classList.remove('hidden');
-                }
-            } else {
-                infoCard.classList.add('hidden');
-            }
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            // You can use this section to set up any initialization logic for the page
+        });
 
     
         // Placeholder functions for top bar actions
