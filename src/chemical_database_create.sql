@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS Chemical_database;
 CREATE DATABASE Chemical_database;
 USE Chemical_database;
 
-
 -- Entities
 
 CREATE TABLE customer(
@@ -46,31 +45,30 @@ INSERT INTO customer VALUES
 CREATE TABLE orders(
 	order_id INT PRIMARY KEY,
     medicine VARCHAR(30) NOT NULL,
-    delivery_date DATE NOT NULL,
-    quantity INT NOT NULL
+    delivery_date DATE NOT NULL
 );
 
-INSERT INTO orders (order_id, medicine, delivery_date, quantity) VALUES
-(1, 'Paracetamol', '2024-12-01', 50),
-(2, 'Ibuprofen', '2024-12-02', 30),
-(3, 'Aspirin', '2024-12-03', 100),
-(4, 'Amoxicillin', '2024-12-04', 25),
-(5, 'Metformin', '2024-12-05', 40),
-(6, 'Simvastatin', '2024-12-06', 15),
-(7, 'Cetirizine', '2024-12-07', 60),
-(8, 'Lisinopril', '2024-12-08', 35),
-(9, 'Omeprazole', '2024-12-09', 50),
-(10, 'Metoprolol', '2024-12-10', 20),
-(11, 'Prednisone', '2024-12-11', 45),
-(12, 'Doxycycline', '2024-12-12', 30),
-(13, 'Losartan', '2024-12-13', 55),
-(14, 'Hydrochlorothiazide', '2024-12-14', 70),
-(15, 'Albuterol', '2024-12-15', 25),
-(16, 'Gabapentin', '2024-12-16', 40),
-(17, 'Fluoxetine', '2024-12-17', 20),
-(18, 'Furosemide', '2024-12-18', 60),
-(19, 'Clonazepam', '2024-12-19', 30),
-(20, 'Loratadine', '2024-12-20', 50);
+INSERT INTO orders (order_id, medicine, delivery_date) VALUES
+(1, 'Paracetamol', '2024-12-01'),
+(2, 'Ibuprofen', '2024-12-02'),
+(3, 'Aspirin', '2024-12-03'),
+(4, 'Amoxicillin', '2024-12-04'),
+(5, 'Metformin', '2024-12-05'),
+(6, 'Simvastatin', '2024-12-06'),
+(7, 'Cetirizine', '2024-12-07'),
+(8, 'Lisinopril', '2024-12-08'),
+(9, 'Omeprazole', '2024-12-09'),
+(10, 'Metoprolol', '2024-12-10'),
+(11, 'Prednisone', '2024-12-11'),
+(12, 'Doxycycline', '2024-12-12'),
+(13, 'Losartan', '2024-12-13'),
+(14, 'Hydrochlorothiazide', '2024-12-14'),
+(15, 'Albuterol', '2024-12-15'),
+(16, 'Gabapentin', '2024-12-16'),
+(17, 'Fluoxetine', '2024-12-17'),
+(18, 'Furosemide', '2024-12-18'),
+(19, 'Clonazepam', '2024-12-19'),
+(20, 'Loratadine', '2024-12-20');
 
 CREATE TABLE pharmacy_store(
 	name VARCHAR(30) NOT NULL,
@@ -254,25 +252,26 @@ INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly wha
 CREATE TABLE prescription(
 	val INT PRIMARY KEY AUTO_INCREMENT,
     dosage INT NOT NULL,
-    expiration_date DATE
+    expiration_date DATE,
+	quantity INT NOT NULL
 );
 
 INSERT INTO prescription (dosage, expiration_date) VALUES
-(500, '2190-12-31'),
-(50, '2190-06-03'),
-(400, '2192-01-17'),
-(3.5, '2191-10-27'),
-(3.5, '2191-10-27'),
-(250, '2195-02-15'),
-(100, '2193-11-10'),
-(200, '2194-07-22'),
-(5, '2193-08-14'),
-(10, '2196-09-30'),
-(750, '2192-05-19'),
-(125, '2194-04-18'),
-(600, '2197-01-05'),
-(50, '2193-01-29'),
-(400, '2195-03-23');
+(500, '2190-12-31', 50),
+(50, '2190-06-03', 30),
+(400, '2192-01-17', 100),
+(3.5, '2191-10-27', 25),
+(3.5, '2191-10-27', 40),
+(250, '2195-02-15', 15),
+(100, '2193-11-10', 60),
+(200, '2194-07-22', 35),
+(5, '2193-08-14', 20),
+(10, '2196-09-30', 45),
+(750, '2192-05-19', 30),
+(125, '2194-04-18', 55),
+(600, '2197-01-05', 70),
+(50, '2193-01-29', 25),
+(400, '2195-03-23', 20);
 
 CREATE TABLE medication(
 	scientific_name VARCHAR(30) NOT NULL,
@@ -388,8 +387,11 @@ VALUES
 (4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
 (5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
 
+SELECT * from works_at
+where staff_id = 1;
+
 -- wtf
-CREATE TABLE obtains (
+CREATE TABLE obtains ( -- doc, pharm, certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     certification_name VARCHAR(30) NOT NULL,
@@ -422,6 +424,9 @@ VALUES
 ('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
 */
 
+SELECT * from obtains
+where first_name = "grace";
+
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
     pharmacy_store_name VARCHAR(30) NOT NULL,
@@ -448,6 +453,9 @@ VALUES
 ('Molina Healthcare', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
 ('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
 ('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
+
+Select * from in_network
+where pharmacy_store_name = 'Cedar Pharmacy';
 
 
 CREATE TABLE insured_by ( -- customer to insurance company
@@ -482,6 +490,8 @@ VALUES
 (333333333, 'EmblemHealth', 'POLICY-2265'),
 (323232323, 'Medica', 'POLICY-4128');
 
+Select * from insured_by
+where insurance_id = 323232323;
 
 CREATE TABLE places ( -- doctor to order
     first_name VARCHAR(30) NOT NULL,
@@ -514,6 +524,8 @@ INSERT INTO places (first_name, last_name, order_id) VALUES
 ('Grace', 'Cerrato', 19),  
 ('Kathleen', 'Durant', 20); 
 
+Select * from places
+where first_name = "grace";
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -554,6 +566,9 @@ VALUES
 (333333333, 19, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
 (323232323, 20, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502');
 
+SELECT * from picks_up
+where customer_id = 123456789;
+
 -- wtf
 CREATE TABLE diagnoses ( -- customer, illness, doctor
     diagnosis_id INT PRIMARY KEY,
@@ -570,8 +585,7 @@ CREATE TABLE diagnoses ( -- customer, illness, doctor
 -- wtf
 CREATE TABLE contains ( -- order to prescription 
     order_id INT,              
-    prescription_id INT,              
-    quantity INT,                    
+    prescription_id INT,                         
     PRIMARY KEY (order_id, prescription_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE, 
     FOREIGN KEY (prescription_id) REFERENCES prescription(val) ON DELETE CASCADE 
@@ -651,6 +665,8 @@ VALUES
 ('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Atorvastatin', 'Lipitor', 90),
 ('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Folic Acid', 'Folacare', 150);
 
+SELECT * from sells
+where medication_scientific_name = 'Ibuprofen';
 
 CREATE TABLE covers ( -- insurance to medication
     scientific_name VARCHAR(30),        
@@ -688,7 +704,10 @@ VALUES
 ('Sodium Bicarbonate', 'Sodibic', 'EmblemHealth'),
 ('Hydrochloric Acid', 'Acidol', 'Medica');
 
+SELECT * from covers
+where insurance_company_name = 'Medica';
 
+-- wtf
 CREATE TABLE composed_of ( -- medication to chemical
     scientific_name VARCHAR(30), 
     brand_name VARCHAR(30), 
@@ -738,6 +757,7 @@ CREATE TABLE used_for ( -- medication to uses
         REFERENCES uses(use_id)
         ON DELETE CASCADE            
 );
+
 INSERT INTO used_for (scientific_name, brand_name, use_id)
 VALUES
 ('Acetylsalicylic Acid', 'Bayer Aspirin', 1),
@@ -765,6 +785,9 @@ VALUES
 ('Ascorbic Acid', 'C-1000', 18),
 ('Sodium Bicarbonate', 'Sodibic', 6),
 ('Hydrochloric Acid', 'Acidol', 7);
+
+SELECT * from used_for
+where brand_name = 'Tylenol';
 
 CREATE TABLE classified_as ( -- chemical to classification
     scientific_name VARCHAR(30), 
@@ -800,7 +823,10 @@ INSERT INTO classified_as (scientific_name, class_name) VALUES
 ('Clonazepam', 'Benzodiazepine'),
 ('Loratadine', 'Antihistamine');
 
+SELECT * from classified_as
+where class_name = 'Antidepressant';
 
+-- wtf
 CREATE TABLE hazardous ( -- chemical to hazard 
     scientific_name VARCHAR(30),
     hazard_description VARCHAR(300),   
@@ -837,13 +863,3 @@ VALUES
 ('Clonazepam', 'May cause drowsiness or dizziness.'),
 ('Loratadine', 'May cause allergic skin reaction.');
 */
-SELECT * from works_at
-where staff_id = 1;
-
-SELECT * from obtains
-where first_name = "grace";
-
-
-
-
-
