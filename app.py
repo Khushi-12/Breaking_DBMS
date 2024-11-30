@@ -35,6 +35,8 @@ def login():
 @app.route('/user')
 def user():
     return render_template('pharmacy.html')
+    #return render_template('orders_list.html')
+
 
 @app.route('/get_customers', methods=['GET'])
 def get_customers():
