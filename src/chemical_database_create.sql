@@ -115,7 +115,6 @@ INSERT INTO pharmacy_store (name, address_street_name, address_street_num, addre
 ('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', '3035550987'),
 ('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', '3235558432');
 
-
 CREATE TABLE pharmacist(
 	staff_id INT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
@@ -226,7 +225,8 @@ INSERT INTO chemical (scientific_name, common_name, molecular_formula, structure
 
 
 CREATE TABLE hazard(
-	hazard_description VARCHAR(300) PRIMARY KEY NOT NULL,
+	hazard_id INT PRIMARY KEY AUTO_INCREMENT,
+	hazard_description VARCHAR(300) NOT NULL,
     safety_instruction VARCHAR(500)
 );
 
@@ -335,32 +335,33 @@ VALUES
 
 
 CREATE TABLE uses(
-	use_id INT PRIMARY KEY,
+	use_id INT PRIMARY KEY AUTO_INCREMENT,
     use_case VARCHAR(30) NOT NULL,
     body_part VARCHAR(30) NOT NULL
 );
-INSERT INTO uses (use_id, use_case, body_part)
+-- Dummy values for the uses table
+INSERT INTO uses (use_case, body_part)
 VALUES
-(1, 'Pain Relief', 'Head'),
-(2, 'Pain Relief', 'Back'),
-(3, 'Allergy Relief', 'Nose'),
-(4, 'Anti-Inflammatory', 'Joints'),
-(5, 'Cold and Flu', 'Sinuses'),
-(6, 'Digestive Health', 'Stomach'),
-(7, 'Skin Irritation', 'Skin'),
-(8, 'Blood Pressure Control', 'Heart'),
-(9, 'Bone Strengthening', 'Bones'),
-(10, 'Eye Drops', 'Eyes'),
-(11, 'Muscle Relaxant', 'Muscles'),
-(12, 'Wound Healing', 'Skin'),
-(13, 'Antibiotic', 'Lungs'),
-(14, 'Cholesterol Control', 'Blood'),
-(15, 'Hair Growth', 'Scalp'),
-(16, 'Dental Care', 'Teeth'),
-(17, 'Antiseptic', 'Hands'),
-(18, 'Immune Support', 'Immune System'),
-(19, 'Joint Lubrication', 'Knees'),
-(20, 'Nerve Pain Relief', 'Nerves');
+('Pain Relief', 'Head'),
+('Pain Relief', 'Back'),
+('Allergy Relief', 'Nose'),
+('Anti-Inflammatory', 'Joints'),
+('Cold and Flu', 'Sinuses'),
+('Digestive Health', 'Stomach'),
+('Skin Irritation', 'Skin'),
+('Blood Pressure Control', 'Heart'),
+('Bone Strengthening', 'Bones'),
+('Eye Drops', 'Eyes'),
+('Muscle Relaxant', 'Muscles'),
+('Wound Healing', 'Skin'),
+('Antibiotic', 'Lungs'),
+('Cholesterol Control', 'Blood'),
+('Hair Growth', 'Scalp'),
+('Dental Care', 'Teeth'),
+('Antiseptic', 'Hands'),
+('Immune Support', 'Immune System'),
+('Joint Lubrication', 'Knees'),
+('Nerve Pain Relief', 'Nerves');
 
 CREATE TABLE insurance_company(
 	name VARCHAR(30) PRIMARY KEY,
@@ -455,18 +456,20 @@ CREATE TABLE obtains_pharmacist ( -- pharm, certification
 -- Insert data into the obtains table with role
 INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
 VALUES
-('Jules', 'Sylvester', 'Pharmacist License'),
-('Edgar', 'Roman', 'Specialist Pharmacist Certification'),
-('Louisa', 'Wetzel', 'Pharmacist License'),
-('Gabby', 'Dipollito', 'Clinical Pharmacist Certification'),
-('Nakul', 'Rao', 'Pharmacist License');
-
-
-
+('Natasha', 'Nicholas', 'Doctor License', 'doctor'),
+('Shane', 'Holmes', 'General Practitioner License', 'doctor'),
+('Khushi', 'Neema', 'Pediatrician License', 'doctor'),
+('Grace', 'Cerrato', 'Doctor License', 'doctor'),
+('Kathleen', 'Durant', 'General Practitioner License', 'doctor'),
+('Jules', 'Sylvester', 'Pharmacist License', 'pharmacist'),
+('Edgar', 'Roman', 'Specialist Pharmacist Certification', 'pharmacist'),
+('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
+('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
+('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
+*/
 
 SELECT * from obtains
 where first_name = "grace";
-
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
@@ -989,39 +992,37 @@ INSERT INTO classified_as (scientific_name, class_name) VALUES
 
 
 -- wtf
-CREATE TABLE hazardous ( -- chemical to hazard 
+CREATE TABLE hazardous ( -- chemical to hazard
     scientific_name VARCHAR(30),
-    hazard_description VARCHAR(300),   
-    PRIMARY KEY (scientific_name, hazard_description),  
+    hazard_id INT,
+    PRIMARY KEY (scientific_name, hazard_id),
     FOREIGN KEY (scientific_name) 
         REFERENCES chemical(scientific_name) 
-        ON DELETE CASCADE,    
-    FOREIGN KEY (hazard_description) 
-        REFERENCES hazard(hazard_description) 
-        ON DELETE CASCADE        
+        ON DELETE CASCADE,
+    FOREIGN KEY (hazard_id) 
+        REFERENCES hazard(hazard_id) 
+        ON DELETE CASCADE
 );
 
-/*
-INSERT INTO hazardous (scientific_name, hazard_description)
+INSERT INTO hazardous (scientific_name, hazard_id)
 VALUES
-('Paracetamol', 'Toxic if swallowed.'),
-('Ibuprofen', 'May cause drowsiness or dizziness.'),
-('Aspirin', 'May cause respiratory irritation.'),
-('Amoxicillin', 'Harmful if inhaled.'),
-('Metformin', 'May cause drowsiness or dizziness.'),
-('Simvastatin', 'May cause drowsiness or dizziness.'),
-('Cetirizine', 'May cause allergic skin reaction.'),
-('Lisinopril', 'May cause respiratory irritation.'),
-('Omeprazole', 'May cause drowsiness or dizziness.'),
-('Metoprolol', 'May cause drowsiness or dizziness.'),
-('Prednisone', 'May cause respiratory irritation.'),
-('Doxycycline', 'Harmful if swallowed.'),
-('Losartan', 'May cause respiratory irritation.'),
-('Hydrochlorothiazide', 'May cause drowsiness or dizziness.'),
-('Albuterol', 'May cause drowsiness or dizziness.'),
-('Gabapentin', 'May cause drowsiness or dizziness.'),
-('Fluoxetine', 'May cause drowsiness or dizziness.'),
-('Furosemide', 'May cause drowsiness or dizziness.'),
-('Clonazepam', 'May cause drowsiness or dizziness.'),
-('Loratadine', 'May cause allergic skin reaction.');
-*/
+('Paracetamol', 1),  
+('Ibuprofen', 11), 
+('Aspirin', 3),     
+('Amoxicillin', 5),  
+('Metformin', 11),  
+('Simvastatin', 11), 
+('Cetirizine', 8),  
+('Lisinopril', 3),  
+('Omeprazole', 11),  
+('Metoprolol', 11),  
+('Prednisone', 3),   
+('Doxycycline', 1),  
+('Losartan', 3),    
+('Hydrochlorothiazide', 11), 
+('Albuterol', 11),  
+('Gabapentin', 11),  
+('Fluoxetine', 11),  
+('Furosemide', 11),  
+('Clonazepam', 11), 
+('Loratadine', 8);  
