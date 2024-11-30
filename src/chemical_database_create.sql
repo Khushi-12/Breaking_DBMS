@@ -474,6 +474,7 @@ VALUES
 SELECT * from obtains
 where first_name = "grace";
 
+
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
     pharmacy_store_name VARCHAR(30) NOT NULL,
@@ -490,16 +491,26 @@ CREATE TABLE in_network ( -- pharmacy store to insurance_company
 
 INSERT INTO in_network (insurance_company_name, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
 VALUES
-('UnitedHealth Group', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Anthem Blue Cross', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('Aetna', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Cigna', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Humana', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-('Kaiser Permanente', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-('Blue Shield of California', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Molina Healthcare', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
+('UnitedHealth Group', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('UnitedHealth Group', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Anthem Blue Cross', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+('Anthem Blue Cross', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+('Aetna', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+('Aetna', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Cigna', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('Cigna', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+('Humana', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Humana', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+('Centene Corporation', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Centene Corporation', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+('Oscar Health', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+('Oscar Health', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Blue Cross Blue Shield', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+('Blue Cross Blue Shield', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('CareFirst BlueCross BlueShield', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('CareFirst BlueCross BlueShield', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+('Harvard Pilgrim Health Care', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+('Harvard Pilgrim Health Care', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028');
 
 Select * from in_network
 where pharmacy_store_name = 'Cedar Pharmacy';
