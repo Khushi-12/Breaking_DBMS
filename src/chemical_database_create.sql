@@ -339,7 +339,7 @@ CREATE TABLE uses(
     use_case VARCHAR(30) NOT NULL,
     body_part VARCHAR(30) NOT NULL
 );
-INSERT INTO uses (use_id, use_case, body_part)
+INSERT INTO uses (use_case, body_part)
 VALUES
 ('Pain Relief', 'Head'),
 ('Pain Relief', 'Back'),
