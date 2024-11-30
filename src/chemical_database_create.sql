@@ -121,7 +121,7 @@ CREATE TABLE doctor (
     email VARCHAR(30) NOT NULL,
     phone CHAR(10) NOT NULL,
     specialty VARCHAR(30),
-    CONSTRAINT unique_doctor_name UNIQUE (first_name, last_name, specialty)
+    PRIMARY KEY (first_name, last_name, specialty)
 );
 
 INSERT INTO doctor VALUES 
