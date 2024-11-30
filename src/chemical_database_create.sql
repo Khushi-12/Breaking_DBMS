@@ -41,56 +41,8 @@ INSERT INTO customer VALUES
 (333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), 
 (323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823);
 
-CREATE TABLE orders(
-	order_id INT PRIMARY KEY,
-    medicine VARCHAR(30) NOT NULL,
-    delivery_date DATE NOT NULL
-);
 
-INSERT INTO orders (order_id, medicine, delivery_date) VALUES
-(1, 'Paracetamol', '2024-12-01'),
-(2, 'Ibuprofen', '2024-12-02'),
-(3, 'Aspirin', '2024-12-03'),
-(4, 'Amoxicillin', '2024-12-04'),
-(5, 'Metformin', '2024-12-05'),
-(6, 'Simvastatin', '2024-12-06'),
-(7, 'Cetirizine', '2024-12-07'),
-(8, 'Lisinopril', '2024-12-08'),
-(9, 'Omeprazole', '2024-12-09'),
-(10, 'Metoprolol', '2024-12-10'),
-(11, 'Prednisone', '2024-12-11'),
-(12, 'Doxycycline', '2024-12-12'),
-(13, 'Losartan', '2024-12-13'),
-(14, 'Hydrochlorothiazide', '2024-12-14'),
-(15, 'Albuterol', '2024-12-15'),
-(16, 'Gabapentin', '2024-12-16'),
-(17, 'Fluoxetine', '2024-12-17'),
-(18, 'Furosemide', '2024-12-18'),
-(19, 'Clonazepam', '2024-12-19'),
-(20, 'Loratadine', '2024-12-20'),
-(21, 'Ciprofloxacin', '2024-12-21'),
-(22, 'Atorvastatin', '2024-12-22'),
-(23, 'Hydroxychloroquine', '2024-12-23'),
-(24, 'Gabapentin', '2024-12-24'),
-(25, 'Amlodipine', '2024-12-25'),
-(26, 'Lansoprazole', '2024-12-26'),
-(27, 'Naproxen', '2024-12-27'),
-(28, 'Prazosin', '2024-12-28'),
-(29, 'Tamsulosin', '2024-12-29'),
-(30, 'Clindamycin', '2024-12-30'),
-(31, 'Chlorpheniramine', '2024-12-31'),
-(32, 'Metoclopramide', '2025-01-01'),
-(33, 'Alprazolam', '2025-01-02'),
-(34, 'Propranolol', '2025-01-03'),
-(35, 'Fentanyl', '2025-01-04'),
-(36, 'Diltiazem', '2025-01-05'),
-(37, 'Oxycodone', '2025-01-06'),
-(38, 'Ethambutol', '2025-01-07'),
-(39, 'Zolpidem', '2025-01-08'),
-(40, 'Pregabalin', '2025-01-09'),
-(41, 'Diclofenac', '2025-01-10'),
-(42, 'Mupirocin', '2025-01-11'),
-(43, 'Sildenafil', '2025-01-12');
+
 
 CREATE TABLE pharmacy_store(
 	name VARCHAR(30) NOT NULL,
@@ -111,19 +63,31 @@ INSERT INTO pharmacy_store (name, address_street_name, address_street_num, addre
 ('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', '3035550987'),
 ('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', '3235558432');
 
+
 CREATE TABLE pharmacist (
 	staff_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name)
+    pharmacy_store_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_name VARCHAR(30) NOT NULL,
+    pharmacy_address_street_num INT NOT NULL,
+    pharmacy_address_town VARCHAR(30) NOT NULL,
+    pharmacy_address_state VARCHAR(30) NOT NULL,
+    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name),
+    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
+        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+    
 );
 
-INSERT INTO pharmacist (first_name, last_name) VALUES
-('Jules', 'Sylvester'),
-('Edgar', 'Roman'),
-('Louisa', 'Wetzel'),
-('Gabby', 'Dipollito'),
-('Nakul', 'Rao');
+INSERT INTO pharmacist (first_name, last_name,pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) VALUES
+('Jules', 'Sylvester','Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Edgar', 'Roman','Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+('Louisa', 'Wetzel','Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+('Gabby', 'Dipollito','Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+('Nakul', 'Rao','Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028');
+
+-- Error Code: 1136. Column count doesn't match value count at row 1
 
 CREATE TABLE illness(
 	name VARCHAR(30) PRIMARY KEY NOT NULL, 
@@ -170,6 +134,64 @@ INSERT INTO doctor VALUES
 ('Khushi', 'Neema', 'Carbon Health', 'Boylston St', 399, 'Boston', 'Massachusetts', 02116, 'neemak@northeastern.edu', '8772419037', 'Psychiatrist'),
 ('Grace', 'Cerrato', 'Atrius Health', 'Hancock St', 1250, 'Quincy', 'Massachusetts', 02169, 'gcerr24@g.holycross.edu', '6173782799', 'Neurology'),
 ('Kathleen', 'Durant', 'Boston Medical Center', 'Massachusetts Ave', 801, 'Boston', 'Massachusetts', 02116, 'k.durant@northeastern.edu', '3823824020', 'Family Medicine');
+
+CREATE TABLE orders(
+	order_id INT PRIMARY KEY,
+    medicine VARCHAR(30) NOT NULL,
+    delivery_date DATE NOT NULL,
+    doctor_first_name varchar(30) NOT NULL,
+    doctor_last_name varchar(30) not null,
+    doctor_specialty varchar(30) not null,
+    foreign key (doctor_first_name, doctor_last_name, doctor_specialty) references doctor(first_name, last_name, specialty)
+    on update cascade on delete cascade
+);
+
+INSERT INTO orders (order_id, medicine, delivery_date, doctor_first_name, doctor_last_name, doctor_specialty) VALUES
+(1, 'Paracetamol', '2024-12-01','Khushi','Neema','Psychiatrist'),
+(2, 'Ibuprofen', '2024-12-02','Grace', 'Cerrato','Neurology'),
+(3, 'Aspirin', '2024-12-03','Natasha', 'Nicholas','Pediatrics'),
+(4, 'Amoxicillin', '2024-12-04','Kathleen', 'Durant','Family Medicine'),
+(5, 'Metformin', '2024-12-05','Natasha', 'Nicholas','Pediatrics'),
+(6, 'Simvastatin', '2024-12-06','Khushi','Neema','Psychiatrist'),
+(7, 'Cetirizine', '2024-12-07','Kathleen', 'Durant','Family Medicine'),
+(8, 'Lisinopril', '2024-12-08','Shane','Holmes','Family Medicine'),
+(9, 'Omeprazole', '2024-12-09','Kathleen', 'Durant','Family Medicine'),
+(10, 'Metoprolol', '2024-12-10','Natasha', 'Nicholas','Pediatrics'),
+(11, 'Prednisone', '2024-12-11','Kathleen', 'Durant','Family Medicine'),
+(12, 'Doxycycline', '2024-12-12','Khushi','Neema','Psychiatrist'),
+(13, 'Losartan', '2024-12-13','Khushi','Neema','Psychiatrist'),
+(14, 'Hydrochlorothiazide', '2024-12-14','Shane','Holmes','Family Medicine'),
+(15, 'Albuterol', '2024-12-15','Grace', 'Cerrato','Neurology'),
+(16, 'Gabapentin', '2024-12-16','Shane','Holmes','Family Medicine'),
+(17, 'Fluoxetine', '2024-12-17','Natasha', 'Nicholas','Pediatrics'),
+(18, 'Furosemide', '2024-12-18','Shane','Holmes','Family Medicine'),
+(19, 'Clonazepam', '2024-12-19','Kathleen', 'Durant','Family Medicine'),
+(20, 'Loratadine', '2024-12-20','Natasha', 'Nicholas','Pediatrics'),
+(21, 'Ciprofloxacin', '2024-12-21','Natasha', 'Nicholas','Pediatrics'),
+(22, 'Atorvastatin', '2024-12-22','Grace', 'Cerrato','Neurology'),
+(23, 'Hydroxychloroquine', '2024-12-23','Grace', 'Cerrato','Neurology'),
+(24, 'Gabapentin', '2024-12-24','Shane','Holmes','Family Medicine'),
+(25, 'Amlodipine', '2024-12-25','Natasha', 'Nicholas','Pediatrics'),
+(26, 'Lansoprazole', '2024-12-26','Grace', 'Cerrato','Neurology'),
+(27, 'Naproxen', '2024-12-27','Grace', 'Cerrato','Neurology'),
+(28, 'Prazosin', '2024-12-28','Kathleen', 'Durant','Family Medicine'),
+(29, 'Tamsulosin', '2024-12-29','Shane','Holmes','Family Medicine'),
+(30, 'Clindamycin', '2024-12-30','Shane','Holmes','Family Medicine'),
+(31, 'Chlorpheniramine', '2024-12-31','Khushi','Neema','Psychiatrist'),
+(32, 'Metoclopramide', '2025-01-01','Khushi','Neema','Psychiatrist'),
+(33, 'Alprazolam', '2025-01-02','Kathleen', 'Durant','Family Medicine'),
+(34, 'Propranolol', '2025-01-03','Khushi','Neema','Psychiatrist'),
+(35, 'Fentanyl', '2025-01-04','Kathleen', 'Durant','Family Medicine'),
+(36, 'Diltiazem', '2025-01-05','Khushi','Neema','Psychiatrist'),
+(37, 'Oxycodone', '2025-01-06','Shane','Holmes','Family Medicine'),
+(38, 'Ethambutol', '2025-01-07','Natasha', 'Nicholas','Pediatrics'),
+(39, 'Zolpidem', '2025-01-08','Shane','Holmes','Family Medicine'),
+(40, 'Pregabalin', '2025-01-09','Kathleen', 'Durant','Family Medicine'),
+(41, 'Diclofenac', '2025-01-10','Khushi','Neema','Psychiatrist'),
+(42, 'Mupirocin', '2025-01-11','Shane','Holmes','Family Medicine'),
+(43, 'Sildenafil', '2025-01-12','Natasha', 'Nicholas','Pediatrics');
+
+
 
 CREATE TABLE certification(
 	name VARCHAR(128) PRIMARY KEY NOT NULL,
@@ -270,30 +292,6 @@ INSERT INTO classification (class_name, properties) VALUES -- this isnt rlly wha
 ('Antidepressant', 'Selective serotonin reuptake inhibitor'),
 ('Benzodiazepine', 'Anxiolytic');
 
-CREATE TABLE prescription(
-	val INT PRIMARY KEY AUTO_INCREMENT,
-    dosage INT NOT NULL,
-    expiration_date DATE,
-	quantity INT NOT NULL
-);
-
-INSERT INTO prescription (dosage, expiration_date, quantity) VALUES
-(500, '2190-12-31', 50),
-(50, '2190-06-03', 30),
-(400, '2192-01-17', 100),
-(3.5, '2191-10-27', 25),
-(3.5, '2191-10-27', 40),
-(250, '2195-02-15', 15),
-(100, '2193-11-10', 60),
-(200, '2194-07-22', 35),
-(5, '2193-08-14', 20),
-(10, '2196-09-30', 45),
-(750, '2192-05-19', 30),
-(125, '2194-04-18', 55),
-(600, '2197-01-05', 70),
-(50, '2193-01-29', 25),
-(400, '2195-03-23', 20);
-
 CREATE TABLE medication(
 	scientific_name VARCHAR(30) NOT NULL,
     common_name VARCHAR(30),
@@ -326,6 +324,38 @@ VALUES
 ('Ascorbic Acid', 'Vitamin C', 'C-1000', 'Tablet', 'Excessive intake may cause kidney stones.', 'Nature Made'),
 ('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer'),
 ('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer');
+
+CREATE TABLE prescription(
+	val INT PRIMARY KEY AUTO_INCREMENT,
+    dosage INT NOT NULL,
+    expiration_date DATE,
+	quantity INT NOT NULL,
+    scientific_name VARCHAR(30) NOT NULL,
+    brand_name VARCHAR(30),
+    FOREIGN KEY (scientific_name, brand_name) REFERENCES medication (scientific_name, brand_name)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO prescription (dosage, expiration_date, quantity, scientific_name, brand_name) VALUES
+(500, '2190-12-31', 50, 'Metformin', 'Glucophage'),
+(50, '2190-06-03', 30, 'Simvastatin', 'Zocor'),
+(400, '2192-01-17', 100,'Simvastatin', 'Zocor'),
+(3.5, '2191-10-27', 25, 'Folic Acid','Folacare'),
+(3.5, '2191-10-27', 40, 'Loratadine', 'Claritin'),
+(250, '2195-02-15', 15, 'Ascorbic Acid', 'C-1000'),
+(100, '2193-11-10', 60,'Ketamine', 'Ketalar'),
+(200, '2194-07-22', 35,'Ibuprofen', 'Advil'),
+(5, '2193-08-14', 20, 'Ascorbic Acid', 'C-1000'),
+(10, '2196-09-30', 45,'Ibuprofen', 'Advil'),
+(750, '2192-05-19', 30,'Paracetamol','Tylenol'),
+(125, '2194-04-18', 55,'Loratadine', 'Claritin'),
+(600, '2197-01-05', 70,'Metformin', 'Glucophage'),
+(50, '2193-01-29', 25,'Ketamine', 'Ketalar'),
+(400, '2195-03-23', 20,'Ibuprofen', 'Advil');
+
+
+
+
 
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY AUTO_INCREMENT,
