@@ -19,7 +19,6 @@ CREATE TABLE customer(
 );
 
 -- test
-
 INSERT INTO customer VALUES 
 (123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111),
 (112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222),
@@ -349,7 +348,7 @@ VALUES
 ('Wound Healing', 'Skin'),
 ('Antibiotic', 'Lungs'),
 ('Cholesterol Control', 'Blood'),
--- ('Hair Growth', 'Scalp'),
+('Hair Growth', 'Scalp'),
 ('Dental Care', 'Teeth'),
 ('Antiseptic', 'Hands'),
 ('Immune Support', 'Immune System'),
@@ -785,29 +784,29 @@ INSERT INTO used_for (scientific_name, brand_name, use_id)
 VALUES
 ('Acetylsalicylic Acid', 'Bayer Aspirin', 1),
 ('Acetylsalicylic Acid', 'Bayer Aspirin', 2),
-('Acetylsalicylic Acid', 'Bayer Aspirin', 4),
-('Paracetamol', 'Tylenol', 1),
-('Paracetamol', 'Tylenol', 2),
+('Acetylsalicylic Acid', 'Bayer Aspirin', 3),
+('Paracetamol', 'Tylenol', 4),
 ('Paracetamol', 'Tylenol', 5),
-('Ibuprofen', 'Advil', 2),
-('Ibuprofen', 'Advil', 4),
-('Amoxicillin', 'Amoxil', 13),
-('Omeprazole', 'Prilosec', 6),
-('Simvastatin', 'Zocor', 14),
-('Ranitidine', 'Zantac', 6),
-('Ranitidine', 'Zantac', 5),
-('Warfarin', 'Coumadin', 8),
-('Epinephrine', 'EpiPen', 3),
-('Ketamine', 'Ketalar', 11),
-('Dexamethasone', 'Decadron', 4),
-('Dexamethasone', 'Decadron', 7),
-('Loratadine', 'Claritin', 3),
-('Loratadine', 'Claritin', 7),
-('Atorvastatin', 'Lipitor', 14),
-('Folic Acid', 'Folacare', 9),
+('Paracetamol', 'Tylenol', 6),
+('Ibuprofen', 'Advil', 7),
+('Ibuprofen', 'Advil', 8),
+('Amoxicillin', 'Amoxil', 9),
+('Omeprazole', 'Prilosec', 10),
+('Simvastatin', 'Zocor', 11),
+('Ranitidine', 'Zantac', 12),
+('Ranitidine', 'Zantac', 13),
+('Warfarin', 'Coumadin', 14),
+('Epinephrine', 'EpiPen', 15),
+('Ketamine', 'Ketalar', 16),
+('Dexamethasone', 'Decadron', 17),
+('Dexamethasone', 'Decadron', 18),
+('Loratadine', 'Claritin', 4),
+('Loratadine', 'Claritin', 5),
+('Atorvastatin', 'Lipitor', 6),
+('Folic Acid', 'Folacare', 10),
 ('Ascorbic Acid', 'C-1000', 18),
-('Sodium Bicarbonate', 'Sodibic', 6),
-('Hydrochloric Acid', 'Acidol', 7)
+('Sodium Bicarbonate', 'Sodibic', 14),
+('Hydrochloric Acid', 'Acidol', 16)
 ;
 
 
