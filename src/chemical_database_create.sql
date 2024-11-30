@@ -309,7 +309,7 @@ CREATE TABLE medication(
     ingredients VARCHAR(30),  -- Link to chemicals 
     PRIMARY KEY (scientific_name, brand_name)
 );
--- Dummy values for the medication table
+
 INSERT INTO medication (scientific_name, common_name, brand_name, type, warnings, contact, ingredients)
 VALUES
 ('Acetylsalicylic Acid', 'Aspirin', 'Bayer Aspirin', 'Tablet', 'May cause gastrointestinal bleeding.', 'Bayer HealthCare', 'C9H8O4'),
@@ -333,12 +333,12 @@ VALUES
 ('Sodium Bicarbonate', 'Baking Soda', 'Sodibic', 'Tablet', 'May cause metabolic alkalosis.', 'Generic Manufacturer', 'NaHCO3'),
 ('Hydrochloric Acid', 'Muriatic Acid', 'Acidol', 'Solution', 'Corrosive; causes severe burns.', 'Generic Manufacturer', 'HCl');
 
+
 CREATE TABLE uses(
 	use_id INT PRIMARY KEY,
     use_case VARCHAR(30) NOT NULL,
     body_part VARCHAR(30) NOT NULL
 );
--- Dummy values for the uses table
 INSERT INTO uses (use_id, use_case, body_part)
 VALUES
 (1, 'Pain Relief', 'Head'),
@@ -367,7 +367,6 @@ CREATE TABLE insurance_company(
     contact VARCHAR(30)
 );
 
--- Dummy values for the insurance_company table
 INSERT INTO insurance_company (name, contact)
 VALUES
 ('UnitedHealth Group', '1-800-328-5979'),
@@ -414,11 +413,6 @@ VALUES
 (4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
 (5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
 
-SELECT * from works_at
-where staff_id = 1;
-
--- wtf
-DROP TABLE IF EXISTS obtains_pharmacist;
 
 CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
@@ -458,7 +452,6 @@ CREATE TABLE obtains_pharmacist ( -- pharm, certification
         ON DELETE CASCADE
 );
     
-
 -- Insert data into the obtains table with role
 INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
 VALUES
@@ -469,10 +462,6 @@ VALUES
 ('Nakul', 'Rao', 'Pharmacist License');
 
 
-
-
-SELECT * from obtains
-where first_name = "grace";
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
@@ -501,8 +490,6 @@ VALUES
 ('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
 ('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
 
-Select * from in_network
-where pharmacy_store_name = 'Cedar Pharmacy';
 
 
 CREATE TABLE insured_by ( -- customer to insurance company
@@ -570,8 +557,6 @@ INSERT INTO places (first_name, last_name, order_id) VALUES
 ('Grace', 'Cerrato', 19),  
 ('Kathleen', 'Durant', 20); 
 
--- Select * from places
--- where first_name = "grace";
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -635,10 +620,6 @@ VALUES
 (222222234, 42, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
 (111123456, 43, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701');
 ;
-
-
-SELECT * from picks_up
-where customer_id = 123456789;
 
 
 CREATE TABLE diagnoses ( -- customer, illness, doctor
@@ -777,32 +758,25 @@ CREATE TABLE written_for ( -- prescription to medication
     FOREIGN KEY (scientific_name, brand_name) REFERENCES medication(scientific_name, brand_name) ON DELETE CASCADE
 );
 
+INSERT INTO written_for (prescription_val, scientific_name, brand_name) VALUES
+(1, 'Acetylsalicylic Acid', 'Bayer Aspirin'),
+(2, 'Paracetamol', 'Tylenol'),
+(3, 'Warfarin', 'Coumadin'),
+(4, 'Amoxicillin', 'Amoxil'),
+(5, 'Metformin', 'Glucophage'),
+(6, 'Omeprazole', 'Prilosec'),
+(7, 'Clopidogrel', 'Plavix'),
+(8, 'Simvastatin', 'Zocor'),
+(9, 'Ranitidine', 'Zantac'),
+(10, 'Warfarin', 'Coumadin'),
+(11, 'Epinephrine', 'EpiPen'),
+(12, 'Ketamine', 'Ketalar'),
+(13, 'Dexamethasone', 'Decadron'),
+(14, 'Clopidogrel', 'Plavix'),
+(15, 'Methotrexate', 'Trexall')
 
+;
 
-
-/*
-INSERT INTO written_for (prescription_val, scientific_name, brand_name, quantity) VALUES
-(1, 'Acetylsalicylic Acid', 'Bayer Aspirin', 10),
-(2, 'Paracetamol', 'Tylenol', 15),
-(3, 'Ibuprofen', 'Advil', 12),
-(4, 'Amoxicillin', 'Amoxil', 25),
-(5, 'Metformin', 'Glucophage', 30),
-(6, 'Omeprazole', 'Prilosec', 20),
-(7, 'Clopidogrel', 'Plavix', 15),
-(8, 'Simvastatin', 'Zocor', 10),
-(9, 'Ranitidine', 'Zantac', 30),
-(10, 'Warfarin', 'Coumadin', 25),
-(11, 'Epinephrine', 'EpiPen', 5),
-(12, 'Ketamine', 'Ketalar', 3),
-(13, 'Dexamethasone', 'Decadron', 20),
-(14, 'Loratadine', 'Claritin', 50),
-(15, 'Methotrexate', 'Trexall', 5),
-(16, 'Atorvastatin', 'Lipitor', 10),
-(17, 'Folic Acid', 'Folacare', 40),
-(18, 'Ascorbic Acid', 'C-1000', 100),
-(19, 'Sodium Bicarbonate', 'Sodibic', 30),
-(20, 'Hydrochloric Acid', 'Acidol', 10);
-*/
 
 CREATE TABLE sells ( -- pharmacy store to medication
     pharmacy_name VARCHAR(30),          
@@ -843,9 +817,6 @@ VALUES
 ('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Atorvastatin', 'Lipitor', 90),
 ('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Folic Acid', 'Folacare', 150);
 
-SELECT * from sells
-where medication_scientific_name = 'Ibuprofen';
-
 
 CREATE TABLE covers ( -- insurance to medication
     scientific_name VARCHAR(30),        
@@ -883,8 +854,6 @@ VALUES
 ('Sodium Bicarbonate', 'Sodibic', 'EmblemHealth'),
 ('Hydrochloric Acid', 'Acidol', 'Medica');
 
-SELECT * from covers
-where insurance_company_name = 'Medica';
 
 -- wtf
 CREATE TABLE composed_of ( -- medication to chemical
@@ -963,10 +932,9 @@ VALUES
 ('Folic Acid', 'Folacare', 9),
 ('Ascorbic Acid', 'C-1000', 18),
 ('Sodium Bicarbonate', 'Sodibic', 6),
-('Hydrochloric Acid', 'Acidol', 7);
+('Hydrochloric Acid', 'Acidol', 7)
+;
 
-SELECT * from used_for
-where brand_name = 'Tylenol';
 
 CREATE TABLE classified_as ( -- chemical to classification
     scientific_name VARCHAR(30), 
@@ -1002,8 +970,6 @@ INSERT INTO classified_as (scientific_name, class_name) VALUES
 ('Clonazepam', 'Benzodiazepine'),
 ('Loratadine', 'Antihistamine');
 
-SELECT * from classified_as
-where class_name = 'Antidepressant';
 
 -- wtf
 CREATE TABLE hazardous ( -- chemical to hazard 
