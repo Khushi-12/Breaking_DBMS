@@ -68,7 +68,33 @@ INSERT INTO orders (order_id, medicine, delivery_date) VALUES
 (17, 'Fluoxetine', '2024-12-17'),
 (18, 'Furosemide', '2024-12-18'),
 (19, 'Clonazepam', '2024-12-19'),
-(20, 'Loratadine', '2024-12-20');
+(20, 'Loratadine', '2024-12-20'),
+(21, 'Ciprofloxacin', '2024-12-21'),
+(22, 'Atorvastatin', '2024-12-22'),
+(23, 'Hydroxychloroquine', '2024-12-23'),
+(24, 'Gabapentin', '2024-12-24'),
+(25, 'Amlodipine', '2024-12-25'),
+(26, 'Lansoprazole', '2024-12-26'),
+(27, 'Naproxen', '2024-12-27'),
+(28, 'Prazosin', '2024-12-28'),
+(29, 'Tamsulosin', '2024-12-29'),
+(30, 'Clindamycin', '2024-12-30'),
+(31, 'Chlorpheniramine', '2024-12-31'),
+(32, 'Metoclopramide', '2025-01-01'),
+(33, 'Alprazolam', '2025-01-02'),
+(34, 'Propranolol', '2025-01-03'),
+(35, 'Fentanyl', '2025-01-04'),
+(36, 'Diltiazem', '2025-01-05'),
+(37, 'Oxycodone', '2025-01-06'),
+(38, 'Ethambutol', '2025-01-07'),
+(39, 'Zolpidem', '2025-01-08'),
+(40, 'Pregabalin', '2025-01-09'),
+(41, 'Diclofenac', '2025-01-10'),
+(42, 'Mupirocin', '2025-01-11'),
+(43, 'Sildenafil', '2025-01-12')
+;
+
+
 
 CREATE TABLE pharmacy_store(
 	name VARCHAR(30) NOT NULL,
@@ -256,7 +282,7 @@ CREATE TABLE prescription(
 	quantity INT NOT NULL
 );
 
-INSERT INTO prescription (dosage, expiration_date) VALUES
+INSERT INTO prescription (dosage, expiration_date, quantity) VALUES
 (500, '2190-12-31', 50),
 (50, '2190-06-03', 30),
 (400, '2192-01-17', 100),
@@ -340,6 +366,7 @@ CREATE TABLE insurance_company(
 	name VARCHAR(30) PRIMARY KEY,
     contact VARCHAR(30)
 );
+
 -- Dummy values for the insurance_company table
 INSERT INTO insurance_company (name, contact)
 VALUES
@@ -564,7 +591,32 @@ VALUES
 (222222223, 17, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
 (222222293, 18, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
 (333333333, 19, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(323232323, 20, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502');
+(323232323, 20, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(222222223, 21, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(222234567, 22, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(222222234, 23, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(223456789, 24, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(111123456, 25, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(112345678, 26, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(111112345, 27, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(111112345, 28, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(222222223, 29, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(222234567, 30, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(111123456, 31, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(222222345, 32, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(234567891, 33, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(222222223, 34, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(112345678, 35, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(111123456, 36, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(111123456, 37, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
+(222222223, 38, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
+(234567891, 39, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
+(222345678, 40, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
+(112345678, 41, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
+(222222234, 42, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
+(111123456, 43, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701');
+;
+
 
 SELECT * from picks_up
 where customer_id = 123456789;
@@ -582,7 +634,7 @@ CREATE TABLE diagnoses ( -- customer, illness, doctor
     FOREIGN KEY (illness_name) REFERENCES illness(name)
 );
 
--- wtf
+
 CREATE TABLE contains ( -- order to prescription 
     order_id INT,              
     prescription_id INT,                         
@@ -591,16 +643,101 @@ CREATE TABLE contains ( -- order to prescription
     FOREIGN KEY (prescription_id) REFERENCES prescription(val) ON DELETE CASCADE 
 ); 
 
--- wtf
+INSERT INTO contains (order_id, prescription_id) 
+VALUES
+(1, 10),
+(1, 3),
+(2, 5),
+(2, 7),
+(3, 6),
+(3, 7),
+(3, 13),
+(4, 12),
+(5, 15),
+(5, 11),
+(6, 2),
+(6, 9),
+(7, 3),
+(7, 5),
+(8, 9),
+(8, 2),
+(9, 6),
+(9, 13),
+(10, 8),
+(10, 7),
+(11, 13),
+(11, 1),
+(12, 15),
+(12, 4),
+(13, 14),
+(13, 9),
+(14, 4),
+(14, 8),
+(15, 11),
+(16, 10),
+(16, 3),
+(17, 6),
+(17, 12),
+(18, 9),
+(18, 7),
+(19, 3),
+(19, 15),
+(20, 8),
+(20, 5),
+(21, 13),
+(21, 2),
+(22, 15),
+(22, 10),
+(23, 2),
+(23, 5),
+(24, 8),
+(24, 1),
+(25, 15),
+(25, 3),
+(26, 7),
+(26, 12),
+(27, 4),
+(27, 13),
+(28, 14),
+(28, 9),
+(29, 1),
+(29, 5),
+(30, 11),
+(31, 6),
+(31, 10),
+(32, 3),
+(32, 7),
+(33, 15),
+(33, 2),
+(34, 14),
+(34, 8),
+(35, 9),
+(35, 12),
+(36, 7),
+(36, 5),
+(37, 2),
+(37, 13),
+(38, 12),
+(39, 1),
+(39, 3),
+(40, 14),
+(41, 6),
+(42, 4),
+(43, 13),
+(43, 7);
+
+
 CREATE TABLE written_for ( -- prescription to medication
     prescription_val INT,              
     scientific_name VARCHAR(30),      
-    brand_name VARCHAR(30),          
-    quantity INT,                  
+    brand_name VARCHAR(30),         
     PRIMARY KEY (prescription_val, scientific_name, brand_name),
     FOREIGN KEY (prescription_val) REFERENCES prescription(val) ON DELETE CASCADE,
     FOREIGN KEY (scientific_name, brand_name) REFERENCES medication(scientific_name, brand_name) ON DELETE CASCADE
 );
+
+
+
 
 /*
 INSERT INTO written_for (prescription_val, scientific_name, brand_name, quantity) VALUES
@@ -667,6 +804,7 @@ VALUES
 
 SELECT * from sells
 where medication_scientific_name = 'Ibuprofen';
+
 
 CREATE TABLE covers ( -- insurance to medication
     scientific_name VARCHAR(30),        
