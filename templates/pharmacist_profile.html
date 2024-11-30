@@ -1,3 +1,174 @@
-<html>
-    <h3>"Connecting DBMS for viewing pharmacist profile page</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacist Profile Dropdown</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        select {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .info-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .info-card {
+            display: inline-block;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .info-card h2 {
+            margin: 0 0 10px;
+            color: #007bff;
+        }
+
+        .info-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Pharmacist</h1>
+        <div class="dropdown-container">
+            <label for="pharmacist-dropdown">Choose a pharmacist:</label>
+            <select id="pharmacist-dropdown">
+                <!-- Dummy Values -->
+                <option value="">-- Select Pharmacist --</option>
+                <option value="Gabby Dipollito">Gabby Dipollito</option>
+                <option value="Jules Sylvester">Jules Sylvester</option>
+                <option value="Louisa Wetzel">Louisa Wetzel</option>
+                <option value="Nakul Rao">Nakul Rao</option>
+                <option value="Edgar Roman">Edgar Roman</option>
+            </select>
+        </div>
+
+        <div class="info-container" id="info-container">
+            <!-- Info cards will be dynamically updated here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("pharmacist-dropdown").addEventListener("change", function () {
+            const selectedPharmacist = this.value;
+            const infoContainer = document.getElementById("info-container");
+
+            // Clear the previous info
+            infoContainer.innerHTML = "";
+
+            if (selectedPharmacist) {
+                // Dummy Data for Pharmacy Store and Certifications
+                const dummyData = {
+                    "Gabby Dipollito": {
+                        store: {
+                            name: "Health Pharmacy",
+                            address: "123 Main St, District 1, Panem",
+                            city: "District 1",
+                            state: "Panem",
+                            zip: "12345"
+                        },
+                        certifications: [
+                            {
+                                name: "Certified Pharmacy Technician",
+                                institution: "Health Association",
+                                expirationDate: "2025-12-31"
+                            }
+                        ]
+                    },
+                    "Jules Sylvester": {
+                        store: {
+                            name: "CareWell Pharmacy",
+                            address: "456 Elm St, District 2, Panem",
+                            city: "District 2",
+                            state: "Panem",
+                            zip: "23456"
+                        },
+                        certifications: [
+                            {
+                                name: "Advanced Pharmacy Certification",
+                                institution: "Pharmacists' Guild",
+                                expirationDate: "2026-11-20"
+                            }
+                        ]
+                    },
+                    // Add similar dummy entries for other pharmacists
+                };
+
+                // Get data for the selected pharmacist
+                const data = dummyData[selectedPharmacist];
+
+                // Display Pharmacy Store Information
+                const storeCard = `
+                    <div class="info-card">
+                        <h2>Pharmacy Store</h2>
+                        <p><strong>Name:</strong> ${data.store.name}</p>
+                        <p><strong>Address:</strong> ${data.store.address}</p>
+                        <p><strong>City:</strong> ${data.store.city}</p>
+                        <p><strong>State:</strong> ${data.store.state}</p>
+                        <p><strong>Zip Code:</strong> ${data.store.zip}</p>
+                    </div>
+                `;
+
+                // Display Certifications Information
+                const certificationCards = data.certifications.map(cert => `
+                    <div class="info-card">
+                        <h2>${cert.name}</h2>
+                        <p><strong>Institution:</strong> ${cert.institution}</p>
+                        <p><strong>Expiration Date:</strong> ${cert.expirationDate}</p>
+                    </div>
+                `).join("");
+
+                // Append both to the container
+                infoContainer.innerHTML = storeCard + certificationCards;
+            }
+        });
+
+        // TODO: Replace dummy data with API calls to fetch pharmacist details and update dynamically
+        // Example:
+        // fetch(`/get_pharmacist_details?name=${encodeURIComponent(selectedPharmacist)}`)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // Update the pharmacy store and certifications dynamically
+        //     });
+    </script>
+</body>
 </html>
