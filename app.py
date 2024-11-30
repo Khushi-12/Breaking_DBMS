@@ -82,34 +82,6 @@ def get_doctor_info():
 
 
 
-@app.route('/customer_orders')
-def customer_orders():
-    # Fetch or mock orders data here
-    orders = [
-        {
-            "order_id": 24234,
-            "expiration_date": "2024-03-30",
-            "illness": "Common Cold",
-            "doctor": "Dr. John Smith",
-            "prescriptions": [
-                {"name": "Cetirizine", "dosage": "10 mg", "frequency": "Once a day"},
-                {"name": "Amoxicillin", "dosage": "500 mg", "frequency": "Twice a day"}
-            ]
-        },
-        {
-            "order_id": 24235,
-            "expiration_date": "2025-01-15",
-            "illness": "Allergies",
-            "doctor": "Dr. Jane Doe",
-            "prescriptions": [
-                {"name": "Ibuprofen", "dosage": "200 mg", "frequency": "Every 6 hours"}
-            ]
-        }
-    ]
-    
-    return jsonify(orders)
-
-
 
 @app.route('/user_setting')
 def setting():
