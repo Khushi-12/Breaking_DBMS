@@ -418,38 +418,58 @@ SELECT * from works_at
 where staff_id = 1;
 
 -- wtf
-CREATE TABLE obtains ( -- doc, pharm, certification
+DROP TABLE IF EXISTS obtains_pharmacist;
+
+CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     certification_name VARCHAR(30) NOT NULL,
-    role VARCHAR(20) NOT NULL,
     PRIMARY KEY (first_name, last_name, certification_name),
     FOREIGN KEY (first_name, last_name) 
         REFERENCES doctor(first_name, last_name) 
-        ON DELETE CASCADE,
-    FOREIGN KEY (first_name, last_name) 
-        REFERENCES pharmacist(first_name, last_name) 
+        ON UPDATE CASCADE
         ON DELETE CASCADE,
     FOREIGN KEY (certification_name) 
         REFERENCES certification(name) 
+        ON UPDATE CASCADE
         ON DELETE CASCADE
 );
-
-/*
--- Insert data into the obtains table with role
-INSERT INTO obtains (first_name, last_name, certification_name, role)
+INSERT INTO obtains_doctor (first_name, last_name, certification_name)
 VALUES
-('Natasha', 'Nicholas', 'Doctor License', 'doctor'),
-('Shane', 'Holmes', 'General Practitioner License', 'doctor'),
-('Khushi', 'Neema', 'Pediatrician License', 'doctor'),
-('Grace', 'Cerrato', 'Doctor License', 'doctor'),
-('Kathleen', 'Durant', 'General Practitioner License', 'doctor'),
-('Jules', 'Sylvester', 'Pharmacist License', 'pharmacist'),
-('Edgar', 'Roman', 'Specialist Pharmacist Certification', 'pharmacist'),
-('Louisa', 'Wetzel', 'Pharmacist License', 'pharmacist'),
-('Gabby', 'Dipollito', 'Clinical Pharmacist Certification', 'pharmacist'),
-('Nakul', 'Rao', 'Pharmacist License', 'pharmacist');
-*/
+('Natasha', 'Nicholas', 'Doctor License'),
+('Shane', 'Holmes', 'General Practitioner License'),
+('Khushi', 'Neema', 'Pediatrician License'),
+('Grace', 'Cerrato', 'Doctor License'),
+('Kathleen', 'Durant', 'General Practitioner License');
+
+
+CREATE TABLE obtains_pharmacist ( -- pharm, certification
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    certification_name VARCHAR(120) NOT NULL,
+    PRIMARY KEY (first_name, last_name, certification_name),
+    FOREIGN KEY (first_name, last_name) 
+        REFERENCES pharmacist(first_name, last_name) 
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (certification_name) 
+        REFERENCES certification(name) 
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+    
+
+-- Insert data into the obtains table with role
+INSERT INTO obtains_pharmacist (first_name, last_name, certification_name)
+VALUES
+('Jules', 'Sylvester', 'Pharmacist License'),
+('Edgar', 'Roman', 'Specialist Pharmacist Certification'),
+('Louisa', 'Wetzel', 'Pharmacist License'),
+('Gabby', 'Dipollito', 'Clinical Pharmacist Certification'),
+('Nakul', 'Rao', 'Pharmacist License');
+
+
+
 
 SELECT * from obtains
 where first_name = "grace";
@@ -517,8 +537,7 @@ VALUES
 (333333333, 'EmblemHealth', 'POLICY-2265'),
 (323232323, 'Medica', 'POLICY-4128');
 
-Select * from insured_by
-where insurance_id = 323232323;
+-- Select * from insured_by;
 
 CREATE TABLE places ( -- doctor to order
     first_name VARCHAR(30) NOT NULL,
@@ -551,8 +570,8 @@ INSERT INTO places (first_name, last_name, order_id) VALUES
 ('Grace', 'Cerrato', 19),  
 ('Kathleen', 'Durant', 20); 
 
-Select * from places
-where first_name = "grace";
+-- Select * from places
+-- where first_name = "grace";
 
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
@@ -621,7 +640,7 @@ VALUES
 SELECT * from picks_up
 where customer_id = 123456789;
 
--- wtf
+
 CREATE TABLE diagnoses ( -- customer, illness, doctor
     diagnosis_id INT PRIMARY KEY,
     customer_insurance_id INT NOT NULL,
@@ -634,6 +653,28 @@ CREATE TABLE diagnoses ( -- customer, illness, doctor
     FOREIGN KEY (illness_name) REFERENCES illness(name)
 );
 
+INSERT INTO diagnoses (diagnosis_id, customer_insurance_id, doctor_first_name, doctor_last_name, illness_name, diagnosis_date)
+VALUES
+(1, 123456789, 'Natasha', 'Nicholas', 'Flu', '2024-01-15'),
+(2, 112345678, 'Shane', 'Holmes', 'Common Cold', '2024-02-20'),
+(3, 111234567, 'Khushi', 'Neema', 'Pneumonia', '2024-03-12'),
+(4, 111123456, 'Grace', 'Cerrato', 'Migraine', '2024-04-10'),
+(5, 111112345, 'Kathleen', 'Durant', 'High Blood Pressure', '2024-05-05'),
+(6, 111111234, 'Natasha', 'Nicholas', 'Asthma', '2024-06-14'),
+(7, 111111123, 'Shane', 'Holmes', 'Arthritis', '2024-07-19'),
+(8, 111111112, 'Khushi', 'Neema', 'Allergy', '2024-08-11'),
+(9, 111111111, 'Grace', 'Cerrato', 'Diabetes', '2024-09-23'),
+(10, 234567891, 'Kathleen', 'Durant', 'Acid Reflux', '2024-10-15'),
+(11, 223456789, 'Natasha', 'Nicholas', 'Anxiety', '2024-11-10'),
+(12, 222345678, 'Shane', 'Holmes', 'Infection', '2024-01-05'),
+(13, 222234567, 'Khushi', 'Neema', 'Insomnia', '2024-02-13'),
+(14, 222223456, 'Grace', 'Cerrato', 'Severe Cough', '2024-03-21'),
+(15, 222222345, 'Kathleen', 'Durant', 'Flu', '2024-04-02'),
+(16, 222222234, 'Natasha', 'Nicholas', 'Common Cold', '2024-05-07'),
+(17, 222222223, 'Shane', 'Holmes', 'Pneumonia', '2024-06-18'),
+(18, 222222293, 'Khushi', 'Neema', 'Migraine', '2024-07-22'),
+(19, 333333333, 'Grace', 'Cerrato', 'High Blood Pressure', '2024-08-29'),
+(20, 323232323, 'Kathleen', 'Durant', 'Asthma', '2024-09-12');
 
 CREATE TABLE contains ( -- order to prescription 
     order_id INT,              
