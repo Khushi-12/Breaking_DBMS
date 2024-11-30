@@ -342,25 +342,24 @@ CREATE TABLE uses(
 INSERT INTO uses (use_case, body_part)
 VALUES
 ('Pain Relief', 'Head'),
-('Pain Relief', 'Back'),
+('Pain Relief', 'Back'), 
 ('Allergy Relief', 'Nose'),
 ('Anti-Inflammatory', 'Joints'),
-('Cold and Flu', 'Sinuses'),
-('Digestive Health', 'Stomach'),
-('Skin Irritation', 'Skin'),
-('Blood Pressure Control', 'Heart'),
+('Cold and Flu', 'Sinuses'), 
+('Digestive Health', 'Stomach'), 
+('Skin Irritation', 'Skin'), 
+('Blood Pressure Control', 'Heart'), 
 ('Bone Strengthening', 'Bones'),
-('Eye Drops', 'Eyes'),
 ('Muscle Relaxant', 'Muscles'),
 ('Wound Healing', 'Skin'),
 ('Antibiotic', 'Lungs'),
 ('Cholesterol Control', 'Blood'),
 ('Hair Growth', 'Scalp'),
-('Dental Care', 'Teeth'),
+('Dental Care', 'Teeth'), 
 ('Antiseptic', 'Hands'),
 ('Immune Support', 'Immune System'),
-('Joint Lubrication', 'Knees'),
-('Nerve Pain Relief', 'Nerves');
+('Nerve Pain Relief', 'Nerves')
+;
 
 CREATE TABLE insurance_company(
 	name VARCHAR(30) PRIMARY KEY,
@@ -874,7 +873,6 @@ VALUES
 ('Hydrochloric Acid', 'Acidol', 'Medica');
 
 
--- wtf
 CREATE TABLE composed_of ( -- medication to chemical
     scientific_name VARCHAR(30), 
     brand_name VARCHAR(30), 
@@ -887,8 +885,7 @@ CREATE TABLE composed_of ( -- medication to chemical
         REFERENCES chemical(scientific_name) 
         ON DELETE CASCADE    
 );
-
-/*INSERT INTO composed_of (scientific_name, brand_name, chemical_scientific_name)
+INSERT INTO composed_of (scientific_name, brand_name, chemical_scientific_name)
 VALUES
 ('Acetylsalicylic Acid', 'Bayer Aspirin', 'Aspirin'),
 ('Paracetamol', 'Tylenol', 'Paracetamol'),
@@ -898,19 +895,21 @@ VALUES
 ('Omeprazole', 'Prilosec', 'Omeprazole'),
 ('Clopidogrel', 'Plavix', 'Cetirizine'),
 ('Simvastatin', 'Zocor', 'Simvastatin'),
-('Ranitidine', 'Zantac', 'Ranitidine'),
-('Warfarin', 'Coumadin', 'Warfarin'),
-('Epinephrine', 'EpiPen', 'Epinephrine'),
-('Ketamine', 'Ketalar', 'Ketamine'),
-('Dexamethasone', 'Decadron', 'Dexamethasone'),
+('Ranitidine', 'Zantac', 'Omeprazole'),
+('Warfarin', 'Coumadin', 'Cetirizine'),
+('Epinephrine', 'EpiPen', 'Paracetamol'),
+('Ketamine', 'Ketalar', 'Cetirizine'),
+('Dexamethasone', 'Decadron', 'Simvastatin'),
 ('Loratadine', 'Claritin', 'Loratadine'),
-('Methotrexate', 'Trexall', 'Methotrexate'),
-('Atorvastatin', 'Lipitor', 'Atorvastatin'),
-('Folic Acid', 'Folacare', 'Folic Acid'),
-('Ascorbic Acid', 'C-1000', 'Ascorbic Acid'),
-('Sodium Bicarbonate', 'Sodibic', 'Sodium Bicarbonate'),
-('Hydrochloric Acid', 'Acidol', 'Hydrochloric Acid');
-*/
+('Methotrexate', 'Trexall', 'Ibuprofen'),
+('Atorvastatin', 'Lipitor', 'Simvastatin'),
+('Folic Acid', 'Folacare', 'Loratadine'),
+('Ascorbic Acid', 'C-1000', 'Simvastatin'),
+('Sodium Bicarbonate', 'Sodibic', 'Simvastatin'),
+('Hydrochloric Acid', 'Acidol', 'Aspirin')
+;
+
+
 
 CREATE TABLE used_for ( -- medication to uses
     scientific_name VARCHAR(30),             
@@ -990,7 +989,6 @@ INSERT INTO classified_as (scientific_name, class_name) VALUES
 ('Loratadine', 'Antihistamine');
 
 
--- wtf
 CREATE TABLE hazardous ( -- chemical to hazard
     scientific_name VARCHAR(30),
     hazard_id INT,
