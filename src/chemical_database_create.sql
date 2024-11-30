@@ -42,17 +42,18 @@ INSERT INTO customer VALUES
 
 
 CREATE TABLE pharmacy_store(
+	pharmacy_id INT PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(30) NOT NULL,
     address_street_name VARCHAR(30) NOT NULL,
     address_street_num INT NOT NULL,
     address_town VARCHAR(30) NOT NULL,
     address_state VARCHAR(30) NOT NULL,
     address_zipcode CHAR(5) NOT NULL,
-    phone_numer CHAR(10) NOT NULL,
-    PRIMARY KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+    phone_number CHAR(10) NOT NULL
+    -- PRIMARY KEY (name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
 );
 
-INSERT INTO pharmacy_store (name, address_street_name, address_street_num, address_town, address_state, address_zipcode, phone_numer) VALUES
+INSERT INTO pharmacy_store (name, address_street_name, address_street_num, address_town, address_state, address_zipcode, phone_number) VALUES
 ('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', '2175550123'),
 ('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', '4025559876'),
 ('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', '2125550321'),
@@ -62,26 +63,25 @@ INSERT INTO pharmacy_store (name, address_street_name, address_street_num, addre
 
 
 CREATE TABLE pharmacist (
-	staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    staff_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    pharmacy_store_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_num INT NOT NULL,
-    pharmacy_address_town VARCHAR(30) NOT NULL,
-    pharmacy_address_state VARCHAR(30) NOT NULL,
-    pharmacy_address_zipcode CHAR(5) NOT NULL,
+    pharmacy_id INT NOT NULL,
     CONSTRAINT unique_pharmacist_name UNIQUE (first_name, last_name),
-    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+    FOREIGN KEY (pharmacy_id) 
+        REFERENCES pharmacy_store(pharmacy_id) 
+        ON DELETE CASCADE
 );
 
-INSERT INTO pharmacist (first_name, last_name,pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) VALUES
-('Jules', 'Sylvester','Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Edgar', 'Roman','Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Louisa', 'Wetzel','Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('Gabby', 'Dipollito','Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Nakul', 'Rao','Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028');
+
+INSERT INTO pharmacist (first_name, last_name, pharmacy_id) 
+VALUES
+('Jules', 'Sylvester', 1), 
+('Edgar', 'Roman', 1),  
+('Louisa', 'Wetzel', 2),  
+('Gabby', 'Dipollito', 3),
+('Nakul', 'Rao', 6);
+
 
 -- Error Code: 1136. Column count doesn't match value count at row 1
 
@@ -121,6 +121,7 @@ CREATE TABLE doctor (
     email VARCHAR(30) NOT NULL,
     phone CHAR(10) NOT NULL,
     specialty VARCHAR(30),
+    CONSTRAINT unique_doctor_name UNIQUE (first_name, last_name),
     PRIMARY KEY (first_name, last_name, specialty)
 );
 
@@ -464,93 +465,85 @@ VALUES
 
 CREATE TABLE in_network ( -- pharmacy store to insurance_company
     insurance_company_name VARCHAR(30) NOT NULL,
-    pharmacy_store_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_num INT NOT NULL,
-    pharmacy_address_town VARCHAR(30) NOT NULL,
-    pharmacy_address_state VARCHAR(30) NOT NULL,
-    pharmacy_address_zipcode CHAR(5) NOT NULL,
-    PRIMARY KEY (insurance_company_name, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
+    pharmacy_id INT NOT NULL,
+    PRIMARY KEY (insurance_company_name, pharmacy_id),
     FOREIGN KEY (insurance_company_name) REFERENCES insurance_company(name),
-    FOREIGN KEY (pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+    FOREIGN KEY (pharmacy_id) 
+        REFERENCES pharmacy_store(pharmacy_id)
 );
 
-INSERT INTO in_network (insurance_company_name, pharmacy_store_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
+INSERT INTO in_network (insurance_company_name, pharmacy_id)
 VALUES
-('UnitedHealth Group', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Anthem Blue Cross', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('Aetna', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Cigna', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Humana', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-('Kaiser Permanente', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-('Blue Shield of California', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Molina Healthcare', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Health Net', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('WellCare Health Plans', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202');
+('UnitedHealth Group', 1), 
+('Anthem Blue Cross', 2),
+('Aetna', 3), 
+('Cigna', 4),  
+('Humana', 5),  
+('Kaiser Permanente', 6),  
+('Blue Shield of California', 1), 
+('Molina Healthcare', 3),  
+('Health Net', 2),   
+('WellCare Health Plans', 5); 
+
 
 -- Select * from insured_by;
 CREATE TABLE picks_up ( -- customer, pharmacy, order
     customer_id INT NOT NULL,
     order_id INT NOT NULL,
-    pharmacy_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_name VARCHAR(30) NOT NULL,
-    pharmacy_address_street_num INT NOT NULL,
-    pharmacy_address_town VARCHAR(30) NOT NULL,
-    pharmacy_address_state VARCHAR(30) NOT NULL,
-    pharmacy_address_zipcode CHAR(5) NOT NULL,
-    PRIMARY KEY (customer_id, order_id, pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode),
+    pharmacy_id INT NOT NULL,
+    PRIMARY KEY (customer_id, order_id, pharmacy_id),
     FOREIGN KEY (customer_id) REFERENCES customer(insurance_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode)
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode)
+    FOREIGN KEY (pharmacy_id)
+        REFERENCES pharmacy_store(pharmacy_id)
 );
 
-INSERT INTO picks_up (customer_id, order_id, pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
+INSERT INTO picks_up (customer_id, order_id, pharmacy_id)
 VALUES
-(123456789, 1, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(112345678, 2, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(111234567, 3, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(111123456, 4, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(111112345, 5, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(111111234, 6, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(111111123, 7, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(111111112, 8, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(111111111, 9, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(234567891, 10, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(223456789, 11, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(222345678, 12, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(222234567, 13, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(222223456, 14, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(222222345, 15, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(222222234, 16, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(222222223, 17, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(222222293, 18, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(333333333, 19, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(323232323, 20, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(222222223, 21, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(222234567, 22, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(222222234, 23, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(223456789, 24, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(111123456, 25, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(112345678, 26, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(111112345, 27, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(111112345, 28, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(222222223, 29, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(222234567, 30, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(111123456, 31, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(222222345, 32, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(234567891, 33, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(222222223, 34, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(112345678, 35, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(111123456, 36, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(111123456, 37, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-(222222223, 38, 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-(234567891, 39, 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-(222345678, 40, 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-(112345678, 41, 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-(222222234, 42, 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-(111123456, 43, 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701');
+(123456789, 1, 1),
+(112345678, 2, 2), 
+(111234567, 3, 3),
+(111123456, 4, 4), 
+(111112345, 5, 5),
+(111111234, 6, 6),
+(111111123, 7, 1), 
+(111111112, 8, 2),
+(111111111, 9, 3),
+(234567891, 10, 4),
+(223456789, 11, 5),
+(222345678, 12, 6),
+(222234567, 13, 1),
+(222223456, 14, 2),
+(222222345, 15, 3),
+(222222234, 16, 4),
+(222222223, 17, 5),
+(222222293, 18, 6),
+(333333333, 19, 1),
+(323232323, 20, 2),
+(222222223, 21, 3),
+(222234567, 22, 4),
+(222222234, 23, 5),
+(223456789, 24, 6),
+(111123456, 25, 1),
+(112345678, 26, 2),
+(111112345, 27, 3),
+(111112345, 28, 4),
+(222222223, 29, 5),
+(222234567, 30, 6),
+(111123456, 31, 1),
+(222222345, 32, 2),
+(234567891, 33, 3),
+(222222223, 34, 4), 
+(112345678, 35, 5), 
+(111123456, 36, 6), 
+(111123456, 37, 1), 
+(222222223, 38, 2), 
+(234567891, 39, 3), 
+(222345678, 40, 4), 
+(112345678, 41, 5),
+(222222234, 42, 6), 
+(111123456, 43, 1);
+
 
 
 CREATE TABLE diagnoses ( -- customer, illness, doctor
@@ -682,43 +675,38 @@ VALUES
 
 
 CREATE TABLE sells ( -- pharmacy store to medication
-    pharmacy_name VARCHAR(30),          
-    pharmacy_address_street_name VARCHAR(30), 
-    pharmacy_address_street_num INT,  
-    pharmacy_address_town VARCHAR(30),   
-    pharmacy_address_state VARCHAR(30), 
-    pharmacy_address_zipcode CHAR(5),  
+    pharmacy_id INT NOT NULL,  
     medication_scientific_name VARCHAR(30),
     medication_brand_name VARCHAR(30), 
     quantity INT NOT NULL,         
-    PRIMARY KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name), -- Composite primary key
-    FOREIGN KEY (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode) 
-        REFERENCES pharmacy_store(name, address_street_name, address_street_num, address_town, address_state, address_zipcode) 
+    PRIMARY KEY (pharmacy_id, medication_scientific_name, medication_brand_name), -- Composite primary key
+    FOREIGN KEY (pharmacy_id) 
+        REFERENCES pharmacy_store(pharmacy_id) 
         ON DELETE CASCADE,       
     FOREIGN KEY (medication_scientific_name, medication_brand_name) 
         REFERENCES medication(scientific_name, brand_name) 
         ON DELETE CASCADE            
 );
 
-INSERT INTO sells (pharmacy_name, pharmacy_address_street_name, pharmacy_address_street_num, pharmacy_address_town, pharmacy_address_state, pharmacy_address_zipcode, medication_scientific_name, medication_brand_name, quantity)
+INSERT INTO sells (pharmacy_id, medication_scientific_name, medication_brand_name, quantity)
 VALUES
-('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Acetylsalicylic Acid', 'Bayer Aspirin', 100),
-('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Paracetamol', 'Tylenol', 200),
-('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', 'Ibuprofen', 'Advil', 150),
-('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Amoxicillin', 'Amoxil', 120),
-('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Metformin', 'Glucophage', 80),
-('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Omeprazole', 'Prilosec', 90),
-('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Simvastatin', 'Zocor', 60),
-('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Clopidogrel', 'Plavix', 150),
-('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Ranitidine', 'Zantac', 75),
-('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Warfarin', 'Coumadin', 130),
-('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Epinephrine', 'EpiPen', 50),
-('Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701', 'Ketamine', 'Ketalar', 30),
-('Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502', 'Dexamethasone', 'Decadron', 110),
-('Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001', 'Loratadine', 'Claritin', 200),
-('Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611', 'Methotrexate', 'Trexall', 40),
-('Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202', 'Atorvastatin', 'Lipitor', 90),
-('Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028', 'Folic Acid', 'Folacare', 150);
+(1, 'Acetylsalicylic Acid', 'Bayer Aspirin', 100),
+(1, 'Paracetamol', 'Tylenol', 200),
+(2, 'Ibuprofen', 'Advil', 150),
+(3, 'Amoxicillin', 'Amoxil', 120),
+(3, 'Metformin', 'Glucophage', 80),
+(4, 'Omeprazole', 'Prilosec', 90),
+(4, 'Simvastatin', 'Zocor', 60),
+(5, 'Clopidogrel', 'Plavix', 150),
+(5, 'Ranitidine', 'Zantac', 75),
+(6, 'Warfarin', 'Coumadin', 130),
+(6, 'Epinephrine', 'EpiPen', 50),
+(1, 'Ketamine', 'Ketalar', 30),
+(2, 'Dexamethasone', 'Decadron', 110),
+(3, 'Loratadine', 'Claritin', 200),
+(4, 'Methotrexate', 'Trexall', 40),
+(5, 'Atorvastatin', 'Lipitor', 90),
+(6, 'Folic Acid', 'Folacare', 150);
 
 
 CREATE TABLE covers ( -- insurance to medication
