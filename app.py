@@ -68,6 +68,7 @@ def get_customer_info():
     return jsonify(customer[0])
 
 
+
 @app.route('/get_doctor_info', methods=['GET'])
 def get_doctor_info():
 

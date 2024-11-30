@@ -339,7 +339,6 @@ CREATE TABLE uses(
     use_case VARCHAR(30) NOT NULL,
     body_part VARCHAR(30) NOT NULL
 );
--- Dummy values for the uses table
 INSERT INTO uses (use_case, body_part)
 VALUES
 ('Pain Relief', 'Head'),
