@@ -44,6 +44,7 @@ def get_customers():
     customers = con.query("SELECT * FROM chemical_database.customer order by first_name;")
     return jsonify(customers)
 
+
 @app.route('/get_doctors', methods=['GET'])
 def get_doctors():
     # Example customer list (replace with database query)
@@ -67,7 +68,6 @@ def get_customer_info():
     return jsonify(customer[0])
 
 
-
 @app.route('/get_doctor_info', methods=['GET'])
 def get_doctor_info():
 
@@ -79,6 +79,35 @@ def get_doctor_info():
  
 
     return jsonify(doctor[0])
+
+
+
+@app.route('/customer_orders')
+def customer_orders():
+    # Fetch or mock orders data here
+    orders = [
+        {
+            "order_id": 24234,
+            "expiration_date": "2024-03-30",
+            "illness": "Common Cold",
+            "doctor": "Dr. John Smith",
+            "prescriptions": [
+                {"name": "Cetirizine", "dosage": "10 mg", "frequency": "Once a day"},
+                {"name": "Amoxicillin", "dosage": "500 mg", "frequency": "Twice a day"}
+            ]
+        },
+        {
+            "order_id": 24235,
+            "expiration_date": "2025-01-15",
+            "illness": "Allergies",
+            "doctor": "Dr. Jane Doe",
+            "prescriptions": [
+                {"name": "Ibuprofen", "dosage": "200 mg", "frequency": "Every 6 hours"}
+            ]
+        }
+    ]
+    
+    return jsonify(orders)
 
 
 
