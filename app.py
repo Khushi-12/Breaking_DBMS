@@ -9,10 +9,12 @@ password = os.environ['PASSWORD']
 
 
 # Define sql connector 
-con = sql_connector.sqlConnector()
-con.connect(username, password, "localhost", "chemical_database")
+try:
+    con = sql_connector.sqlConnector()
+    con.connect(username, password, "localhost", "chemical_database")
 
-
+except Error as e:
+    print("Not connecting")
 app = Flask (__name__)
 
 @app.route('/')
