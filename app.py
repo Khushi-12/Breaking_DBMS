@@ -115,20 +115,22 @@ def get_pharmacy_info():
         # SQL Query
         query = f"""
             SELECT pharmacist.first_name, pharmacist.last_name,
-           pharmacist.pharmacy_store_name AS pharmacy_store_name,
-           pharmacist.pharmacy_address_street_name AS address_street_name,
-           pharmacist.pharmacy_address_street_num AS address_street_num,
-           pharmacist.pharmacy_address_town AS address_town,
-           pharmacist.pharmacy_address_state AS address_state,
-           pharmacist.pharmacy_address_zipcode AS address_zipcode,
+           pharmacy_store.name AS pharmacy_store_name,
+           pharmacy_store.address_street_name AS address_street_name,
+           pharmacy_store.address_street_num AS address_street_num,
+           pharmacy_store.address_town AS address_town,
+           pharmacy_store.address_state AS address_state,
+           pharmacy_store.address_zipcode AS address_zipcode,
            certification.name AS certification_name,
            certification.institution,
            certification.expiration_date AS expiration_date
             FROM pharmacist
+            JOIN pharmacy_store ON pharmacist.pharmacy_id = pharmacy_store.pharmacy_id
             JOIN obtains_pharmacist ON pharmacist.first_name = obtains_pharmacist.first_name
                                 AND pharmacist.last_name = obtains_pharmacist.last_name
             JOIN certification ON obtains_pharmacist.certification_name = certification.name
             WHERE pharmacist.first_name = '{pharmacist_id[0]}' AND pharmacist.last_name = '{pharmacist_id[1]}';
+            
         """
 
         # Execute the query

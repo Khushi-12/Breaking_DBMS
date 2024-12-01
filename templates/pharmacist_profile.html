@@ -64,6 +64,26 @@
             margin: 5px 0;
             color: #555;
         }
+
+        .back-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -79,9 +99,18 @@
         <div class="info-container" id="info-container">
             <!-- Info cards will be dynamically updated here -->
         </div>
+
+        <div class="back-button">
+            <button onclick="goBack()">Back to Main Page</button>
+        </div>
     </div>
 
     <script>
+        // Function to navigate back to the main page
+        function goBack() {
+            window.location.href = '/user'; // Replace '/' with the main page URL
+        }
+
         // Function to fetch pharmacist names and populate the dropdown
         async function loadPharmacists() {
             try {
@@ -109,42 +138,17 @@
         // Function to fetch details for the selected pharmacist
         async function loadPharmacistDetails(selectedPharmacist) {
             try {
-
-                // const [first_name, last_name] = selectedPharmacist.split(" "); // Split full name into first and last name
-
-                // const response = await fetch(`/get_pharmacist_details?first_name=${encodeURIComponent(first_name)}&last_name=${encodeURIComponent(last_name)}`);
-
-                const response = await fetch(`/get_pharmacist_details?name=${encodeURIComponent(selectedPharmacist)}`); // Replace with your API endpoint
+                const response = await fetch(`/get_pharmacist_details?name=${encodeURIComponent(selectedPharmacist)}`);
                 if (!response.ok) throw new Error("Failed to fetch pharmacist details");
 
-                const data = await response.json(); // Expected format: {store: {...}, certifications: [...]}
+                const data = await response.json();
                 const infoContainer = document.getElementById("info-container");
 
                 // Clear previous data
                 infoContainer.innerHTML = "";
 
-                // Display Pharmacy Store Information
-                // const storeCard = `
-                //     <div class="info-card">
-                //         <h2>Pharmacy Store</h2>
-                //         <p><strong>Name:</strong> ${data.pharmacy_store_name}</p>
-                //         <p><strong>Address:</strong> ${data.pharmacy_store_address_street_name, data.pharmacy_store_address_street_num}</p>
-                //         <p><strong>City:</strong> ${data.pharmacy_address_town}</p>
-                //         <p><strong>State:</strong> ${data.pharmacy_address_state}</p>
-                //         <p><strong>Zip Code:</strong> ${data.pharmacy_address_zipcode}</p>
-                //     </div>
-                // `;
-
-                // // Display Certifications Information
-                // const certificationCards = data.certifications.map(cert => `
-                //     <div class="info-card">
-                //         <h2>${cert.name}</h2>
-                //         <p><strong>Institution:</strong> ${cert.institution}</p>
-                //         <p><strong>Expiration Date:</strong> ${cert.expirationDate}</p>
-                //     </div>
-                // `).join("");
-
-                data.forEach((row) => {
+                // Display data
+                data.forEach(row => {
                     const storeCard = `
                         <div class="info-card">
                             <h2>Pharmacy Store</h2>
@@ -164,13 +168,8 @@
                         </div>
                     `;
 
-                    document.getElementById("info-container").innerHTML += storeCard + certificationCard;
+                    infoContainer.innerHTML += storeCard + certificationCard;
                 });
-
-
-                // // Append both to the container
-                // infoContainer.innerHTML = storeCard + certificationCards;
-                // infoContainer.innerHTML = certificationCards;
 
             } catch (error) {
                 console.error("Error loading pharmacist details:", error);
