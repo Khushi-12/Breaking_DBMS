@@ -9,10 +9,12 @@ password = os.environ['PASSWORD']
 
 
 # Define sql connector 
-con = sql_connector.sqlConnector()
-con.connect(username, password, "localhost", "chemical_database")
+try:
+    con = sql_connector.sqlConnector()
+    con.connect(username, password, "localhost", "chemical_database")
 
-
+except Error as e:
+    print("Not connecting")
 app = Flask (__name__)
 
 @app.route('/')
@@ -89,78 +91,77 @@ def get_doctor_info():
 
     doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
  
-
+    print(doctor[0])
     return jsonify(doctor[0])
 
+@app.route('/get_pharmacists', methods =['GET'])
+def get_pharmacy():
+    pharmacist = con.query(f"SELECT * from pharmacist ORDER BY first_name;")
 
+    return jsonify(pharmacist)
 
-@app.route('/get_orders', methods=['GET'])
-def get_orders_for_customer():
+@app.route('/get_pharmacist_details', methods=['GET'])
+def get_pharmacy_info():
+    pharmacist_id = request.args.get('name').split()
+    pharmacist_id = request.args.get('name').split()
+    print("Pharmacist ID:", pharmacist_id)
 
-    #doctor_id = request.args.get('id').split()
+    # if len(pharmacist_id) != 2:
+    #     return jsonify({"error": "Invalid name format. Expected 'first_name last_name'."}), 400
 
-    #doctor = con.query(f"SELECT * FROM chemical_database.doctor do WHERE do.first_name = '{doctor_id[0]}' and do.last_name = '{doctor_id[1]}';")
+    try:
+        # SQL Query
+        query = f"""
+            SELECT pharmacist.first_name, pharmacist.last_name,
+           pharmacist.pharmacy_store_name AS pharmacy_store_name,
+           pharmacist.pharmacy_address_street_name AS address_street_name,
+           pharmacist.pharmacy_address_street_num AS address_street_num,
+           pharmacist.pharmacy_address_town AS address_town,
+           pharmacist.pharmacy_address_state AS address_state,
+           pharmacist.pharmacy_address_zipcode AS address_zipcode,
+           certification.name AS certification_name,
+           certification.institution,
+           certification.expiration_date AS expiration_date
+            FROM pharmacist
+            JOIN obtains_pharmacist ON pharmacist.first_name = obtains_pharmacist.first_name
+                                AND pharmacist.last_name = obtains_pharmacist.last_name
+            JOIN certification ON obtains_pharmacist.certification_name = certification.name
+            WHERE pharmacist.first_name = '{pharmacist_id[0]}' AND pharmacist.last_name = '{pharmacist_id[1]}';
+        """
 
-    #doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
- 
-    orders = [
-        {
-            "first_name" : "John",
-            "last_name" : "Carter",
-            "phone" : "456-345-0982",
-            "email" : "johnCart@gmail.com",
-            "orders" : [
-                {
-                    "order_id" : 1244, 
-                    "expiration_date" : "2024-12-01",
-                    "doctor_first_name" : "Johnson",
-                    "prescriptions" : [
-                        {
-                            "val" : 1,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 50,
-                            "dosage" : 130
-                        },
-                        {
-                            "val" : 2,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 130
+        # Execute the query
+        pharmacist_data = con.query(query)
 
-                        }
-                    ]
+        # Check if query returned data
+        if not pharmacist_data:
+            return jsonify({"error": "No data found for the selected pharmacist"}), 404
 
-                },
-                {
-                    "order_id" : 1346, 
-                    "expiration_date" : "2024-07-05",
-                    "doctor_first_name" : "Jein",
-                    "prescriptions" : [
+        # Process the result
+        result = []
+        for row in pharmacist_data:
+            result.append({
+                "first_name": row["first_name"],
+                "last_name": row["last_name"],
+                "pharmacy_store_name": row["pharmacy_store_name"],
+                "pharmacy_store_address_street_name": row["address_street_name"],
+                "pharmacy_store_address_street_num": row["address_street_num"],
+                "pharmacy_address_town": row["address_town"],
+                "pharmacy_address_state": row["address_state"],
+                "pharmacy_address_zipcode": row["address_zipcode"],
+                "certification_name": row["certification_name"],
+                "institution": row["institution"],
+                "expiration_date": row["expiration_date"],
+            })
+        # result =[]
+        # print(result)
+        return jsonify(result)
 
-                    ]
-                },
-                {
-                    "order_id" : 5434, 
-                    "expiration_date" : "2024-04-09",
-                    "doctor_first_name" : "Gene",
-                    "prescriptions" : [
-                        {
-                            "val" : 3,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 50
-                        }
-                    ]
-                }
-            ]
+    except Exception as e:
+        # Log the exception for debugging
+        print("Error executing query:", e)
+        return jsonify({"error": str(e)}), 500
 
-        }
-    ]
-
-    return jsonify(orders)
-
-
-
+    
 @app.route('/user_setting')
 def setting():
     return render_template('pharmacist_profile.html')

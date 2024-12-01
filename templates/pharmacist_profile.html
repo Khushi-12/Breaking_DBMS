@@ -1,3 +1,195 @@
-<html>
-    <h3>"Connecting DBMS for viewing pharmacist profile page</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Pharmacist Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        select {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .info-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .info-card {
+            display: inline-block;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .info-card h2 {
+            margin: 0 0 10px;
+            color: #007bff;
+        }
+
+        .info-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Pharmacist</h1>
+        <div class="dropdown-container">
+            <label for="pharmacist-dropdown">Choose a pharmacist:</label>
+            <select id="pharmacist-dropdown">
+                <!-- Dropdown will be dynamically populated -->
+            </select>
+        </div>
+
+        <div class="info-container" id="info-container">
+            <!-- Info cards will be dynamically updated here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch pharmacist names and populate the dropdown
+        async function loadPharmacists() {
+            try {
+                const response = await fetch('/get_pharmacists'); // Replace with your backend API endpoint
+                if (!response.ok) throw new Error("Failed to fetch pharmacists");
+
+                const pharmacists = await response.json(); // Expected format: [{first_name: "Gabby", last_name: "Dipollito"}, ...]
+
+                const dropdown = document.getElementById("pharmacist-dropdown");
+                dropdown.innerHTML = '<option value="">-- Select Pharmacist --</option>'; // Reset dropdown
+
+                // Populate dropdown with fetched data
+                pharmacists.forEach(pharmacist => {
+                    const option = document.createElement("option");
+                    option.value = `${pharmacist.first_name} ${pharmacist.last_name}`;
+                    option.textContent = `${pharmacist.first_name} ${pharmacist.last_name}`;
+                    dropdown.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error loading pharmacists:", error);
+            }
+        }
+
+        // Function to fetch details for the selected pharmacist
+        async function loadPharmacistDetails(selectedPharmacist) {
+            try {
+
+                // const [first_name, last_name] = selectedPharmacist.split(" "); // Split full name into first and last name
+
+                // const response = await fetch(`/get_pharmacist_details?first_name=${encodeURIComponent(first_name)}&last_name=${encodeURIComponent(last_name)}`);
+
+                const response = await fetch(`/get_pharmacist_details?name=${encodeURIComponent(selectedPharmacist)}`); // Replace with your API endpoint
+                if (!response.ok) throw new Error("Failed to fetch pharmacist details");
+
+                const data = await response.json(); // Expected format: {store: {...}, certifications: [...]}
+                const infoContainer = document.getElementById("info-container");
+
+                // Clear previous data
+                infoContainer.innerHTML = "";
+
+                // Display Pharmacy Store Information
+                // const storeCard = `
+                //     <div class="info-card">
+                //         <h2>Pharmacy Store</h2>
+                //         <p><strong>Name:</strong> ${data.pharmacy_store_name}</p>
+                //         <p><strong>Address:</strong> ${data.pharmacy_store_address_street_name, data.pharmacy_store_address_street_num}</p>
+                //         <p><strong>City:</strong> ${data.pharmacy_address_town}</p>
+                //         <p><strong>State:</strong> ${data.pharmacy_address_state}</p>
+                //         <p><strong>Zip Code:</strong> ${data.pharmacy_address_zipcode}</p>
+                //     </div>
+                // `;
+
+                // // Display Certifications Information
+                // const certificationCards = data.certifications.map(cert => `
+                //     <div class="info-card">
+                //         <h2>${cert.name}</h2>
+                //         <p><strong>Institution:</strong> ${cert.institution}</p>
+                //         <p><strong>Expiration Date:</strong> ${cert.expirationDate}</p>
+                //     </div>
+                // `).join("");
+
+                data.forEach((row) => {
+                    const storeCard = `
+                        <div class="info-card">
+                            <h2>Pharmacy Store</h2>
+                            <p><strong>Name:</strong> ${row.pharmacy_store_name}</p>
+                            <p><strong>Address:</strong> ${row.pharmacy_store_address_street_name} ${row.pharmacy_store_address_street_num}</p>
+                            <p><strong>City:</strong> ${row.pharmacy_address_town}</p>
+                            <p><strong>State:</strong> ${row.pharmacy_address_state}</p>
+                            <p><strong>Zip Code:</strong> ${row.pharmacy_address_zipcode}</p>
+                        </div>
+                    `;
+
+                    const certificationCard = `
+                        <div class="info-card">
+                            <h2>${row.certification_name}</h2>
+                            <p><strong>Institution:</strong> ${row.institution}</p>
+                            <p><strong>Expiration Date:</strong> ${row.expiration_date}</p>
+                        </div>
+                    `;
+
+                    document.getElementById("info-container").innerHTML += storeCard + certificationCard;
+                });
+
+
+                // // Append both to the container
+                // infoContainer.innerHTML = storeCard + certificationCards;
+                // infoContainer.innerHTML = certificationCards;
+
+            } catch (error) {
+                console.error("Error loading pharmacist details:", error);
+                document.getElementById("info-container").innerHTML = "<p>Failed to load details. Please try again later.</p>";
+            }
+        }
+
+        // Event listener for dropdown change
+        document.getElementById("pharmacist-dropdown").addEventListener("change", function () {
+            const selectedPharmacist = this.value;
+            if (selectedPharmacist) {
+                loadPharmacistDetails(selectedPharmacist); // Fetch and display details for the selected pharmacist
+            } else {
+                document.getElementById("info-container").innerHTML = ""; // Clear details if no pharmacist is selected
+            }
+        });
+
+        // Load pharmacists on page load
+        document.addEventListener("DOMContentLoaded", loadPharmacists);
+    </script>
+</body>
 </html>
