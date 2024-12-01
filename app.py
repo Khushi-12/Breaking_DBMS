@@ -65,63 +65,18 @@ def get_customer_info():
 
     customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
  
+    customer = customer[0]
 
-    customer_info = [
-        {
-            "first_name" : "John",
-            "last_name" : "Carter",
-            "phone" : "456-345-0982",
-            "email" : "johnCart@gmail.com",
-            "orders" : [
-                {
-                    "order_id" : 1244, 
-                    "expiration_date" : "2024-12-01",
-                    "doctor_first_name" : "Johnson",
-                    "prescriptions" : [
-                        {
-                            "val" : 1,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 50,
-                            "dosage" : 130
-                        },
-                        {
-                            "val" : 2,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 130
+    customer_orders = con.query(f"SELECT * FROM orders o JOIN picks_up pi ON o.order_id = pi.order_id JOIN customer cu ON pi.customer_id = cu.insurance_id WHERE cu.first_name = '{customer_id[0]}' and cu.last_name = '{customer_id[1]}';")
 
-                        }
-                    ]
+    for orderInd in range(len(customer_orders)):
+        orderNumber = customer_orders[orderInd]['order_id']
+        prescriptions = con.query(f"SELECT * FROM prescription pre JOIN contains con ON pre.val = con.prescription_id WHERE order_id = {orderNumber};")
+        customer_orders[orderInd]["prescriptions"] = prescriptions
 
-                },
-                {
-                    "order_id" : 1346, 
-                    "expiration_date" : "2024-07-05",
-                    "doctor_first_name" : "Jein",
-                    "prescriptions" : [
+    customer["orders"] = customer_orders
 
-                    ]
-                },
-                {
-                    "order_id" : 5434, 
-                    "expiration_date" : "2024-04-09",
-                    "doctor_first_name" : "Gene",
-                    "prescriptions" : [
-                        {
-                            "val" : 3,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 50
-                        }
-                    ]
-                }
-            ]
-
-        }
-    ]
-
-
-    return jsonify(customer[0])
+    return jsonify(customer)
 
 
 
