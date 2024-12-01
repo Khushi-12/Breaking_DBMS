@@ -91,9 +91,75 @@ def get_doctor_info():
 
     doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
  
-
+    print(doctor[0])
     return jsonify(doctor[0])
 
+@app.route('/get_pharmacists', methods =['GET'])
+def get_pharmacy():
+    pharmacist = con.query(f"SELECT * from pharmacist ORDER BY first_name;")
+
+    return jsonify(pharmacist)
+
+@app.route('/get_pharmacist_details', methods=['GET'])
+def get_pharmacy_info():
+    pharmacist_id = request.args.get('name').split()
+    pharmacist_id = request.args.get('name').split()
+    print("Pharmacist ID:", pharmacist_id)
+
+    # if len(pharmacist_id) != 2:
+    #     return jsonify({"error": "Invalid name format. Expected 'first_name last_name'."}), 400
+
+    try:
+        # SQL Query
+        query = f"""
+            SELECT pharmacist.first_name, pharmacist.last_name,
+           pharmacist.pharmacy_store_name AS pharmacy_store_name,
+           pharmacist.pharmacy_address_street_name AS address_street_name,
+           pharmacist.pharmacy_address_street_num AS address_street_num,
+           pharmacist.pharmacy_address_town AS address_town,
+           pharmacist.pharmacy_address_state AS address_state,
+           pharmacist.pharmacy_address_zipcode AS address_zipcode,
+           certification.name AS certification_name,
+           certification.institution,
+           certification.expiration_date AS expiration_date
+            FROM pharmacist
+            JOIN obtains_pharmacist ON pharmacist.first_name = obtains_pharmacist.first_name
+                                AND pharmacist.last_name = obtains_pharmacist.last_name
+            JOIN certification ON obtains_pharmacist.certification_name = certification.name
+            WHERE pharmacist.first_name = '{pharmacist_id[0]}' AND pharmacist.last_name = '{pharmacist_id[1]}';
+        """
+
+        # Execute the query
+        pharmacist_data = con.query(query)
+
+        # Check if query returned data
+        if not pharmacist_data:
+            return jsonify({"error": "No data found for the selected pharmacist"}), 404
+
+        # Process the result
+        result = []
+        for row in pharmacist_data:
+            result.append({
+                "first_name": row["first_name"],
+                "last_name": row["last_name"],
+                "pharmacy_store_name": row["pharmacy_store_name"],
+                "pharmacy_store_address_street_name": row["address_street_name"],
+                "pharmacy_store_address_street_num": row["address_street_num"],
+                "pharmacy_address_town": row["address_town"],
+                "pharmacy_address_state": row["address_state"],
+                "pharmacy_address_zipcode": row["address_zipcode"],
+                "certification_name": row["certification_name"],
+                "institution": row["institution"],
+                "expiration_date": row["expiration_date"],
+            })
+        # result =[]
+        # print(result)
+        return jsonify(result)
+
+    except Exception as e:
+        # Log the exception for debugging
+        print("Error executing query:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route('/get_orders', methods=['GET'])
@@ -162,7 +228,7 @@ def get_orders_for_customer():
     return jsonify(orders)
 
 
-
+    
 @app.route('/user_setting')
 def setting():
     return render_template('pharmacist_profile.html')
