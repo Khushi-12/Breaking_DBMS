@@ -415,8 +415,37 @@
         document.addEventListener("DOMContentLoaded", () => {
             // You can use this section to set up any initialization logic for the page
         });
+        
+        async function displayDoctorInfo(event) {
+            const doctorId = event.target.value;
+            const infoCard = document.getElementById('info-card');
 
-    
+            if (doctorId) {
+                try {
+                    const response = await fetch(`/get_doctor_info?id=${encodeURIComponent(doctorId)}`);
+                    if (!response.ok) throw new Error("Failed to fetch doctor info");
+
+                    const doctorInfo = await response.json();
+
+                    infoCard.innerHTML = `
+                        <h3>${doctorInfo.first_name} ${doctorInfo.last_name}</h3>
+                        <p>Email: ${doctorInfo.email}</p>
+                        <p>Phone: ${doctorInfo.phone}</p>
+                        <p>Phone: ${doctorInfo.office_name}</p>
+                        <p>Office Address: ${doctorInfo.office_address_street_name} ${doctorInfo.office_address_street_num}, ${doctorInfo.office_address_town}, ${doctorInfo.office_address_state}, ${doctorInfo.office_address_zipcode}</p>
+                    `;
+                    infoCard.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Error fetching doctor info:", error);
+                    infoCard.innerHTML = "<p>Failed to load doctor details.</p>";
+                    infoCard.classList.remove('hidden');
+                }
+            } else {
+                infoCard.classList.add('hidden');
+            }
+        }
+
+        
         // Placeholder functions for top bar actions
         function addNew() {
             alert('Add New functionality triggered');
