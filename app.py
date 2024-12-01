@@ -65,6 +65,62 @@ def get_customer_info():
 
     customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
  
+
+    customer_info = [
+        {
+            "first_name" : "John",
+            "last_name" : "Carter",
+            "phone" : "456-345-0982",
+            "email" : "johnCart@gmail.com",
+            "orders" : [
+                {
+                    "order_id" : 1244, 
+                    "expiration_date" : "2024-12-01",
+                    "doctor_first_name" : "Johnson",
+                    "prescriptions" : [
+                        {
+                            "val" : 1,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 50,
+                            "dosage" : 130
+                        },
+                        {
+                            "val" : 2,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 100,
+                            "dosage" : 130
+
+                        }
+                    ]
+
+                },
+                {
+                    "order_id" : 1346, 
+                    "expiration_date" : "2024-07-05",
+                    "doctor_first_name" : "Jein",
+                    "prescriptions" : [
+
+                    ]
+                },
+                {
+                    "order_id" : 5434, 
+                    "expiration_date" : "2024-04-09",
+                    "doctor_first_name" : "Gene",
+                    "prescriptions" : [
+                        {
+                            "val" : 3,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 100,
+                            "dosage" : 50
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+
+
     return jsonify(customer[0])
 
 
@@ -81,6 +137,72 @@ def get_doctor_info():
 
     return jsonify(doctor[0])
 
+
+
+@app.route('/get_orders', methods=['GET'])
+def get_orders_for_customer():
+
+    #doctor_id = request.args.get('id').split()
+
+    #doctor = con.query(f"SELECT * FROM chemical_database.doctor do WHERE do.first_name = '{doctor_id[0]}' and do.last_name = '{doctor_id[1]}';")
+
+    #doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
+ 
+    orders = [
+        {
+            "first_name" : "John",
+            "last_name" : "Carter",
+            "phone" : "456-345-0982",
+            "email" : "johnCart@gmail.com",
+            "orders" : [
+                {
+                    "order_id" : 1244, 
+                    "expiration_date" : "2024-12-01",
+                    "doctor_first_name" : "Johnson",
+                    "prescriptions" : [
+                        {
+                            "val" : 1,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 50,
+                            "dosage" : 130
+                        },
+                        {
+                            "val" : 2,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 100,
+                            "dosage" : 130
+
+                        }
+                    ]
+
+                },
+                {
+                    "order_id" : 1346, 
+                    "expiration_date" : "2024-07-05",
+                    "doctor_first_name" : "Jein",
+                    "prescriptions" : [
+
+                    ]
+                },
+                {
+                    "order_id" : 5434, 
+                    "expiration_date" : "2024-04-09",
+                    "doctor_first_name" : "Gene",
+                    "prescriptions" : [
+                        {
+                            "val" : 3,
+                            "expiration_date" : "2025-12-01",
+                            "quantity" : 100,
+                            "dosage" : 50
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+
+    return jsonify(orders)
 
 
 
