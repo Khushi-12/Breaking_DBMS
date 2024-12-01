@@ -86,16 +86,70 @@ def get_customer_info():
 
 @app.route('/get_doctor_info', methods=['GET'])
 def get_doctor_info():
-
     doctor_id = request.args.get('id').split()
 
-    doctor = con.query(f"SELECT * FROM chemical_database.doctor do WHERE do.first_name = '{doctor_id[0]}' and do.last_name = '{doctor_id[1]}';")
+    try: 
+        # SQL query to fetch doctor details and certifications
+        doctor_query = f"""
+            SELECT 
+                do.first_name,
+                do.last_name,
+                do.email,
+                do.phone,
+                do.specialty,
+                do.office_name,
+                do.office_address_street_name,
+                do.office_address_street_num,
+                do.office_address_town,
+                do.office_address_state,
+                do.office_address_zipcode,
+                c.name,
+                c.institution,
+                c.expiration_date
+            FROM chemical_database.doctor do
+            JOIN obtains_doctor ON do.first_name = obtains_doctor.first_name
+            AND do.last_name = obtains_doctor.last_name
+            JOIN certification c ON obtains_doctor.certification_name = c.name
+            WHERE do.first_name = '{doctor_id[0]}'
+            AND do.last_name = '{doctor_id[1]}';
+        """
 
-    doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
- 
-    print(doctor[0])
-    return jsonify(doctor[0])
+        doctor_rows = con.query(doctor_query)  # Fetch all matching rows
+        
+        if not doctor_rows:
+            return jsonify({"error": "Doctor not found"}), 404
 
+        # Extract basic doctor information from the first row
+        doctor_info = {
+            "first_name": doctor_rows[0]["first_name"],
+            "last_name": doctor_rows[0]["last_name"],
+            "email": doctor_rows[0]["email"],
+            "phone": addDashesToPhoneNumber(doctor_rows[0]["phone"]),
+            "specialty": doctor_rows[0]["specialty"],
+            "office_name": doctor_rows[0]["office_name"],
+            "office_address_street_name": doctor_rows[0]["office_address_street_name"],
+            "office_address_street_num": doctor_rows[0]["office_address_street_num"],
+            "office_address_town": doctor_rows[0]["office_address_town"],
+            "office_address_state": doctor_rows[0]["office_address_state"],
+            "office_address_zipcode": doctor_rows[0]["office_address_zipcode"],
+            "certifications": []
+        }
+
+        # Add certifications to the doctor_info object
+        for row in doctor_rows:
+            doctor_info["certifications"].append({
+                "certification_name": row["name"],
+                "institution": row["institution"],
+                "expiration_date": row["expiration_date"].strftime("%Y-%m-%d")  # Convert date to string
+            })
+        
+        return jsonify(doctor_info)
+    except Exception as e:
+        print("Error executing query:", e)
+        return jsonify({"error": str(e)}), 500
+
+    
+# doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
 @app.route('/get_pharmacists', methods =['GET'])
 def get_pharmacy():
     pharmacist = con.query(f"SELECT * from pharmacist ORDER BY first_name;")
