@@ -4,6 +4,34 @@ USE Chemical_database;
 
 -- Entities
 
+CREATE TABLE insurance_company(
+	name VARCHAR(30) PRIMARY KEY,
+    contact VARCHAR(30)
+);
+
+INSERT INTO insurance_company (name, contact)
+VALUES
+('UnitedHealth Group', '1-800-328-5979'),
+('Anthem Blue Cross', '1-800-331-1476'),
+('Aetna', '1-855-372-8824'),
+('Cigna', '1-800-997-1654'),
+('Humana', '1-877-877-1051'),
+('Kaiser Permanente', '1-800-464-4000'),
+('Blue Shield of California', '1-888-256-3650'),
+('Molina Healthcare', '1-888-665-4621'),
+('Health Net', '1-800-522-0088'),
+('WellCare Health Plans', '1-866-999-3945'),
+('Centene Corporation', '1-800-392-2160'),
+('Oscar Health', '1-855-672-2788'),
+('United Healthcare of Texas', '1-800-357-0978'),
+('Blue Cross Blue Shield', '1-888-630-2583'),
+('CareFirst BlueCross BlueShield', '1-800-783-4582'),
+('Harvard Pilgrim Health Care', '1-888-888-4742'),
+('Highmark', '1-866-823-2573'),
+('Independence Blue Cross', '1-800-275-2583'),
+('EmblemHealth', '1-800-447-8255'),
+('Medica', '1-800-936-6880');
+
 CREATE TABLE customer(
 	insurance_id INT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
@@ -15,30 +43,33 @@ CREATE TABLE customer(
     address_zipcode CHAR(5) NOT NULL,
     dob DATE NOT NULL,
     email VARCHAR(30) NOT NULL,
-    phone CHAR(10) NOT NULL
+    phone CHAR(10) NOT NULL,
+    insurance_name VARCHAR(30),
+    FOREIGN KEY (insurance_name) REFERENCES insurance_company(name)
+	ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO customer VALUES 
-(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111),
-(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222),
-(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 3333333333),
-(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 1111111212),
-(111112345, 'Lucygray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 4444444444),
-(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 5555555555),
-(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 6666666666),
-(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 7777777777),
-(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 8888888888),
-(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 9999999999),
-(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 1112221111),
-(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 1113331111),
-(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-10-10', 'pheavensbee@gmail.com', 1114441111),
-(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111555111),
-(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 7163414340),
-(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 7819592378),
-(222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 8681932849),
-(222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392),
-(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378), 
-(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823);
+(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111,'Blue Cross Blue Shield'),
+(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222,'Health Net'),
+(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 3333333333,'Health Net'),
+(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 1111111212,'Harvard Pilgrim Health Care'),
+(111112345, 'Lucygray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 4444444444,'Centene Corporation'),
+(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 5555555555,'Aetna'),
+(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 6666666666, 'Cigna'),
+(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 7777777777,'Health Net'),
+(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 8888888888,'EmblemHealth'),
+(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 9999999999,'EmblemHealth'),
+(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 1112221111,'Humana'),
+(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 1113331111,'Blue Cross Blue Shield'),
+(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-10-10', 'pheavensbee@gmail.com', 1114441111,'Independence Blue Cross'),
+(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111555111,'Cigna'),
+(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 7163414340,'CareFirst BlueCross BlueShield'),
+(222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 7819592378,'Blue Cross Blue Shield'),
+(222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 8681932849,'Oscar Health'),
+(222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392,'Anthem Blue Cross'),
+(333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378,'Oscar Health'), 
+(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823,'Independence Blue Cross');
 
 
 CREATE TABLE pharmacy_store(
@@ -135,7 +166,6 @@ INSERT INTO doctor VALUES
 
 CREATE TABLE orders(
 	order_id INT PRIMARY KEY,
-    medicine VARCHAR(30) NOT NULL,
     delivery_date DATE NOT NULL,
     doctor_first_name varchar(30) NOT NULL,
     doctor_last_name varchar(30) not null,
@@ -144,50 +174,50 @@ CREATE TABLE orders(
     on update cascade on delete cascade
 );
 
-INSERT INTO orders (order_id, medicine, delivery_date, doctor_first_name, doctor_last_name, doctor_specialty) VALUES
-(1, 'Paracetamol', '2024-12-01','Khushi','Neema','Psychiatrist'),
-(2, 'Ibuprofen', '2024-12-02','Grace', 'Cerrato','Neurology'),
-(3, 'Aspirin', '2024-12-03','Natasha', 'Nicholas','Pediatrics'),
-(4, 'Amoxicillin', '2024-12-04','Kathleen', 'Durant','Family Medicine'),
-(5, 'Metformin', '2024-12-05','Natasha', 'Nicholas','Pediatrics'),
-(6, 'Simvastatin', '2024-12-06','Khushi','Neema','Psychiatrist'),
-(7, 'Cetirizine', '2024-12-07','Kathleen', 'Durant','Family Medicine'),
-(8, 'Lisinopril', '2024-12-08','Shane','Holmes','Family Medicine'),
-(9, 'Omeprazole', '2024-12-09','Kathleen', 'Durant','Family Medicine'),
-(10, 'Metoprolol', '2024-12-10','Natasha', 'Nicholas','Pediatrics'),
-(11, 'Prednisone', '2024-12-11','Kathleen', 'Durant','Family Medicine'),
-(12, 'Doxycycline', '2024-12-12','Khushi','Neema','Psychiatrist'),
-(13, 'Losartan', '2024-12-13','Khushi','Neema','Psychiatrist'),
-(14, 'Hydrochlorothiazide', '2024-12-14','Shane','Holmes','Family Medicine'),
-(15, 'Albuterol', '2024-12-15','Grace', 'Cerrato','Neurology'),
-(16, 'Gabapentin', '2024-12-16','Shane','Holmes','Family Medicine'),
-(17, 'Fluoxetine', '2024-12-17','Natasha', 'Nicholas','Pediatrics'),
-(18, 'Furosemide', '2024-12-18','Shane','Holmes','Family Medicine'),
-(19, 'Clonazepam', '2024-12-19','Kathleen', 'Durant','Family Medicine'),
-(20, 'Loratadine', '2024-12-20','Natasha', 'Nicholas','Pediatrics'),
-(21, 'Ciprofloxacin', '2024-12-21','Natasha', 'Nicholas','Pediatrics'),
-(22, 'Atorvastatin', '2024-12-22','Grace', 'Cerrato','Neurology'),
-(23, 'Hydroxychloroquine', '2024-12-23','Grace', 'Cerrato','Neurology'),
-(24, 'Gabapentin', '2024-12-24','Shane','Holmes','Family Medicine'),
-(25, 'Amlodipine', '2024-12-25','Natasha', 'Nicholas','Pediatrics'),
-(26, 'Lansoprazole', '2024-12-26','Grace', 'Cerrato','Neurology'),
-(27, 'Naproxen', '2024-12-27','Grace', 'Cerrato','Neurology'),
-(28, 'Prazosin', '2024-12-28','Kathleen', 'Durant','Family Medicine'),
-(29, 'Tamsulosin', '2024-12-29','Shane','Holmes','Family Medicine'),
-(30, 'Clindamycin', '2024-12-30','Shane','Holmes','Family Medicine'),
-(31, 'Chlorpheniramine', '2024-12-31','Khushi','Neema','Psychiatrist'),
-(32, 'Metoclopramide', '2025-01-01','Khushi','Neema','Psychiatrist'),
-(33, 'Alprazolam', '2025-01-02','Kathleen', 'Durant','Family Medicine'),
-(34, 'Propranolol', '2025-01-03','Khushi','Neema','Psychiatrist'),
-(35, 'Fentanyl', '2025-01-04','Kathleen', 'Durant','Family Medicine'),
-(36, 'Diltiazem', '2025-01-05','Khushi','Neema','Psychiatrist'),
-(37, 'Oxycodone', '2025-01-06','Shane','Holmes','Family Medicine'),
-(38, 'Ethambutol', '2025-01-07','Natasha', 'Nicholas','Pediatrics'),
-(39, 'Zolpidem', '2025-01-08','Shane','Holmes','Family Medicine'),
-(40, 'Pregabalin', '2025-01-09','Kathleen', 'Durant','Family Medicine'),
-(41, 'Diclofenac', '2025-01-10','Khushi','Neema','Psychiatrist'),
-(42, 'Mupirocin', '2025-01-11','Shane','Holmes','Family Medicine'),
-(43, 'Sildenafil', '2025-01-12','Natasha', 'Nicholas','Pediatrics');
+INSERT INTO orders (order_id, delivery_date, doctor_first_name, doctor_last_name, doctor_specialty) VALUES
+(1, '2024-12-01','Khushi','Neema','Psychiatrist'),
+(2, '2024-12-02','Grace', 'Cerrato','Neurology'),
+(3, '2024-12-03','Natasha', 'Nicholas','Pediatrics'),
+(4, '2024-12-04','Kathleen', 'Durant','Family Medicine'),
+(5,  '2024-12-05','Natasha', 'Nicholas','Pediatrics'),
+(6,  '2024-12-06','Khushi','Neema','Psychiatrist'),
+(7,  '2024-12-07','Kathleen', 'Durant','Family Medicine'),
+(8,  '2024-12-08','Shane','Holmes','Family Medicine'),
+(9,  '2024-12-09','Kathleen', 'Durant','Family Medicine'),
+(10,  '2024-12-10','Natasha', 'Nicholas','Pediatrics'),
+(11,  '2024-12-11','Kathleen', 'Durant','Family Medicine'),
+(12, '2024-12-12','Khushi','Neema','Psychiatrist'),
+(13, '2024-12-13','Khushi','Neema','Psychiatrist'),
+(14,'2024-12-14','Shane','Holmes','Family Medicine'),
+(15,'2024-12-15','Grace', 'Cerrato','Neurology'),
+(16, '2024-12-16','Shane','Holmes','Family Medicine'),
+(17, '2024-12-17','Natasha', 'Nicholas','Pediatrics'),
+(18, '2024-12-18','Shane','Holmes','Family Medicine'),
+(19, '2024-12-19','Kathleen', 'Durant','Family Medicine'),
+(20, '2024-12-20','Natasha', 'Nicholas','Pediatrics'),
+(21, '2024-12-21','Natasha', 'Nicholas','Pediatrics'),
+(22, '2024-12-22','Grace', 'Cerrato','Neurology'),
+(23, '2024-12-23','Grace', 'Cerrato','Neurology'),
+(24, '2024-12-24','Shane','Holmes','Family Medicine'),
+(25, '2024-12-25','Natasha', 'Nicholas','Pediatrics'),
+(26, '2024-12-26','Grace', 'Cerrato','Neurology'),
+(27, '2024-12-27','Grace', 'Cerrato','Neurology'),
+(28, '2024-12-28','Kathleen', 'Durant','Family Medicine'),
+(29, '2024-12-29','Shane','Holmes','Family Medicine'),
+(30, '2024-12-30','Shane','Holmes','Family Medicine'),
+(31, '2024-12-31','Khushi','Neema','Psychiatrist'),
+(32, '2025-01-01','Khushi','Neema','Psychiatrist'),
+(33, '2025-01-02','Kathleen', 'Durant','Family Medicine'),
+(34, '2025-01-03','Khushi','Neema','Psychiatrist'),
+(35, '2025-01-04','Kathleen', 'Durant','Family Medicine'),
+(36, '2025-01-05','Khushi','Neema','Psychiatrist'),
+(37, '2025-01-06','Shane','Holmes','Family Medicine'),
+(38, '2025-01-07','Natasha', 'Nicholas','Pediatrics'),
+(39, '2025-01-08','Shane','Holmes','Family Medicine'),
+(40, '2025-01-09','Kathleen', 'Durant','Family Medicine'),
+(41, '2025-01-10','Khushi','Neema','Psychiatrist'),
+(42, '2025-01-11','Shane','Holmes','Family Medicine'),
+(43, '2025-01-12','Natasha', 'Nicholas','Pediatrics');
 
 
 CREATE TABLE certification(
@@ -384,33 +414,7 @@ VALUES
 ('Nerve Pain Relief', 'Nerves');
 
 
-CREATE TABLE insurance_company(
-	name VARCHAR(30) PRIMARY KEY,
-    contact VARCHAR(30)
-);
 
-INSERT INTO insurance_company (name, contact)
-VALUES
-('UnitedHealth Group', '1-800-328-5979'),
-('Anthem Blue Cross', '1-800-331-1476'),
-('Aetna', '1-855-372-8824'),
-('Cigna', '1-800-997-1654'),
-('Humana', '1-877-877-1051'),
-('Kaiser Permanente', '1-800-464-4000'),
-('Blue Shield of California', '1-888-256-3650'),
-('Molina Healthcare', '1-888-665-4621'),
-('Health Net', '1-800-522-0088'),
-('WellCare Health Plans', '1-866-999-3945'),
-('Centene Corporation', '1-800-392-2160'),
-('Oscar Health', '1-855-672-2788'),
-('United Healthcare of Texas', '1-800-357-0978'),
-('Blue Cross Blue Shield', '1-888-630-2583'),
-('CareFirst BlueCross BlueShield', '1-800-783-4582'),
-('Harvard Pilgrim Health Care', '1-888-888-4742'),
-('Highmark', '1-866-823-2573'),
-('Independence Blue Cross', '1-800-275-2583'),
-('EmblemHealth', '1-800-447-8255'),
-('Medica', '1-800-936-6880');
 
 
 
