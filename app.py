@@ -64,7 +64,7 @@ def get_customer_info():
 
     customer_id = request.args.get('id').split()
 
-    customer = con.query(f"SELECT * FROM chemical_database.customer cu WHERE cu.first_name = '{customer_id[0]}' and cu.last_name = '{customer_id[1]}';")
+    customer = con.query(f"SELECT * FROM chemical_database.customer cu JOIN chemical_database.insurance_company ic ON cu.insurance_name = ic.name WHERE cu.first_name = '{customer_id[0]}' and cu.last_name = '{customer_id[1]}';")
 
     customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
  
