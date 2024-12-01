@@ -50,9 +50,14 @@ def get_customers():
 
 @app.route('/get_doctors', methods=['GET'])
 def get_doctors():
-    # Example customer list (replace with database query)
     doctors = con.query("SELECT * FROM chemical_database.doctor order by first_name;")
     return jsonify(doctors)
+
+
+@app.route('/get_meds', methods=['GET'])
+def get_meds():
+    meds = con.query("SELECT * FROM chemical_database.medication order by common_name;")
+    return jsonify(meds)
 
 
 def addDashesToPhoneNumber(number: str):
