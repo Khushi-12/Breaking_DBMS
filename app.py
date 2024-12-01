@@ -49,9 +49,14 @@ def get_customers():
 
 @app.route('/get_doctors', methods=['GET'])
 def get_doctors():
-    # Example customer list (replace with database query)
     doctors = con.query("SELECT * FROM chemical_database.doctor order by first_name;")
     return jsonify(doctors)
+
+
+@app.route('/get_meds', methods=['GET'])
+def get_meds():
+    meds = con.query("SELECT * FROM chemical_database.medication order by common_name;")
+    return jsonify(meds)
 
 
 def addDashesToPhoneNumber(number: str):
@@ -92,8 +97,20 @@ def get_doctor_info():
 
     doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
  
-    print(doctor[0])
     return jsonify(doctor[0])
+
+
+@app.route('/get_medication_info', methods=['GET'])
+def get_medication_info():
+
+    med_id = request.args.get('id')
+
+    med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.common_name = '{med_id}';")
+
+    med = med[0]
+ 
+    return jsonify(med)
+
 
 @app.route('/get_pharmacists', methods =['GET'])
 def get_pharmacy():

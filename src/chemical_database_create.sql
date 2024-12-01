@@ -780,7 +780,16 @@ VALUES
 ('Folic Acid', 'Folacare', 'Loratadine'),
 ('Ascorbic Acid', 'C-1000', 'Simvastatin'),
 ('Sodium Bicarbonate', 'Sodibic', 'Simvastatin'),
-('Hydrochloric Acid', 'Acidol', 'Aspirin');
+('Hydrochloric Acid', 'Acidol', 'Aspirin'),
+('Ranitidine', 'Zantac', 'Simvastatin'),
+('Warfarin', 'Coumadin', 'Ibuprofen'),
+('Epinephrine', 'EpiPen', 'Metformin'),
+('Atorvastatin', 'Lipitor', 'Paracetamol'),
+('Folic Acid', 'Folacare', 'Metformin'),
+('Ascorbic Acid', 'C-1000', 'Cetirizine'),
+('Epinephrine', 'EpiPen', 'Loratadine'),
+('Ketamine', 'Ketalar', 'Loratadine')
+;
 
 
 CREATE TABLE used_for ( -- medication to uses
@@ -858,4 +867,13 @@ VALUES
 ('Fluoxetine', 11),  
 ('Furosemide', 11),  
 ('Clonazepam', 11), 
-('Loratadine', 8);  
+('Loratadine', 8),
+('Doxycycline', 2),
+('Albuterol', 4),  
+('Gabapentin', 3),  
+('Fluoxetine', 7), 
+('Simvastatin', 7), 
+('Cetirizine', 10),
+('Omeprazole', 1),  
+('Metoprolol', 2)
+;  
