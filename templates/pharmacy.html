@@ -234,6 +234,7 @@
         <div class="left-box">
             <button onclick="displayTable('Customers')">Customers</button>
             <button onclick="displayTable('Doctors')">Doctors</button>
+            <button onclick="displayTable('MedWiki')">MedWiki</button>
             <!-- <button onclick="displayTable('Inventory')">Inventory</button>
             <button onclick="displayTable('Suppliers')">Suppliers</button> -->
         </div>
@@ -315,6 +316,38 @@
                         <p>Failed to load doctor details.</p>
                     `;
                 }
+            } else if (tableName === "MedWiki") {
+                try {
+                    // Fetch the customer list from the backend
+                    const response = await fetch('/get_meds');
+                    if (!response.ok) throw new Error("Failed to fetch medications list");
+    
+                    const meds = await response.json();
+    
+                    // Build the dropdown dynamically with customer data
+                    const customerDropdown = `
+                    <label for="medDropdown">Select a Medication:</label>
+                    <select id="medDropdown" name="medDropdown">
+                        ${meds.map(med => `<option value="${med.common_name}">${med.common_name}</option>`).join('')}
+                    </select>
+                `;
+    
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Details of the ${tableName} table will appear here.</p>
+                        ${customerDropdown}
+                        <div id="info-card" class="info-card hidden"></div>
+                    `;
+
+                    document.getElementById('medDropdown').addEventListener('change', displayMedInfo);
+                } catch (error) {
+                    console.error("Error fetching med data:", error);
+                    displayArea.innerHTML = `
+                        <h2>${tableName} Table</h2>
+                        <p>Failed to load med details.</p>
+                    `;
+                }
+
             } else {
                 // Handle other tables (if any)
                 displayArea.innerHTML = `
@@ -418,6 +451,7 @@
             // You can use this section to set up any initialization logic for the page
         });
         
+
         async function displayDoctorInfo(event) {
     const doctorId = event.target.value;
     const infoCard = document.getElementById('info-card');
@@ -470,6 +504,41 @@
         infoCard.innerHTML = ""; // Clear the info card if no doctor is selected
     }
 }
+
+
+
+
+        async function displayMedInfo(event) {
+            const doctorId = event.target.value;
+            const infoCard = document.getElementById('info-card');
+
+            if (doctorId) {
+                try {
+                    const response = await fetch(`/get_medication_info?id=${encodeURIComponent(doctorId)}`);
+                    if (!response.ok) throw new Error("Failed to fetch med info");
+
+                    const medInfo = await response.json();
+
+                    infoCard.innerHTML = `
+                        <h3>${medInfo.common_name}</h3>
+                        <p>Scientific Name: ${medInfo.scientific_name}</p>
+                        <p>Brand Name: ${medInfo.brand_name}</p>
+                        <p>Intake Type: ${medInfo.type}</p>
+                        <p>Manufacturer: ${medInfo.contact}</p>
+                        <p>Medicine Warning: ${medInfo.warnings}</p>
+                    `;
+                    
+                    infoCard.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Error fetching med info:", error);
+                    infoCard.innerHTML = "<p>Failed to load med details.</p>";
+                    infoCard.classList.remove('hidden');
+                }
+            } else {
+                infoCard.classList.add('hidden');
+            }
+        }
+
 
         
         // Placeholder functions for top bar actions
