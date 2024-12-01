@@ -154,6 +154,18 @@ def get_doctor_info():
         return jsonify({"error": str(e)}), 500
 
     
+@app.route('/get_medication_info', methods=['GET'])
+def get_medication_info():
+
+    med_id = request.args.get('id')
+
+    med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.common_name = '{med_id}';")
+
+    med = med[0]
+ 
+    return jsonify(med)
+
+
 # doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
 @app.route('/get_pharmacists', methods =['GET'])
 def get_pharmacy():
