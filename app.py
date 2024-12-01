@@ -74,6 +74,7 @@ def get_customer_info():
     for orderInd in range(len(customer_orders)):
         orderNumber = customer_orders[orderInd]['order_id']
         prescriptions = con.query(f"SELECT * FROM prescription pre JOIN contains con ON pre.val = con.prescription_id WHERE order_id = {orderNumber};")
+        # prescriptions = con.query(f"SELECT * FROM prescription pre JOIN contains con ON pre.val = con.prescription_id WHERE order_id = (SELECT o.order_id FROM orders o JOIN picks_up pi ON o.order_id = pi.order_id JOIN customer cu ON pi.customer_id = cu.insurance_id WHERE cu.first_name = '{customer_id[0]}' and cu.last_name = '{customer_id[1]}');")
         customer_orders[orderInd]["prescriptions"] = prescriptions
 
     customer["orders"] = customer_orders
