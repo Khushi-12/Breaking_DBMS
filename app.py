@@ -12,8 +12,9 @@ password = os.environ['PASSWORD']
 try:
     con = sql_connector.sqlConnector()
     con.connect(username, password, "localhost", "chemical_database")
+    print("Successfully Connected")
 
-except Error as e:
+except Exception as e:
     print("Not connecting")
 app = Flask (__name__)
 
@@ -105,7 +106,7 @@ def get_pharmacy():
 def get_pharmacy_info():
     pharmacist_id = request.args.get('name').split()
     pharmacist_id = request.args.get('name').split()
-    print("Pharmacist ID:", pharmacist_id)
+    # print("Pharmacist ID:", pharmacist_id)
 
     # if len(pharmacist_id) != 2:
     #     return jsonify({"error": "Invalid name format. Expected 'first_name last_name'."}), 400
