@@ -291,6 +291,17 @@ def get_orders_for_customer():
 def setting():
     return render_template('pharmacist_profile.html')
 
+@app.route('/add_new')
+def add_new():
+    return render_template('add_new.html')
+
+@app.route('/modify')
+def modify():
+    return render_template('modify.html')
+
+@app.route('/delete')
+def delete():
+    return render_template('delete.html')
 
 if __name__ == '__main__':
     
