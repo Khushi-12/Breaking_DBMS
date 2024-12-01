@@ -419,6 +419,7 @@ VALUES
 
 
 -- Relationships
+drop table obtains_doctor;
 CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -440,7 +441,8 @@ VALUES
 ('Shane', 'Holmes', 'General Practitioner License'),
 ('Khushi', 'Neema', 'Pediatrician License'),
 ('Grace', 'Cerrato', 'Doctor License'),
-('Kathleen', 'Durant', 'General Practitioner License');
+('Kathleen', 'Durant', 'General Practitioner License'),
+('Kathleen', 'Durant', 'Doctor License');
 
 
 CREATE TABLE obtains_pharmacist ( -- pharm, certification
