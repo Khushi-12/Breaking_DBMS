@@ -355,150 +355,28 @@
                         </div>
 
                         <div class="tab-content hidden" id="tab2">
-                            
                             <div class="scroll-container">
-                                <!-- Order boxes go here -->
-                                <div class="box">
-                                    <h3>Order #1</h3>
-                                    <p><strong>Expiration Date:</strong> 2024-12-01</p>
-                                    <p><strong>Illness:</strong> Common Cold</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. John Smith</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Amoxicillin</p>
-                                            <p><strong>Dosage:</strong> 500 mg</p>
-                                            <p><strong>Frequency:</strong> Twice a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 2</h4>
-                                            <p><strong>Medication:</strong> Ibuprofen</p>
-                                            <p><strong>Dosage:</strong> 200 mg</p>
-                                            <p><strong>Frequency:</strong> Every 6 hours</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div class="box">
-                                    <h3>Order #2</h3>
-                                    <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                    <p><strong>Illness:</strong> Allergies</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 2</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 3</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
+                                ${customerInfo.orders.map(order => `
+                                    <div class="box">
+                                        <h3>Order #${order.order_id}</h3>
+                                        <p><strong>Delivery Date:</strong> ${order.delivery_date}</p>
+                                        <p><strong>Pickup Pharmacy Name:</strong> ${order.pharmacy_name}</p>
+                                        <p><strong>Prescribing Doctor:</strong> Dr. ${order.doctor_first_name}</p>
+                                        <div class="prescription-container">
+                                            ${order.prescriptions.length > 0 ? order.prescriptions.map(prescription => `
+                                                <div class="prescription-box">
+                                                    <h4>Prescription ${prescription.val}</h4>
+                                                    <p><strong>Brand Name:</strong> ${prescription.brand_name}</p>
+                                                    <p><strong>Name:</strong> ${prescription.scientific_name}</p>
+                                                    <p><strong>Quantity:</strong> ${prescription.quantity}</p>
+                                                    <p><strong>Dosage:</strong> ${prescription.dosage} mg</p>
+                                                    <p><strong>Expiration Date:</strong> ${prescription.expiration_date}</p>
+                                                </div>
+                                            `).join('') : `<p>No prescriptions for this order.</p>`}
                                         </div>
                                     </div>
-                                </div>
-                            
-                                <div class="box">
-                                    <h3>Order #3</h3>
-                                    <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                    <p><strong>Illness:</strong> Allergies</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div class="box">
-                                    <h3>Order #4</h3>
-                                    <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                    <p><strong>Illness:</strong> Allergies</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div class="box">
-                                    <h3>Order #5</h3>
-                                    <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                    <p><strong>Illness:</strong> Allergies</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div class="box">
-                                    <h3>Order #6</h3>
-                                    <p><strong>Expiration Date:</strong> 2025-01-15</p>
-                                    <p><strong>Illness:</strong> Allergies</p>
-                                    <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
-                                    <div class="prescription-container">
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                        <div class="prescription-box">
-                                            <h4>Prescription 1</h4>
-                                            <p><strong>Medication:</strong> Cetirizine</p>
-                                            <p><strong>Dosage:</strong> 10 mg</p>
-                                            <p><strong>Frequency:</strong> Once a day</p>
-                                        </div>
-                                    </div>
-                                </div>
-                        
-                        
+                                `).join('')}
                             </div>
-
                         </div>
                     `;
                     infoCard.classList.remove('hidden');
