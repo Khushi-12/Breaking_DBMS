@@ -83,9 +83,31 @@
             background-color: #dc3545;
             color: white;
         }
+        .back-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <div class="back-button">
+            <button onclick="goBack()">Back to Main Page</button>
+    </div>
     <div class="form-container">
         <h2>Add New Doctor</h2>
         <form id="doctor-form">
@@ -178,110 +200,9 @@
     </script>
 
     <script>
-    //     const certificationsContainer = document.getElementById("certifications-container");
-    //     const addCertificationButton = document.getElementById("add-certification-button");
-    //     let certificationCount = 1;
-
-    //     // Add a new certification form
-    //     // Dynamically add a new certification
-    // // document.querySelectorAll("select").forEach((dropdown) => {
-    // // certificateNames.forEach((cert) => {
-    // //     const option = document.createElement("option");
-    // //     option.value = cert;
-    // //     option.textContent = cert;
-    // //     dropdown.appendChild(option);
-    // //     });
-    // // });
-
-
-    //     addCertificationButton.addEventListener("click", () => {
-    //         certificationCount++;
-    //         const certificationGroup = document.createElement("div");
-    //         certificationGroup.classList.add("certification-group");
-    //         certificationGroup.id = `certification-${certificationCount}`;
-    //         certificationGroup.innerHTML = `
-    //             <h4>Certification ${certificationCount}</h4>
-    //             <div class="form-group">
-    //                 <label for="cert-name-${certificationCount}">Certification Name</label>
-    //                 <select id="cert-name-${certificationCount}" name="certifications[${certificationCount}][certification_name]" required>
-    //                     <option value="">-- Select Certification --</option>
-    //                     {% for cert in certificate_names %}
-    //                             <option value="{{ cert }}">{{ cert }}</option>
-    //                         {% endfor %}
-    //                 </select>
-    //             </div>
-    //             <div class="form-group">
-    //                 <label for="institution-${certificationCount}">Institution</label>
-    //                 <input type="text" id="institution-${certificationCount}" name="certifications[${certificationCount}][institution]" required>
-    //             </div>
-    //             <div class="form-group">
-    //                 <label for="expiration-${certificationCount}">Expiration Date</label>
-    //                 <input type="date" id="expiration-${certificationCount}" name="certifications[${certificationCount}][expiration_date]" required>
-    //             </div>
-    //             <button type="button" class="remove-button" onclick="removeCertification(${certificationCount})">Remove</button>
-    //         `;
-    //         certificationsContainer.appendChild(certificationGroup);
-    //     });
-
-
-
-    //     // Remove a certification form
-    //     function removeCertification(id) {
-    //         const certificationGroup = document.getElementById(`certification-${id}`);
-    //         if (certificationGroup) certificationsContainer.removeChild(certificationGroup);
-    //     }
-
-    //     // Handle form submission
-    //     document.getElementById("doctor-form").addEventListener("submit", (e) => {
-    //     e.preventDefault(); // Prevent default form submission behavior
-    //     console.log(doctorInfo)
-
-    //     // Collect doctor information
-    //     const doctorInfo = {
-    //         first_name: document.getElementById("first-name").value,
-    //         last_name: document.getElementById("last-name").value,
-    //         office_name: document.getElementById("office-name").value,
-    //         office_address_street_name: document.getElementById("street-name").value,
-    //         office_address_street_num: document.getElementById("street-num").value,
-    //         office_address_town: document.getElementById("town").value,
-    //         office_address_state: document.getElementById("state").value,
-    //         office_address_zipcode: document.getElementById("zipcode").value,
-    //         email: document.getElementById("email").value,
-    //         phone: document.getElementById("phone").value,
-    //         specialty: document.getElementById("specialty").value,
-    //         certifications: []
-    //     };
-
-    //     // Collect certifications
-    //     const certificationGroups = document.querySelectorAll(".certification-group");
-    //     certificationGroups.forEach((group) => {
-    //         const certName = group.querySelector(`[id^="cert-name-"]`).value;
-    //         const institution = group.querySelector(`[id^="institution-"]`).value;
-    //         const expirationDate = group.querySelector(`[id^="expiration-"]`).value;
-
-    //         doctorInfo.certifications.push({
-    //             certification_name: certName,
-    //             institution: institution,
-    //             expiration_date: expirationDate
-    //         });
-        
-    //     });
-    //     console.log("Doctor Information:", doctorInfo);
-    //     // Confirm submission
-    //     const confirmation = confirm("Are you sure you want to submit?");
-    //     if (confirmation) {
-    //         console.log("Doctor Information:", doctorInfo);
-    //         alert("Doctor information has been saved successfully!");
-    //         // Optionally, send this data to the server via fetch or other methods
-    //     }
-    // });
-
-
-                // Assume this array is populated from the server or defined elsewhere
-
-    
-
-
+     function goBack() {
+            window.location.href = '/user'; // Replace '/' with the main page URL
+        }
     const certificationsContainer = document.getElementById("certifications-container");
     const addCertificationButton = document.getElementById("add-certification-button");
     let certificationCount = 1;
