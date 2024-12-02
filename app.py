@@ -324,15 +324,82 @@ def get_orders_for_customer():
 def setting():
     return render_template('pharmacist_profile.html')
 
-@app.route('/add_new', methods=['GET'])
+@app.route('/add_new', methods=['GET', 'POST'])
 def add_new():
-    con = get_con()
-    try:
-        certificates = con.query("SELECT name FROM certification")
-        certificate_names = [cert['name'] for cert in certificates]
-        return render_template('add_new.html', certificate_names=certificate_names)
-    finally:
-        con.close()
+    if request.method == 'GET':
+        con = get_con()
+        try:
+            certificates = con.query("SELECT name FROM certification")
+            certificate_names = [cert['name'] for cert in certificates]
+            return render_template('add_new.html', certificate_names=certificate_names)
+        finally:
+            con.close()
+    elif request.method == 'POST':
+        data = request.get_json()
+        con = get_con()
+        try:
+            # Insert doctor information
+            doctor_info = data
+            insert_doctor_query = """
+                INSERT INTO doctor (
+                    first_name, last_name, office_name, office_address_street_name, office_address_street_num,
+                    office_address_town, office_address_state, office_address_zipcode, email, phone, specialty
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            doctor_values = (
+                doctor_info['first_name'],
+                doctor_info['last_name'],
+                doctor_info['office_name'],
+                doctor_info['office_address_street_name'],
+                doctor_info['office_address_street_num'],
+                doctor_info['office_address_town'],
+                doctor_info['office_address_state'],
+                doctor_info['office_address_zipcode'],
+                doctor_info['email'],
+                doctor_info['phone'],
+                doctor_info['specialty']
+            )
+            # Execute the insert into 'doctor' table
+            con.execute(insert_doctor_query, doctor_values)
+
+            # For each certification, insert into 'certification' and 'obtains_doctor' tables
+            certifications = doctor_info.get('certifications', [])
+            for cert in certifications:
+                cert_name = cert['certification_name']
+                institution = cert['institution']
+                expiration_date = cert['expiration_date']
+                # Check if certification exists
+                select_cert_query = "SELECT * FROM certification WHERE name = %s"
+                cert_result = con.query(select_cert_query, (cert_name,))
+                if not cert_result:
+                    # Insert into 'certification' table
+                    insert_cert_query = """
+                        INSERT INTO certification (name, institution,expiration_date)
+                        VALUES (%s, %s, %s)
+                    """
+                    con.execute(insert_cert_query, (cert_name, institution, expiration_date))
+                # Insert into 'obtains_doctor' table
+                insert_obtains_query = """
+                    INSERT INTO obtains_doctor (first_name, last_name, certification_name)
+                    VALUES (%s, %s, %s)
+                """
+                obtains_values = (
+                    doctor_info['first_name'],
+                    doctor_info['last_name'],
+                    cert_name,
+                )
+                con.execute(insert_obtains_query, obtains_values)
+            # Commit the transaction
+            con.commit()
+            return jsonify({'success': True}), 200
+        except Exception as e:
+            # Handle the error, rollback the transaction
+            con.rollback()
+            print("Error inserting doctor:", e)
+            return jsonify({'success': False, 'error': str(e)}), 500
+        finally:
+            con.close()
+
 
 @app.route('/modify')
 def modify():
