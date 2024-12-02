@@ -61,6 +61,11 @@ class sqlConnector:
 
     def getConnectionStatus(self):
         return self.connection is not None and self.connection.open
+    
+    def close(self):
+        if self.connection:
+            self.connection.close()
+            self.connection = None
 
 
 

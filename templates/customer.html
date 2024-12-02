@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Database</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .top-bar button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .top-bar button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+
+        .left-box {
+            width: 20%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .left-box button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .left-box button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .right-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .right-box h2 {
+            color: #333;
+        }
+
+        .right-box p {
+            color: #555;
+        }
+
+        .info-card {
+            position: relative;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            gap: 10px; /* Space between orders */
+            background-color: #f4f4f4;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background-color: #ddd;
+        }
+
+        .box {
+            min-width: 300px;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .box h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .box p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .box .prescription-container {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar-track {
+            background-color: #ddd;
+        }
+
+        .prescription-box {
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .prescription-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .prescription-box h4 {
+            margin: 0 0 5px;
+            font-size: 16px;
+            color: #007bff;
+        }
+
+        .prescription-box p {
+            margin: 3px 0;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+        }
+        .tab-button.active {
+            background-color: #ddd;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .tab-content:not(.hidden) {
+            display: block;
+        }
+
+
+    </style>
+</head>
+<body>
+    <script>
+        async function CustomerInfo(event) {
+            try {
+                const response = await fetch('/get_customers');
+                if (!response.ok) throw new Error("Failed to fetch customer list");
+
+                const customers = await response.json();
+
+                // Build the dropdown dynamically with customer data
+                const customerDropdown = `
+                <label for="customerDropdown">Select a Customer:</label>
+                <select id="customerDropdown" name="customerDropdown">
+                    ${customers.map(customer => `<option value="${customer.first_name + " " + customer.last_name}">${customer.first_name + " " + customer.last_name}</option>`).join('')}
+                </select>
+                `;
+
+                displayArea.innerHTML = `
+                    <h2>${tableName} Table</h2>
+                    <p>Details of the ${tableName} table will appear here.</p>
+                    ${customerDropdown}
+                    <div id="info-card" class="info-card hidden"></div>
+                `;
+
+                // Add event listener for dropdown change
+                document.getElementById('customerDropdown').addEventListener('change', displayCustomerInfo);
+
+            } 
+            catch (error) {
+                console.error("Error fetching customer data:", error);
+                displayArea.innerHTML = `
+                    <h2>${tableName} Table</h2>
+                    <p>Failed to load customer details.</p>
+                `;
+            }
+            
+            async function displayCustomerInfo(event) {
+            const customerId = event.target.value;
+            const infoCard = document.getElementById('info-card');
+
+            if (customerId) {
+                try {
+                    const response = await fetch(`/get_customer_info?id=${encodeURIComponent(customerId)}`);
+                    if (!response.ok) throw new Error("Failed to fetch customer info");
+
+                    const customerInfo = await response.json();
+
+                    infoCard.innerHTML = `
+                        <div class="tabs">
+                            <button class="tab-button active" data-tab="tab1">Info</button>
+                            <button class="tab-button" data-tab="tab2">Orders</button>
+                        </div>
+
+                        <div class="tab-content" id="tab1">
+                            <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
+                            <p>DOB: ${customerInfo.dob}</p>
+                            <p>Email: ${customerInfo.email}</p>
+                            <p>Phone: ${customerInfo.phone}</p>
+                            <p>Address: ${customerInfo.address_street_name} ${customerInfo.address_street_num}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
+                            <p>Insurance #: ${customerInfo.insurance_id}</p>
+                            <p>Insurance Name: ${customerInfo.insurance_name}</p>
+                            <p>Insurance Contact: ${customerInfo.contact}</p>
+                        </div>
+
+                        <div class="tab-content hidden" id="tab2">
+                            <div class="scroll-container">
+                                ${customerInfo.orders.map(order => `
+                                    <div class="box">
+                                        <h3>Order #${order.order_id}</h3>
+                                        <p><strong>Delivery Date:</strong> ${order.delivery_date}</p>
+                                        <p><strong>Pickup Pharmacy Name:</strong> ${order.pharmacy_name}</p>
+                                        <p><strong>Prescribing Doctor:</strong> Dr. ${order.doctor_first_name}</p>
+                                        <div class="prescription-container">
+                                            ${order.prescriptions.length > 0 ? order.prescriptions.map(prescription => `
+                                                <div class="prescription-box">
+                                                    <h4>Prescription ${prescription.val}</h4>
+                                                    <p><strong>Brand Name:</strong> ${prescription.brand_name}</p>
+                                                    <p><strong>Name:</strong> ${prescription.scientific_name}</p>
+                                                    <p><strong>Quantity:</strong> ${prescription.quantity}</p>
+                                                    <p><strong>Dosage:</strong> ${prescription.dosage} mg</p>
+                                                    <p><strong>Expiration Date:</strong> ${prescription.expiration_date}</p>
+                                                </div>
+                                            `).join('') : `<p>No prescriptions for this order.</p>`}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    infoCard.classList.remove('hidden');
+
+                    // Add event listeners for tabs
+                    const tabs = document.querySelectorAll(".tab-button");
+                    const tabContents = document.querySelectorAll(".tab-content");
+                    
+                    tabs.forEach((tab) => {
+                        tab.addEventListener("click", () => {
+                            // Remove 'active' class from all tabs
+                            tabs.forEach((t) => t.classList.remove("active"));
+                        
+                            // Hide all tab contents
+                            tabContents.forEach((content) => content.classList.add("hidden"));
+                        
+                            // Add 'active' class to the clicked tab
+                            tab.classList.add("active");
+                        
+                            // Show the corresponding tab content
+                            const target = tab.dataset.tab;
+                            document.getElementById(target).classList.remove("hidden");
+                        });
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching customer info:", error);
+                    infoCard.innerHTML = "<p>Failed to load customer details.</p>";
+                    infoCard.classList.remove('hidden');
+                }
+            } else {
+                infoCard.classList.add('hidden');
+            }
+        }
+    }
+    </script>
+</body>
+</html>
