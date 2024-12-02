@@ -322,9 +322,15 @@ def get_orders_for_customer():
 def setting():
     return render_template('pharmacist_profile.html')
 
-@app.route('/add_new')
+@app.route('/add_new', methods=['GET'])
 def add_new():
-    return render_template('add_new.html')
+    try:
+        certificates = con.query("SELECT name FROM certification")
+        certificate_names = [cert['name'] for cert in certificates]  # Extract names into a list
+        return render_template('add_new.html', certificate_names=certificate_names)
+    except Exception as e:
+        print(f"Error fetching certificates: {e}")
+        return "Error loading the page", 500
 
 @app.route('/modify')
 def modify():
