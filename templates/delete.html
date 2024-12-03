@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Customer</title>
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .certifications-container {
+            margin-top: 20px;
+        }
+
+        .certification-group {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .certification-group h4 {
+            margin-top: 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .back-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <button onclick="goBack()">Back to Main Page</button>
+    </div>
+    <div class="form-container">
+        <h2>Delete Doctor</h2>
+        <form id="doctor-form">
+            <!-- Doctor Information -->
+            <div class="form-group">
+                <label for="doctor-id">Doctor ID</label>
+                <input type="text" id="doctor-id" name="doctor_id" required placeholder="Enter Doctor ID">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" class="remove-button" id="delete-button">Delete Doctor</button>
+        </form>
+    </div>
+
+    <script>
+        // Go back to the main page
+        function goBack() {
+            window.location.href = '/user'; // Replace '/' with the main page URL
+        }
+
+        // Handle form submission for doctor deletion
+        document.getElementById("doctor-form").addEventListener("submit", (e) => {
+            e.preventDefault(); // Prevent default form submission behavior
+
+            // Collect doctor ID (since we are deleting, we need the doctor's unique ID)
+            const doctorId = document.getElementById("doctor-id").value;
+
+            // Confirm deletion
+            const confirmation = confirm(`Are you sure you want to delete the doctor with ID ${doctorId}?`);
+            if (confirmation) {
+                // Send data to server via fetch for deletion
+                fetch('/delete_doctor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ doctor_id: doctorId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Doctor has been deleted successfully!");
+                        // Optionally, redirect to another page or clear the form
+                        window.location.href = '/user'; // Redirect to main page
+                    } else {
+                        alert("Error deleting doctor: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the doctor.');
+                });
+            }
+        });
+
+        // Handle button click for deletion directly (alternative to form submit)
+        document.getElementById("delete-button").addEventListener("click", function () {
+            const doctorId = document.getElementById("doctor-id").value;
+
+            // Confirm deletion
+            const confirmation = confirm(`Are you sure you want to delete the doctor with ID ${doctorId}?`);
+            if (confirmation) {
+                // Send data to server via fetch for deletion
+                fetch('/delete_doctor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ doctor_id: doctorId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Doctor has been deleted successfully!");
+                        window.location.href = '/user'; // Redirect to main page
+                    } else {
+                        alert("Error deleting doctor: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the doctor.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

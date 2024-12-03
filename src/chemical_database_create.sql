@@ -419,7 +419,7 @@ VALUES
 
 
 -- Relationships
-drop table obtains_doctor;
+drop table if exists obtains_doctor;
 CREATE TABLE obtains_doctor ( -- doc, certification
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -543,10 +543,9 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
     order_id INT NOT NULL,
     pharmacy_id INT NOT NULL,
     PRIMARY KEY (customer_id, order_id, pharmacy_id),
-    FOREIGN KEY (customer_id) REFERENCES customer(insurance_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (pharmacy_id)
-        REFERENCES pharmacy_store(pharmacy_id)
+    FOREIGN KEY (customer_id) REFERENCES customer(insurance_id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy_store(pharmacy_id)
 );
 
 INSERT INTO picks_up (customer_id, order_id, pharmacy_id)
@@ -604,7 +603,7 @@ CREATE TABLE diagnoses ( -- customer, illness, doctor
     doctor_last_name VARCHAR(30) NOT NULL,
     illness_name VARCHAR(30) NOT NULL,
     diagnosis_date DATE NOT NULL,
-    FOREIGN KEY (customer_insurance_id) REFERENCES customer(insurance_id),
+    FOREIGN KEY (customer_insurance_id) REFERENCES customer(insurance_id) ON DELETE CASCADE,
     FOREIGN KEY (doctor_first_name, doctor_last_name) REFERENCES doctor(first_name, last_name),
     FOREIGN KEY (illness_name) REFERENCES illness(name)
 );

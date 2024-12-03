@@ -3,192 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Pharmacist Profile</title>
+    <title>Orders with Prescription Details</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
         }
 
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        .dropdown-container {
+        .scroll-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        select {
+            overflow-x: auto;
             padding: 10px;
-            width: 300px;
-            border: 1px solid #ccc;
+            gap: 10px; /* Space between orders */
+            background-color: #f4f4f4;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
             border-radius: 5px;
-            font-size: 16px;
         }
 
-        .info-container {
-            margin-top: 30px;
-            text-align: center;
+        .scroll-container::-webkit-scrollbar-track {
+            background-color: #ddd;
         }
 
-        .info-card {
-            display: inline-block;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin: 10px;
+        .box {
+            min-width: 300px;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
         }
 
-        .info-card h2 {
+        .box h3 {
             margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .box p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .box .prescription-container {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        .box .prescription-container::-webkit-scrollbar-track {
+            background-color: #ddd;
+        }
+
+        .prescription-box {
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .prescription-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .prescription-box h4 {
+            margin: 0 0 5px;
+            font-size: 16px;
             color: #007bff;
         }
 
-        .info-card p {
-            margin: 5px 0;
-            color: #555;
-        }
-
-        .back-button {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .back-button button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .back-button button:hover {
-            background-color: #0056b3;
+        .prescription-box p {
+            margin: 3px 0;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Select a Pharmacist</h1>
-        <div class="dropdown-container">
-            <label for="pharmacist-dropdown">Choose a pharmacist:</label>
-            <select id="pharmacist-dropdown">
-                <!-- Dropdown will be dynamically populated -->
-            </select>
+    <div class="scroll-container">
+        <!-- Order boxes go here -->
+        <div class="box">
+            <h3>Order #1</h3>
+            <p><strong>Expiration Date:</strong> 2024-12-01</p>
+            <p><strong>Illness:</strong> Common Cold</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. John Smith</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Amoxicillin</p>
+                    <p><strong>Dosage:</strong> 500 mg</p>
+                    <p><strong>Frequency:</strong> Twice a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 2</h4>
+                    <p><strong>Medication:</strong> Ibuprofen</p>
+                    <p><strong>Dosage:</strong> 200 mg</p>
+                    <p><strong>Frequency:</strong> Every 6 hours</p>
+                </div>
+            </div>
         </div>
 
-        <div class="info-container" id="info-container">
-            <!-- Info cards will be dynamically updated here -->
+        <div class="box">
+            <h3>Order #2</h3>
+            <p><strong>Expiration Date:</strong> 2025-01-15</p>
+            <p><strong>Illness:</strong> Allergies</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 2</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 3</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+            </div>
         </div>
 
-        <div class="back-button">
-            <button onclick="goBack()">Back to Main Page</button>
+        <div class="box">
+            <h3>Order #3</h3>
+            <p><strong>Expiration Date:</strong> 2025-01-15</p>
+            <p><strong>Illness:</strong> Allergies</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+            </div>
         </div>
+
+        <div class="box">
+            <h3>Order #4</h3>
+            <p><strong>Expiration Date:</strong> 2025-01-15</p>
+            <p><strong>Illness:</strong> Allergies</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>Order #5</h3>
+            <p><strong>Expiration Date:</strong> 2025-01-15</p>
+            <p><strong>Illness:</strong> Allergies</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>Order #6</h3>
+            <p><strong>Expiration Date:</strong> 2025-01-15</p>
+            <p><strong>Illness:</strong> Allergies</p>
+            <p><strong>Prescribing Doctor:</strong> Dr. Jane Doe</p>
+            <div class="prescription-container">
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+                <div class="prescription-box">
+                    <h4>Prescription 1</h4>
+                    <p><strong>Medication:</strong> Cetirizine</p>
+                    <p><strong>Dosage:</strong> 10 mg</p>
+                    <p><strong>Frequency:</strong> Once a day</p>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-
-    <script>
-        // Function to navigate back to the main page
-        function goBack() {
-            window.location.href = '/user'; // Replace '/' with the main page URL
-        }
-
-        // Function to fetch pharmacist names and populate the dropdown
-        async function loadPharmacists() {
-            try {
-                const response = await fetch('/get_pharmacists'); // Replace with your backend API endpoint
-                if (!response.ok) throw new Error("Failed to fetch pharmacists");
-
-                const pharmacists = await response.json(); // Expected format: [{first_name: "Gabby", last_name: "Dipollito"}, ...]
-
-                const dropdown = document.getElementById("pharmacist-dropdown");
-                dropdown.innerHTML = '<option value="">-- Select Pharmacist --</option>'; // Reset dropdown
-
-                // Populate dropdown with fetched data
-                pharmacists.forEach(pharmacist => {
-                    const option = document.createElement("option");
-                    option.value = `${pharmacist.first_name} ${pharmacist.last_name}`;
-                    option.textContent = `${pharmacist.first_name} ${pharmacist.last_name}`;
-                    dropdown.appendChild(option);
-                });
-
-            } catch (error) {
-                console.error("Error loading pharmacists:", error);
-            }
-        }
-
-        // Function to fetch details for the selected pharmacist
-        async function loadPharmacistDetails(selectedPharmacist) {
-            try {
-                const response = await fetch(`/get_pharmacist_details?name=${encodeURIComponent(selectedPharmacist)}`);
-                if (!response.ok) throw new Error("Failed to fetch pharmacist details");
-
-                const data = await response.json();
-                const infoContainer = document.getElementById("info-container");
-
-                // Clear previous data
-                infoContainer.innerHTML = "";
-
-                // Display data
-                data.forEach(row => {
-                    const storeCard = `
-                        <div class="info-card">
-                            <h2>Pharmacy Store</h2>
-                            <p><strong>Name:</strong> ${row.pharmacy_store_name}</p>
-                            <p><strong>Address:</strong> ${row.pharmacy_store_address_street_name} ${row.pharmacy_store_address_street_num}</p>
-                            <p><strong>City:</strong> ${row.pharmacy_address_town}</p>
-                            <p><strong>State:</strong> ${row.pharmacy_address_state}</p>
-                            <p><strong>Zip Code:</strong> ${row.pharmacy_address_zipcode}</p>
-                        </div>
-                    `;
-
-                    const certificationCard = `
-                        <div class="info-card">
-                            <h2>${row.certification_name}</h2>
-                            <p><strong>Institution:</strong> ${row.institution}</p>
-                            <p><strong>Expiration Date:</strong> ${row.expiration_date}</p>
-                        </div>
-                    `;
-
-                    infoContainer.innerHTML += storeCard + certificationCard;
-                });
-
-            } catch (error) {
-                console.error("Error loading pharmacist details:", error);
-                document.getElementById("info-container").innerHTML = "<p>Failed to load details. Please try again later.</p>";
-            }
-        }
-
-        // Event listener for dropdown change
-        document.getElementById("pharmacist-dropdown").addEventListener("change", function () {
-            const selectedPharmacist = this.value;
-            if (selectedPharmacist) {
-                loadPharmacistDetails(selectedPharmacist); // Fetch and display details for the selected pharmacist
-            } else {
-                document.getElementById("info-container").innerHTML = ""; // Clear details if no pharmacist is selected
-            }
-        });
-
-        // Load pharmacists on page load
-        document.addEventListener("DOMContentLoaded", loadPharmacists);
-    </script>
 </body>
 </html>
