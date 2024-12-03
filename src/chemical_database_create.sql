@@ -927,3 +927,36 @@ VALUES
 ('Omeprazole', 1),  
 ('Metoprolol', 2)
 ;  
+
+
+DROP TRIGGER IF EXISTS delete_customer_and_associated_data;
+DELIMITER $$
+
+CREATE TRIGGER delete_customer_and_associated_data
+BEFORE DELETE ON customer
+FOR EACH ROW
+BEGIN
+    -- Delete from contains where orders are associated
+    DELETE contains
+    FROM contains
+    JOIN picks_up ON contains.order_id = picks_up.order_id
+    WHERE picks_up.customer_id = OLD.insurance_id;
+    
+    -- Delete related orders
+    DELETE orders
+    FROM orders
+    JOIN picks_up ON orders.order_id = picks_up.order_id
+    WHERE picks_up.customer_id = OLD.insurance_id;
+
+    -- Delete from picks_up where customer_id matches
+    DELETE FROM picks_up
+    WHERE customer_id = OLD.insurance_id;
+    
+    -- Delete from diagnoses where customer_insurance_id matches
+    DELETE FROM diagnoses
+    WHERE customer_insurance_id = OLD.insurance_id;
+
+    -- If there are other associated tables, include similar DELETE statements here
+END$$
+
+DELIMITER ;
