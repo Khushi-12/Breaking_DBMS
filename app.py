@@ -320,9 +320,41 @@ def add_new():
 def modify():
     return render_template('modify.html')
 
-@app.route('/delete')
+@app.route('/delete', methods =['POST','GET'])
 def delete():
-    return render_template('delete.html')
+    if request.method == 'GET':
+        con =get_con()
+        try:
+            customer = con.query(f"SELECT *from customer;")
+            return render_template('delete.html', customers = customer)
+        except Exception as e:
+            con.rollback()
+            return jsonify({'success': False, 'error': str(e)}), 500
+        
+        finally:
+            con.close()
+   
+    # return render_template('delete.html')
+@app.route('/delete_customer', methods=['POST'])
+def delete_customer():
+    data = request.get_json()
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    con = get_con()
+    try:
+        # Delete the customer using first_name and last_name
+        con.execute("""
+            DELETE FROM customer
+            WHERE first_name = %s AND last_name = %s;
+        """, (first_name, last_name))
+        con.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        con.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        con.close()
+
 
 if __name__ == '__main__':
     app.run()
