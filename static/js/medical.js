@@ -15,7 +15,7 @@ async function displayMedWiki() {
             const medDropdown = `
                 <label for="medDropdown">Select a Medication:</label>
                 <select id="medDropdown" name="medDropdown">
-                    ${meds.map(med => `<option value="${med.common_name}">${med.common_name}</option>`).join('')}
+                    ${meds.map(med => `<option value="${med.scientific_name}">${med.scientific_name}</option>`).join('')}
                 </select>
             `;
 
@@ -54,6 +54,42 @@ async function displayMedInfo(event) {
                 <p>Intake Type: ${medInfo.type}</p>
                 <p>Manufacturer: ${medInfo.contact}</p>
                 <p>Medicine Warning: ${medInfo.warnings}</p>
+
+                <h3>Uses</h3>
+                    <div class="box">
+                        <div class="prescription-container">
+                            ${medInfo.uses.length > 0 ? medInfo.uses.map(use => `
+                                <div class="prescription-box">
+                                    <p><strong>Use Case:</strong> ${use.use_case}</p>
+                                    <p><strong>Body Part:</strong> ${use.body_part}</p>
+                                </div>
+                            `).join('') : `<p>No uses for this medication.</p>`}
+                        </div>
+                    </div>
+                    <h3>Chemicals</h3>
+                    <div class="scroll-container">
+                        ${medInfo.chemicals.map(chemical => `
+                            <div class="box">
+                                <h3>Scientific name: ${chemical.chemical_scientific_name}</h3>
+                                <p><strong>Common name:</strong> ${chemical.common_name}</p>
+                                <p><strong>Formmula:</strong> ${chemical.molecular_formula}</p>
+                                <p><strong>Structure:</strong> ${chemical.structure}</p>
+                                <p><strong>Charge:</strong> ${chemical.charge}</p>
+                                <p><strong>Solubility:</strong> ${chemical.solubility}</p>
+                                <p><strong>Classification:</strong> ${chemical.classified_class_name}</p>
+                                <h4>Hazards</h4>
+                                <div class="prescription-container">
+                                    ${chemical.hazards.length > 0 ? chemical.hazards.map(hazard => `
+                                        <div class="prescription-box">
+                                            <p><strong>Hazard Description</strong> ${hazard.hazard_description}</p>
+                                            <p><strong>Safety Instruction</strong> ${hazard.safety_instruction}</p>
+                                        </div>
+                                    `).join('') : `<p>No hazards for this chemical.</p>`}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
             `;
 
             infoCard.classList.remove('hidden');
