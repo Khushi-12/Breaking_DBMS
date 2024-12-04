@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modify Pharmacy Store</title>
+    <title>Delete Customer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,16 +53,6 @@
             cursor: pointer;
         }
 
-        .add-button {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .submit-button {
-            background-color: #007bff;
-            color: white;
-        }
-
         .remove-button {
             background-color: #dc3545;
             color: white;
@@ -94,50 +84,23 @@
         <button onclick="goBack()">Back to Main Page</button>
     </div>
     <div class="form-container">
-        <h2>Modify Pharmacy Store</h2>
-        <form id="pharmacy-form">
-            <!-- Pharmacy Store Information -->
+        <h2>Delete Customer</h2>
+        <form id="customer-form">
+            <!-- Customer Information -->
             <div class="form-group">
-                <label for="store-name">Pharmacy Store Name</label>
-                <input type="text" id="store-name" name="store_name" required>
-            </div>
-            <div class="form-group">
-                <label for="street-name">Street Name</label>
-                <input type="text" id="street-name" name="store_address_street_name" required>
-            </div>
-            <div class="form-group">
-                <label for="street-num">Street Number</label>
-                <input type="text" id="street-num" name="store_address_street_num" required>
-            </div>
-            <div class="form-group">
-                <label for="town">Town</label>
-                <input type="text" id="town" name="store_address_town" required>
-            </div>
-            <div class="form-group">
-                <label for="state">State</label>
-                <input type="text" id="state" name="store_address_state" required>
-            </div>
-            <div class="form-group">
-                <label for="zipcode">Zip Code</label>
-                <input type="text" id="zipcode" name="store_address_zipcode" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" required pattern="\d{10}" placeholder="1234567890">
+                <label for="customerDropdown">Select a Customer:</label>
+                <select id="customerDropdown" name="customerDropdown">
+                    {% for customer in customers %}
+                        <option value="{{ customer.first_name }} {{ customer.last_name }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
-            <!-- Medications or Services -->
-            <div class="form-group">
-                <label for="medications">Available Medications/Services</label>
-                <input type="text" id="medications" name="medications" required>
-            </div>
+            <!-- Customer Info Display -->
+            <div id="customer-info" class="info-card hidden"></div>
 
             <!-- Submit Button -->
-            <button type="submit" class="submit-button">Submit</button>
+            <button type="button" class="remove-button" id="delete-button">Delete Customer</button>
         </form>
     </div>
 
