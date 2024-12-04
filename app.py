@@ -91,6 +91,7 @@ def get_customer_info():
             SELECT * FROM orders o
             JOIN picks_up pi ON o.order_id = pi.order_id
             JOIN customer cu ON pi.customer_id = cu.insurance_id
+            JOIN pharmacy_store as ps ON ps.pharmacy_id = pi.pharmacy_id
             WHERE cu.first_name = '{customer_id[0]}' AND cu.last_name = '{customer_id[1]}';
         """)
 
