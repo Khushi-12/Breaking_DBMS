@@ -465,13 +465,6 @@ def modify_pharm():
             
             result = con.query("SELECT LAST_INSERT_ID() AS pharmacy_id;")
             pharmacy_id = result[0]['pharmacy_id']
-        
-        # Now, associate the pharmacy with the customer
-        # con.execute("""
-        #     UPDATE picks_up 
-        #     SET pharmacy_id = %s 
-        #     WHERE first_name = %s AND last_name = %s;
-        # """, (pharmacy_id, first_name, last_name))
 
         con.execute("""
             UPDATE picks_up 
