@@ -342,10 +342,39 @@ def add_new():
         finally:
             con.close()
 
-
 @app.route('/modify')
 def modify():
-    return render_template('modify.html')
+    if request.method == 'GET':
+        con =get_con()
+        try:
+            picks_up = con.query(f"SELECT *from picks_up;")
+            return render_template('modify.html', customer_orders = picks_up)
+        except Exception as e:
+            con.rollback()
+            return jsonify({'success': False, 'error': str(e)}), 500
+        
+        finally:
+            con.close()
+
+@app.route('/modify_pharmacy', methods=['POST'])
+def delete_pharmacy():
+    data = request.get_json()
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    con = get_con()
+    try:
+        # Delete the customer using first_name and last_name
+        con.execute("""
+            SELECT * FROM customer
+            WHERE first_name = %s AND last_name = %s;
+        """, (first_name, last_name))
+        con.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        con.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        con.close()
 
 @app.route('/delete', methods =['POST','GET'])
 def delete():
