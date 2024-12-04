@@ -63,8 +63,7 @@ def get_meds():
         return jsonify(meds)
     finally:
         con.close()
-    meds = con.query("SELECT * FROM chemical_database.medication order by scientific_name;")
-    return jsonify(meds)
+    
 
 
 def addDashesToPhoneNumber(number: str):
@@ -171,6 +170,7 @@ def get_doctor_info():
 
 @app.route('/get_medication_info', methods=['GET'])
 def get_medication_info():
+    con =get_con()
     med_id = request.args.get('id')
 
     med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.scientific_name = '{med_id}';")
@@ -179,7 +179,7 @@ def get_medication_info():
 
     chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
 
-    med = med[0]
+    med =med[0]
     med["uses"] = uses
 
     for chemInd in range(len(chemicals)):
@@ -192,6 +192,7 @@ def get_medication_info():
 
 
     return jsonify(med)
+
 
 @app.route('/get_pharmacists', methods=['GET'])
 def get_pharmacy():
