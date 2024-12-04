@@ -475,7 +475,7 @@ CREATE TABLE in_network ( -- pharmacy store to insurance_company
     PRIMARY KEY (insurance_company_name, pharmacy_id),
     FOREIGN KEY (insurance_company_name) REFERENCES insurance_company(name),
     FOREIGN KEY (pharmacy_id) 
-        REFERENCES pharmacy_store(pharmacy_id)
+        REFERENCES pharmacy_store(pharmacy_id) ON UPDATE CASCADE
 );
 
 INSERT INTO in_network (insurance_company_name, pharmacy_id)
@@ -543,9 +543,9 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
     order_id INT NOT NULL,
     pharmacy_id INT NOT NULL,
     PRIMARY KEY (customer_id, order_id, pharmacy_id),
-    FOREIGN KEY (customer_id) REFERENCES customer(insurance_id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES customer(insurance_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy_store(pharmacy_id)
+    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy_store(pharmacy_id) ON UPDATE CASCADE
 );
 
 INSERT INTO picks_up (customer_id, order_id, pharmacy_id)
@@ -732,7 +732,7 @@ CREATE TABLE sells ( -- pharmacy store to medication
     PRIMARY KEY (pharmacy_id, medication_scientific_name, medication_brand_name), -- Composite primary key
     FOREIGN KEY (pharmacy_id) 
         REFERENCES pharmacy_store(pharmacy_id) 
-        ON DELETE CASCADE,       
+        ON DELETE CASCADE ON UPDATE CASCADE,       
     FOREIGN KEY (medication_scientific_name, medication_brand_name) 
         REFERENCES medication(scientific_name, brand_name) 
         ON DELETE CASCADE            
