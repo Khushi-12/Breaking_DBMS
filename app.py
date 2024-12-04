@@ -419,62 +419,17 @@ def modify():
 def modify_pharm():
     data = request.get_json()
 
-    cust_id = data.get('insurance_id')
-
-    pharmacy_name = data.get('pharmacy_name')
-    pharmacy_street_name = data.get('pharmacy_address_street_name')
-    pharmacy_street_num = data.get('pharmacy_address_street_num')
-    pharmacy_town = data.get('pharmacy_address_town')
-    pharmacy_state = data.get('pharmacy_address_state')
-    pharmacy_zipcode = data.get('pharmacy_address_zipcode')
-    pharmacy_phone = data.get('pharmacy_phone')
+    order_id = data.get('order_id')
+    pharmacy_id = data.get('pharmacy_id')
 
     con = get_con()
     try:
-        result = con.query("""
-            SELECT pharmacy_id FROM pharmacy_store 
-            WHERE name = %s AND address_street_name = %s 
-            AND address_street_num = %s AND address_town = %s 
-            AND address_state = %s AND address_zipcode = %s;
-        """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
-              pharmacy_town, pharmacy_state, pharmacy_zipcode))
-        
-        print("Query result:", result)
-        
-        if result:
-            pharmacy_id = result[0]['pharmacy_id']
-            con.execute("""
-                UPDATE pharmacy_store 
-                SET name = %s, 
-                    address_street_name = %s, 
-                    address_street_num = %s, 
-                    address_town = %s, 
-                    address_state = %s, 
-                    address_zipcode = %s, 
-                    phone_number = %s
-                WHERE pharmacy_id = %s;
-            """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
-                  pharmacy_town, pharmacy_state, pharmacy_zipcode, 
-                  pharmacy_phone, pharmacy_id))
-        else:
-            print("Inserting new pharmacy...")
-            con.execute("""
-                INSERT INTO pharmacy_store (name, address_street_name, address_street_num, 
-                                            address_town, address_state, address_zipcode, 
-                                            phone_number)
-                VALUES (%s, %s, %s, %s, %s, %s, %s);
-            """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
-                  pharmacy_town, pharmacy_state, pharmacy_zipcode, pharmacy_phone))
-            
-            result = con.query("SELECT LAST_INSERT_ID() AS pharmacy_id;")
-            pharmacy_id = result[0]['pharmacy_id']
-            print(f"New pharmacy ID: {pharmacy_id}")
-
+        # Update the picks_up table for the given order_id
         con.execute("""
             UPDATE picks_up 
             SET pharmacy_id = %s 
-            WHERE customer_id = %s;
-        """, (pharmacy_id, cust_id))
+            WHERE order_id = %s;
+        """, (pharmacy_id, order_id))
 
         con.commit()
 
@@ -483,6 +438,47 @@ def modify_pharm():
     except Exception as e:
         con.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        con.close()
+
+@app.route('/get_customer_infos', methods=['GET'])
+def get_customer_infos():
+    customer_id = request.args.get('id').split()
+    con = get_con()
+    try:
+        customer = con.query(f"""
+            SELECT * FROM chemical_database.customer cu
+            JOIN chemical_database.insurance_company ic ON cu.insurance_name = ic.name
+            WHERE cu.first_name = %s AND cu.last_name = %s;
+        """, (customer_id[0], customer_id[1]))
+
+        if not customer:
+            return jsonify({"error": "Customer not found"}), 404
+
+        customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
+        customer = customer[0]
+
+        customer_orders = con.query(f"""
+            SELECT o.*, ps.name, ps.address_street_name, ps.address_street_num, ps.address_town, ps.address_state, ps.address_zipcode
+            FROM orders o
+            JOIN picks_up pi ON o.order_id = pi.order_id
+            JOIN customer cu ON pi.customer_id = cu.insurance_id
+            JOIN pharmacy_store ps ON pi.pharmacy_id = ps.pharmacy_id
+            WHERE cu.first_name = %s AND cu.last_name = %s;
+        """, (customer_id[0], customer_id[1]))
+
+        for order in customer_orders:
+            order_number = order['order_id']
+            prescriptions = con.query("""
+                SELECT * FROM prescription pre
+                JOIN contains con ON pre.val = con.prescription_id
+                WHERE order_id = %s;
+            """, (order_number,))
+            order["prescriptions"] = prescriptions
+
+        customer["orders"] = customer_orders
+
+        return jsonify(customer)
     finally:
         con.close()
 
@@ -520,6 +516,17 @@ def delete_customer():
         return jsonify({'success': False, 'error': str(e)}), 500
     finally:
         con.close()
+
+@app.route('/get_pharmacies', methods=['GET'])
+def get_pharmacies():
+    con = get_con()
+    try:
+        pharmacies = con.query("SELECT pharmacy_id, name FROM pharmacy_store ORDER BY name;")
+        return jsonify(pharmacies)
+    finally:
+        con.close()
+
+
 
 
 if __name__ == '__main__':
