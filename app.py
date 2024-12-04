@@ -343,41 +343,92 @@ def add_new():
             con.close()
 
 
-@app.route('/modify', methods =['POST','GET'])
+@app.route('/modify', methods=['POST', 'GET'])
 def modify():
     if request.method == 'GET':
-        con =get_con()
+        con = get_con()
         try:
-            customer = con.query(f"SELECT *from customer;")
-            return render_template('modify.html', customers = customer)
+            customers = con.query("SELECT * FROM customer;")
+            return render_template('modify.html', customers=customers)
         except Exception as e:
             con.rollback()
             return jsonify({'success': False, 'error': str(e)}), 500
-        
         finally:
             con.close()
-   
-    # return render_template('delete.html')
+
 @app.route('/modify_pharm', methods=['POST'])
 def modify_pharm():
     data = request.get_json()
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
+
+    cust_id = data.get('insurance_id')
+
+    pharmacy_name = data.get('pharmacy_name')
+    pharmacy_street_name = data.get('pharmacy_address_street_name')
+    pharmacy_street_num = data.get('pharmacy_address_street_num')
+    pharmacy_town = data.get('pharmacy_address_town')
+    pharmacy_state = data.get('pharmacy_address_state')
+    pharmacy_zipcode = data.get('pharmacy_address_zipcode')
+    pharmacy_phone = data.get('pharmacy_phone')
+
     con = get_con()
     try:
-        # Delete the customer using first_name and last_name
+        result = con.query("""
+            SELECT pharmacy_id FROM pharmacy_store 
+            WHERE name = %s AND address_street_name = %s 
+            AND address_street_num = %s AND address_town = %s 
+            AND address_state = %s AND address_zipcode = %s;
+        """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
+              pharmacy_town, pharmacy_state, pharmacy_zipcode))
+        
+        if result:
+            pharmacy_id = result[0]['pharmacy_id']
+            con.execute("""
+                UPDATE pharmacy_store 
+                SET name = %s, 
+                    address_street_name = %s, 
+                    address_street_num = %s, 
+                    address_town = %s, 
+                    address_state = %s, 
+                    address_zipcode = %s, 
+                    phone_number = %s
+                WHERE pharmacy_id = %s;
+            """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
+                  pharmacy_town, pharmacy_state, pharmacy_zipcode, 
+                  pharmacy_phone, pharmacy_id))
+        else:
+            con.execute("""
+                INSERT INTO pharmacy_store (name, address_street_name, address_street_num, 
+                                            address_town, address_state, address_zipcode, 
+                                            phone_number)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
+            """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
+                  pharmacy_town, pharmacy_state, pharmacy_zipcode, pharmacy_phone))
+            
+            result = con.query("SELECT LAST_INSERT_ID() AS pharmacy_id;")
+            pharmacy_id = result[0]['pharmacy_id']
+        
+        # Now, associate the pharmacy with the customer
+        # con.execute("""
+        #     UPDATE picks_up 
+        #     SET pharmacy_id = %s 
+        #     WHERE first_name = %s AND last_name = %s;
+        # """, (pharmacy_id, first_name, last_name))
+
         con.execute("""
-            DELETE FROM customer
-            WHERE first_name = %s AND last_name = %s;
-        """, (first_name, last_name))
+            UPDATE picks_up 
+            SET pharmacy_id = %s 
+            WHERE customer_id = %s;
+        """, (pharmacy_id, cust_id))
+
         con.commit()
+
         return jsonify({'success': True})
+
     except Exception as e:
         con.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
     finally:
         con.close()
-
 
 @app.route('/delete', methods =['POST','GET'])
 def delete():
