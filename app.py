@@ -467,8 +467,5 @@ def get_pharmacies():
     finally:
         con.close()
 
-
-
-
 if __name__ == '__main__':
     app.run()
