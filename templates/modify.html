@@ -1,72 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modify Pharmacy</title>
+    <!-- Your existing head content -->
+</head>
+<body>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
-            padding: 20px;
-        }
-
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-
-        .form-container h2 {
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .remove-button {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .submit-button {
-            background-color: #007bff;
-            color: white;
+            padding: 0;
         }
 
         .back-button {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
+            margin: 20px;
         }
 
         .back-button button {
@@ -82,17 +29,124 @@
         .back-button button:hover {
             background-color: #0056b3;
         }
+
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .info-card {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .info-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .info-card h4 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .info-card h5 {
+            margin-top: 15px;
+            color: #666;
+        }
+
+        .info-card div {
+            margin-bottom: 15px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .back-button button {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
     </style>
-</head>
-<body>
     <div class="back-button">
         <button onclick="goBack()">Back to Main Page</button>
     </div>
 
     <div class="form-container">
-        <h2>Select Customer</h2>
-        <form id="customer-form">
-            <!-- Customer Information -->
+        <h2>Modify Pharmacy for an Order</h2>
+        <form id="modify-form">
+            <!-- Customer Selection -->
             <div class="form-group">
                 <label for="customerDropdown">Select a Customer:</label>
                 <select id="customerDropdown" name="customerDropdown">
@@ -105,40 +159,20 @@
             <!-- Customer Info Display -->
             <div id="customer-info" class="info-card hidden"></div>
 
-            <!-- Pharmacy Information -->
+            <!-- Order Selection -->
             <div class="form-group">
-                <label for="pharmacy-name">Pharmacy Name:</label>
-                <input type="text" id="pharmacy-name" name="pharmacy_name" required>
+                <label for="orderDropdown">Select an Order:</label>
+                <select id="orderDropdown" name="orderDropdown">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
             </div>
 
+            <!-- Pharmacy Selection -->
             <div class="form-group">
-                <label for="pharmacy-street-name">Street Name:</label>
-                <input type="text" id="pharmacy-street-name" name="pharmacy_address_street_name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pharmacy-street-num">Street Number:</label>
-                <input type="text" id="pharmacy-street-num" name="pharmacy_address_street_num" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pharmacy-town">Town:</label>
-                <input type="text" id="pharmacy-town" name="pharmacy_address_town" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pharmacy-state">State:</label>
-                <input type="text" id="pharmacy-state" name="pharmacy_address_state" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pharmacy-zipcode">Zip Code:</label>
-                <input type="text" id="pharmacy-zipcode" name="pharmacy_address_zipcode" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pharmacy-phone">Pharmacy Phone:</label>
-                <input type="text" id="pharmacy-phone" name="pharmacy_phone" required>
+                <label for="pharmacyDropdown">Select a Pharmacy:</label>
+                <select id="pharmacyDropdown" name="pharmacyDropdown">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
             </div>
 
             <!-- Submit Button -->
@@ -149,7 +183,7 @@
     <script>
         // Go back to the main page
         function goBack() {
-            window.location.href = '/user'; // Replace '/' with the main page URL
+            window.location.href = '/user'; // Replace '/user' with the main page URL
         }
 
         // Function to format phone numbers
@@ -157,37 +191,82 @@
             return `${number.slice(0,3)}-${number.slice(3,6)}-${number.slice(6)}`;
         }
 
-        // Function to display customer information when selected
+        // Fetch and populate pharmacy dropdown when the page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/get_pharmacies');
+                if (!response.ok) throw new Error("Failed to fetch pharmacies");
+
+                const pharmacies = await response.json();
+                const pharmacyDropdown = document.getElementById('pharmacyDropdown');
+
+                pharmacies.forEach(pharmacy => {
+                    const option = document.createElement('option');
+                    option.value = pharmacy.pharmacy_id;
+                    option.textContent = pharmacy.name;
+                    pharmacyDropdown.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error fetching pharmacies:", error);
+            }
+        });
+
+        // Define displayCustomerInfo function
         async function displayCustomerInfo(event) {
             const customerName = event.target.value;
             const infoCard = document.getElementById('customer-info');
+            const orderDropdown = document.getElementById('orderDropdown');
 
             if (customerName) {
                 try {
-                    const response = await fetch(`/get_customer_info?id=${encodeURIComponent(customerName)}`);
+                    const response = await fetch(`/get_customer_infos?id=${encodeURIComponent(customerName)}`);
                     if (!response.ok) throw new Error("Failed to fetch customer info");
 
                     const customerInfo = await response.json();
 
-                    // Display customer details and fill pharmacy fields
+                    // Build HTML content to display customer information
                     infoCard.innerHTML = `
                         <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
                         <p><strong>DOB:</strong> ${customerInfo.dob}</p>
                         <p><strong>Email:</strong> ${customerInfo.email}</p>
                         <p><strong>Phone:</strong> ${addDashesToPhoneNumber(customerInfo.phone)}</p>
                         <p><strong>Address:</strong> ${customerInfo.address_street_num} ${customerInfo.address_street_name}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
+                        <p><strong>Insurance #:</strong> ${customerInfo.insurance_id}</p>
+                        <p><strong>Insurance Name:</strong> ${customerInfo.insurance_name}</p>
+                        <p><strong>Insurance Contact:</strong> ${customerInfo.contact}</p>
+                        <h3>Orders</h3>
+                        ${customerInfo.orders.length > 0 ? customerInfo.orders.map(order => `
+                            <div>
+                                <h4>Order #${order.order_id}</h4>
+                                <p><strong>Delivery Date:</strong> ${order.delivery_date}</p>
+                                <p><strong>Pickup Pharmacy Name:</strong> ${order.name}</p>
+                                <p><strong>Prescribing Doctor:</strong> Dr. ${order.doctor_first_name} ${order.doctor_last_name}</p>
+                                <h5>Prescriptions</h5>
+                                ${order.prescriptions.length > 0 ? order.prescriptions.map(prescription => `
+                                    <div>
+                                        <p><strong>Prescription ID:</strong> ${prescription.val}</p>
+                                        <p><strong>Brand Name:</strong> ${prescription.brand_name}</p>
+                                        <p><strong>Scientific Name:</strong> ${prescription.scientific_name}</p>
+                                        <p><strong>Quantity:</strong> ${prescription.quantity}</p>
+                                        <p><strong>Dosage:</strong> ${prescription.dosage} mg</p>
+                                        <p><strong>Expiration Date:</strong> ${prescription.expiration_date}</p>
+                                    </div>
+                                `).join('') : `<p>No prescriptions for this order.</p>`}
+                            </div>
+                        `).join('') : `<p>No orders found.</p>`}
                     `;
-
-                    // Fill pharmacy info fields
-                    document.getElementById("pharmacy-name").value = customerInfo.pharmacy_name || '';
-                    document.getElementById("pharmacy-street-name").value = customerInfo.pharmacy_address_street_name || '';
-                    document.getElementById("pharmacy-street-num").value = customerInfo.pharmacy_address_street_num || '';
-                    document.getElementById("pharmacy-town").value = customerInfo.pharmacy_address_town || '';
-                    document.getElementById("pharmacy-state").value = customerInfo.pharmacy_address_state || '';
-                    document.getElementById("pharmacy-zipcode").value = customerInfo.pharmacy_address_zipcode || '';
-                    document.getElementById("pharmacy-phone").value = customerInfo.pharmacy_phone || '';
-
                     infoCard.classList.remove('hidden');
+
+                    // Populate orderDropdown
+                    orderDropdown.innerHTML = ''; // Clear existing options
+                    customerInfo.orders.forEach(order => {
+                        const option = document.createElement('option');
+                        option.value = order.order_id;
+                        option.textContent = `Order #${order.order_id} - ${order.delivery_date}`;
+                        orderDropdown.appendChild(option);
+                    });
+
                 } catch (error) {
                     console.error("Error fetching customer info:", error);
                     infoCard.innerHTML = "<p>Failed to load customer details.</p>";
@@ -195,30 +274,19 @@
                 }
             } else {
                 infoCard.classList.add('hidden');
+                orderDropdown.innerHTML = ''; // Clear the order dropdown
             }
         }
 
-        // Attach event listener for customer dropdown
+        // Attach event listener after defining displayCustomerInfo
         document.getElementById('customerDropdown').addEventListener('change', displayCustomerInfo);
 
         // Handle form submission to update pharmacy information
         document.getElementById("update-pharmacy-button").addEventListener("click", function () {
-            const customerName = document.getElementById("customerDropdown").value;
-            const [firstName, lastName] = customerName.split(' ');
+            const order_id = document.getElementById("orderDropdown").value;
+            const pharmacy_id = document.getElementById("pharmacyDropdown").value;
 
-            const pharmacyData = {
-                first_name: firstName,
-                last_name: lastName,
-                pharmacy_name: document.getElementById("pharmacy-name").value,
-                pharmacy_address_street_name: document.getElementById("pharmacy-street-name").value,
-                pharmacy_address_street_num: document.getElementById("pharmacy-street-num").value,
-                pharmacy_address_town: document.getElementById("pharmacy-town").value,
-                pharmacy_address_state: document.getElementById("pharmacy-state").value,
-                pharmacy_address_zipcode: document.getElementById("pharmacy-zipcode").value,
-                pharmacy_phone: document.getElementById("pharmacy-phone").value
-            };
-
-            const confirmation = confirm(`Are you sure you want to update pharmacy information for ${firstName} ${lastName}?`);
+            const confirmation = confirm(`Are you sure you want to update the pharmacy for Order #${order_id}?`);
             if (confirmation) {
                 // Send data to the server to update pharmacy info
                 fetch('/modify_pharm', {
@@ -226,7 +294,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(pharmacyData)
+                    body: JSON.stringify({ order_id: order_id, pharmacy_id: pharmacy_id })
                 })
                 .then(response => response.json())
                 .then(data => {
