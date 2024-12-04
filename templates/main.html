@@ -1,0 +1,46 @@
+<!-- templates/main.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... existing head content ... -->
+    <title>Pharmacy Database</title>
+    <!-- Link to your external CSS file (if you have one) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div>
+            <button onclick="window.location.href='/add_new'">Add New</button>
+            <button onclick="window.location.href='/modify'">Modify</button>
+            <button onclick="window.location.href='/delete'">Delete</button>
+        </div>
+        <button onclick="window.location.href='/user_setting'">User Settings</button>
+        <button onclick="window.location.href='/'">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Box -->
+        <div class="left-box">
+            <button onclick="displayCustomers()">Customers</button>
+            <button onclick="displayDoctors()">Doctors</button>
+            <button onclick="displayMedWiki()">MedWiki</button>
+        </div>
+
+        <!-- Right Box -->
+        <div class="right-box" id="display-area">
+            <h2>Welcome to the Pharmacy Database</h2>
+            <p>Select a table from the left to display its content.</p>
+        </div>
+    </div>
+
+    <!-- Include common JavaScript files -->
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+    <!-- Include page-specific JavaScript files -->
+    <script src="{{ url_for('static', filename='js/customer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/doctor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/medical.js') }}"></script>
+</body>
+</html>

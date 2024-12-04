@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Customer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <button onclick="goBack()">Back to Main Page</button>
+    </div>
+    <div class="form-container">
+        <h2>Delete Customer</h2>
+        <form id="customer-form">
+            <!-- Customer Information -->
+            <div class="form-group">
+                <label for="customerDropdown">Select a Customer:</label>
+                <select id="customerDropdown" name="customerDropdown">
+                    {% for customer in customers %}
+                        <option value="{{ customer.first_name }} {{ customer.last_name }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Customer Info Display -->
+            <div id="customer-info" class="info-card hidden"></div>
+
+            <!-- Submit Button -->
+            <button type="button" class="remove-button" id="delete-button">Delete Customer</button>
+        </form>
+    </div>
+
+    <script>
+        // Go back to the main page
+        function goBack() {
+            window.location.href = '/user'; // Replace '/' with the main page URL
+        }
+
+        // Function to format phone numbers
+        function addDashesToPhoneNumber(number) {
+            return `${number.slice(0,3)}-${number.slice(3,6)}-${number.slice(6)}`;
+        }
+
+        // Define displayCustomerInfo function
+        async function displayCustomerInfo(event) {
+            const customerName = event.target.value;
+            const infoCard = document.getElementById('customer-info');
+
+            if (customerName) {
+                // const [firstName, lastName] = customerName.split(' ');
+                try {
+                    const response = await fetch(`/get_customer_info?id=${encodeURIComponent(customerName)}`);
+                    if (!response.ok) throw new Error("Failed to fetch customer info");
+
+                    const customerInfo = await response.json();
+
+                    // Build HTML content to display customer information
+                    infoCard.innerHTML = `
+                        <h3>${customerInfo.first_name} ${customerInfo.last_name}</h3>
+                        <p><strong>DOB:</strong> ${customerInfo.dob}</p>
+                        <p><strong>Email:</strong> ${customerInfo.email}</p>
+                        <p><strong>Phone:</strong> ${addDashesToPhoneNumber(customerInfo.phone)}</p>
+                        <p><strong>Address:</strong> ${customerInfo.address_street_num} ${customerInfo.address_street_name}, ${customerInfo.address_town}, ${customerInfo.address_state}, ${customerInfo.address_zipcode}</p>
+                        <p><strong>Insurance #:</strong> ${customerInfo.insurance_id}</p>
+                        <p><strong>Insurance Name:</strong> ${customerInfo.insurance_name}</p>
+                        <p><strong>Insurance Contact:</strong> ${customerInfo.contact}</p>
+                        <h3>Orders</h3>
+                        ${customerInfo.orders.length > 0 ? customerInfo.orders.map(order => `
+                            <div>
+                                <h4>Order #${order.order_id}</h4>
+                                <p><strong>Delivery Date:</strong> ${order.delivery_date}</p>
+                                <p><strong>Pickup Pharmacy Name:</strong> ${order.pharmacy_name}</p>
+                                <p><strong>Prescribing Doctor:</strong> Dr. ${order.doctor_first_name}</p>
+                                <h5>Prescriptions</h5>
+                                ${order.prescriptions.length > 0 ? order.prescriptions.map(prescription => `
+                                    <div>
+                                        <p><strong>Prescription ID:</strong> ${prescription.val}</p>
+                                        <p><strong>Brand Name:</strong> ${prescription.brand_name}</p>
+                                        <p><strong>Scientific Name:</strong> ${prescription.scientific_name}</p>
+                                        <p><strong>Quantity:</strong> ${prescription.quantity}</p>
+                                        <p><strong>Dosage:</strong> ${prescription.dosage} mg</p>
+                                        <p><strong>Expiration Date:</strong> ${prescription.expiration_date}</p>
+                                    </div>
+                                `).join('') : `<p>No prescriptions for this order.</p>`}
+                            </div>
+                        `).join('') : `<p>No orders found.</p>`}
+                    `;
+                    infoCard.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Error fetching customer info:", error);
+                    infoCard.innerHTML = "<p>Failed to load customer details.</p>";
+                    infoCard.classList.remove('hidden');
+                }
+            } else {
+                infoCard.classList.add('hidden');
+            }
+        }
+
+        // Attach event listener after defining displayCustomerInfo
+        document.getElementById('customerDropdown').addEventListener('change', displayCustomerInfo);
+
+        // Handle button click for deletion directly (alternative to form submit)
+        document.getElementById("delete-button").addEventListener("click", function () {
+            const customerName = document.getElementById("customerDropdown").value;
+            const [firstName, lastName] = customerName.split(' ');
+
+            // Confirm deletion
+            const confirmation = confirm(`Are you sure you want to delete ${firstName} ${lastName}?`);
+            if (confirmation) {
+                // Send data to server via fetch for deletion
+                fetch('/delete_customer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ first_name: firstName, last_name: lastName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Customer has been deleted successfully!");
+                        window.location.href = '/user'; // Redirect to main page
+                    } else {
+                        alert("Error deleting customer: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the customer.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

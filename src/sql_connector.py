@@ -1,17 +1,10 @@
+# src/sql_connector.py
 
 import pymysql
 
 class sqlConnector:
-
-    host = ""
-    user = ""
-    password = ""
-    database = ""
-
-    connection = None
-
     def __init__(self):
-        pass
+        self.connection = None
 
     def connect(self, username : str, password : str, host : str, database : str):
 
@@ -42,25 +35,30 @@ class sqlConnector:
                 raise TypeError("Incorrect username or password")
 
 
-    def query(self, quer):
-
-        returnList = []
-
+    def query(self, sql, params=None):
         with self.connection.cursor() as cursor:
-            cursor.execute(quer)  
-            results = cursor.fetchall()
+            cursor.execute(sql, params)
+            result = cursor.fetchall()
+        return result
 
-            for row in results:
-                returnList.append(row)
+    def execute(self, sql, params=None):
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql, params)
 
-        return returnList    
-    
+    def commit(self):
+        self.connection.commit()
 
-    def disconnect(self):
-        self.connection.close()
+    def rollback(self):
+        self.connection.rollback()
 
-    def getConnectionStatus(self):
-        return self.connection is not None and self.connection.open
+    def close(self):
+        if self.connection:
+            try:
+                self.connection.close()
+            except Exception as e:
+                print(f"Error closing connection: {e}")
+            finally:
+                self.connection = None
 
 
 

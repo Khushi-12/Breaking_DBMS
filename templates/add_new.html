@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Doctor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .certifications-container {
+            margin-top: 20px;
+        }
+
+        .certification-group {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .certification-group h4 {
+            margin-top: 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .back-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+            <button onclick="goBack()">Back to Main Page</button>
+    </div>
+    <div class="form-container">
+        <h2>Add New Doctor</h2>
+        <form id="doctor-form">
+            <!-- Doctor Information -->
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="office-name">Office Name</label>
+                <input type="text" id="office-name" name="office_name" required>
+            </div>
+            <div class="form-group">
+                <label for="street-name">Street Name</label>
+                <input type="text" id="street-name" name="office_address_street_name" required>
+            </div>
+            <div class="form-group">
+                <label for="street-num">Street Number</label>
+                <input type="text" id="street-num" name="office_address_street_num" required>
+            </div>
+            <div class="form-group">
+                <label for="town">Town</label>
+                <input type="text" id="town" name="office_address_town" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="office_address_state" required>
+            </div>
+            <div class="form-group">
+                <label for="zipcode">Zip Code</label>
+                <input type="text" id="zipcode" name="office_address_zipcode" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input 
+                    type="text" 
+                    id="phone" 
+                    name="phone" 
+                    required 
+                    pattern="\d{10}" 
+                    placeholder="1234567890">
+            <div class="form-group">
+                <label for="specialty">Specialty</label>
+                <input type="text" id="specialty" name="specialty" required>
+            </div>
+
+            <!-- Certifications -->
+            <div class="certifications-container" id="certifications-container">
+                <h3>Certifications</h3>
+                <!-- First Certification -->
+                <div class="certification-group">
+                    <h4>Certification 1</h4>
+                    <div class="form-group">
+                        <label for="cert-name-1">Certification Name</label>
+                        <select id="cert-name-1" name="certifications[0][certification_name]" required>
+                            <option value="">-- Select Certification --</option>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="institution-1">Institution</label>
+                        <input type="text" id="institution-1" name="certifications[0][institution]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiration-1">Expiration Date</label>
+                        <input type="date" id="expiration-1" name="certifications[0][expiration_date]" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add Certificate Button -->
+            <button type="button" class="add-button" id="add-certification-button">Add Certification</button>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Submit</button>
+
+        </form>
+    </div>
+
+    <script>
+        const certificateNames = {{ certificate_names | tojson }};
+    </script>
+
+    <script>
+     function goBack() {
+            window.location.href = '/user'; // Replace '/' with the main page URL
+        }
+    const certificationsContainer = document.getElementById("certifications-container");
+    const addCertificationButton = document.getElementById("add-certification-button");
+    let certificationCount = 1;
+
+    // Populate initial certification select element
+    const initialCertificationSelect = document.getElementById("cert-name-1");
+    certificateNames.forEach((cert) => {
+        const option = document.createElement("option");
+        option.value = cert;
+        option.textContent = cert;
+        initialCertificationSelect.appendChild(option);
+    });
+
+    // Add a new certification form
+    addCertificationButton.addEventListener("click", () => {
+        certificationCount++;
+        const certificationGroup = document.createElement("div");
+        certificationGroup.classList.add("certification-group");
+        certificationGroup.id = `certification-${certificationCount}`;
+        certificationGroup.innerHTML = `
+            <h4>Certification ${certificationCount}</h4>
+            <div class="form-group">
+                <label for="cert-name-${certificationCount}">Certification Name</label>
+                <select id="cert-name-${certificationCount}" name="certifications[${certificationCount - 1}][certification_name]" required>
+                    <option value="">-- Select Certification --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="institution-${certificationCount}">Institution</label>
+                <input type="text" id="institution-${certificationCount}" name="certifications[${certificationCount - 1}][institution]" required>
+            </div>
+            <div class="form-group">
+                <label for="expiration-${certificationCount}">Expiration Date</label>
+                <input type="date" id="expiration-${certificationCount}" name="certifications[${certificationCount - 1}][expiration_date]" required>
+            </div>
+            <button type="button" class="remove-button" onclick="removeCertification(${certificationCount})">Remove</button>
+        `;
+        certificationsContainer.appendChild(certificationGroup);
+
+        // Populate the select options
+        const newSelect = certificationGroup.querySelector(`#cert-name-${certificationCount}`);
+        certificateNames.forEach((cert) => {
+            const option = document.createElement("option");
+            option.value = cert;
+            option.textContent = cert;
+            newSelect.appendChild(option);
+        });
+    });
+
+    // Remove a certification form
+    function removeCertification(id) {
+        const certificationGroup = document.getElementById(`certification-${id}`);
+        if (certificationGroup) certificationsContainer.removeChild(certificationGroup);
+    }
+    
+    
+        // Handle form submission
+        document.getElementById("doctor-form").addEventListener("submit", (e) => {
+            e.preventDefault(); // Prevent default form submission behavior
+    
+            // Collect doctor information
+            const doctorInfo = {
+                first_name: document.getElementById("first-name").value,
+                last_name: document.getElementById("last-name").value,
+                office_name: document.getElementById("office-name").value,
+                office_address_street_name: document.getElementById("street-name").value,
+                office_address_street_num: document.getElementById("street-num").value,
+                office_address_town: document.getElementById("town").value,
+                office_address_state: document.getElementById("state").value,
+                office_address_zipcode: document.getElementById("zipcode").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                specialty: document.getElementById("specialty").value,
+                certifications: []
+            };
+    
+            // Collect certifications
+            const certificationGroups = document.querySelectorAll(".certification-group");
+            certificationGroups.forEach((group) => {
+                const certName = group.querySelector(`[id^="cert-name-"]`).value;
+                const institution = group.querySelector(`[id^="institution-"]`).value;
+                const expirationDate = group.querySelector(`[id^="expiration-"]`).value;
+    
+                doctorInfo.certifications.push({
+                    certification_name: certName,
+                    institution: institution,
+                    expiration_date: expirationDate
+                });
+            });
+    
+            console.log("Doctor Information:", doctorInfo);
+    
+            // Confirm submission
+            const confirmation = confirm("Are you sure you want to submit?");
+            if (confirmation) {
+                // Send data to server via fetch
+                fetch('/add_new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(doctorInfo)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Doctor information has been saved successfully!");
+                        // Optionally, redirect to another page or clear the form
+                        window.location.href = '/user'; // Redirect to main page
+                    } else {
+                        alert("Error saving doctor information: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving doctor information.');
+                });
+            }
+        });
+    
+    </script>
+    
+</body>
+</html>
