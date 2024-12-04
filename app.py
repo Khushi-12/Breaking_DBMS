@@ -56,7 +56,7 @@ def get_doctors():
 
 @app.route('/get_meds', methods=['GET'])
 def get_meds():
-    meds = con.query("SELECT * FROM chemical_database.medication order by common_name;")
+    meds = con.query("SELECT * FROM chemical_database.medication order by scientific_name;")
     return jsonify(meds)
 
 
@@ -159,10 +159,24 @@ def get_medication_info():
 
     med_id = request.args.get('id')
 
-    med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.common_name = '{med_id}';")
+    med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.scientific_name = '{med_id}';")
+
+    uses = con.query(f"SELECT * FROM medication med JOIN used_for uf ON med.scientific_name = uf.scientific_name JOIN uses u ON uf.use_id = u.use_id WHERE med.scientific_name = '{med_id}';")
+
+    chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
 
     med = med[0]
- 
+    med["uses"] = uses
+
+    for chemInd in range(len(chemicals)):
+        chemName = chemicals[chemInd]['chemical_scientific_name']
+        hazards = con.query(f"SELECT * FROM chemical che JOIN hazardous hazs ON che.scientific_name = hazs.scientific_name JOIN hazard haz ON hazs.hazard_id = haz.hazard_id WHERE che.scientific_name = '{chemName}';")
+        
+        chemicals[chemInd]["hazards"] = hazards
+
+    med["chemicals"] = chemicals
+
+
     return jsonify(med)
 
 
