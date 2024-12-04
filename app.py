@@ -59,7 +59,7 @@ def get_doctors():
 def get_meds():
     con = get_con()
     try:
-        meds = con.query("SELECT * FROM chemical_database.medication ORDER BY common_name;")
+        meds = con.query("SELECT * FROM chemical_database.medication ORDER BY scientific_name;")
         return jsonify(meds)
     finally:
         con.close()
@@ -88,6 +88,7 @@ def get_customer_info():
             SELECT * FROM orders o
             JOIN picks_up pi ON o.order_id = pi.order_id
             JOIN customer cu ON pi.customer_id = cu.insurance_id
+            JOIN pharmacy_store as ps ON ps.pharmacy_id = pi.pharmacy_id
             WHERE cu.first_name = '{customer_id[0]}' AND cu.last_name = '{customer_id[1]}';
         """)
 
@@ -170,10 +171,36 @@ def get_medication_info():
     med_id = request.args.get('id')
     con = get_con()
     try:
-        med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.common_name = '{med_id}';")
+
+        med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.scientific_name = '{med_id}';")
+
         if not med:
             return jsonify({"error": "Medication not found"}), 404
+
+        uses = con.query(f"SELECT * FROM medication med JOIN used_for uf ON med.scientific_name = uf.scientific_name JOIN uses u ON uf.use_id = u.use_id WHERE med.scientific_name = '{med_id}';")
+
+        if not uses:
+            return jsonify({"error": "Uses not found"}), 404
+
+        chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
+
+        if not chemicals:
+            return jsonify({"error": "Chemicals not found"}), 404
+
         med = med[0]
+        med["uses"] = uses
+
+        for chemInd in range(len(chemicals)):
+            chemName = chemicals[chemInd]['chemical_scientific_name']
+            hazards = con.query(f"SELECT * FROM chemical che JOIN hazardous hazs ON che.scientific_name = hazs.scientific_name JOIN hazard haz ON hazs.hazard_id = haz.hazard_id WHERE che.scientific_name = '{chemName}';")
+        
+            if not hazards:
+                return jsonify({"error": "Hazards not found"}), 404
+
+            chemicals[chemInd]["hazards"] = hazards
+
+        med["chemicals"] = chemicals
+
         return jsonify(med)
     finally:
         con.close()
@@ -315,39 +342,10 @@ def add_new():
         finally:
             con.close()
 
+
 @app.route('/modify')
 def modify():
-    if request.method == 'GET':
-        con =get_con()
-        try:
-            picks_up = con.query(f"SELECT *from picks_up;")
-            return render_template('modify.html', customer_orders = picks_up)
-        except Exception as e:
-            con.rollback()
-            return jsonify({'success': False, 'error': str(e)}), 500
-        
-        finally:
-            con.close()
-
-@app.route('/modify_pharmacy', methods=['POST'])
-def delete_pharmacy():
-    data = request.get_json()
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    con = get_con()
-    try:
-        # Delete the customer using first_name and last_name
-        con.execute("""
-            SELECT * FROM customer
-            WHERE first_name = %s AND last_name = %s;
-        """, (first_name, last_name))
-        con.commit()
-        return jsonify({'success': True})
-    except Exception as e:
-        con.rollback()
-        return jsonify({'success': False, 'error': str(e)}), 500
-    finally:
-        con.close()
+    return render_template('modify.html')
 
 @app.route('/delete', methods =['POST','GET'])
 def delete():
