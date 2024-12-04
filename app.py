@@ -402,9 +402,41 @@ def add_new():
             con.close()
 
 
-@app.route('/modify')
+@app.route('/modify', methods =['POST','GET'])
 def modify():
-    return render_template('modify.html')
+    if request.method == 'GET':
+        con =get_con()
+        try:
+            customer = con.query(f"SELECT *from customer;")
+            return render_template('modify.html', customers = customer)
+        except Exception as e:
+            con.rollback()
+            return jsonify({'success': False, 'error': str(e)}), 500
+        
+        finally:
+            con.close()
+   
+    # return render_template('delete.html')
+@app.route('/modify_pharm', methods=['POST'])
+def modify_pharm():
+    data = request.get_json()
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    con = get_con()
+    try:
+        # Delete the customer using first_name and last_name
+        con.execute("""
+            DELETE FROM customer
+            WHERE first_name = %s AND last_name = %s;
+        """, (first_name, last_name))
+        con.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        con.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        con.close()
+
 
 @app.route('/delete', methods =['POST','GET'])
 def delete():
