@@ -545,7 +545,7 @@ CREATE TABLE picks_up ( -- customer, pharmacy, order
     PRIMARY KEY (customer_id, order_id, pharmacy_id),
     FOREIGN KEY (customer_id) REFERENCES customer(insurance_id) ON DELETE CASCADE,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy_store(pharmacy_id)
+    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy_store(pharmacy_id) ON UPDATE CASCADE
 );
 
 INSERT INTO picks_up (customer_id, order_id, pharmacy_id)
@@ -731,7 +731,7 @@ CREATE TABLE sells ( -- pharmacy store to medication
     quantity INT NOT NULL,         
     PRIMARY KEY (pharmacy_id, medication_scientific_name, medication_brand_name), -- Composite primary key
     FOREIGN KEY (pharmacy_id) 
-        REFERENCES pharmacy_store(pharmacy_id) 
+        REFERENCES pharmacy_store(pharmacy_id)
         ON DELETE CASCADE,       
     FOREIGN KEY (medication_scientific_name, medication_brand_name) 
         REFERENCES medication(scientific_name, brand_name) 
@@ -960,3 +960,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- shane should run this every time, but we dont wanna submit this in our final submission
+
+update 
