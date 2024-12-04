@@ -439,6 +439,8 @@ def modify_pharm():
         """, (pharmacy_name, pharmacy_street_name, pharmacy_street_num, 
               pharmacy_town, pharmacy_state, pharmacy_zipcode))
         
+        print("Query result:", result)
+        
         if result:
             pharmacy_id = result[0]['pharmacy_id']
             con.execute("""
@@ -455,6 +457,7 @@ def modify_pharm():
                   pharmacy_town, pharmacy_state, pharmacy_zipcode, 
                   pharmacy_phone, pharmacy_id))
         else:
+            print("Inserting new pharmacy...")
             con.execute("""
                 INSERT INTO pharmacy_store (name, address_street_name, address_street_num, 
                                             address_town, address_state, address_zipcode, 
@@ -465,6 +468,7 @@ def modify_pharm():
             
             result = con.query("SELECT LAST_INSERT_ID() AS pharmacy_id;")
             pharmacy_id = result[0]['pharmacy_id']
+            print(f"New pharmacy ID: {pharmacy_id}")
 
         con.execute("""
             UPDATE picks_up 
