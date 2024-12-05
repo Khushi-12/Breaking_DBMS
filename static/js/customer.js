@@ -71,7 +71,7 @@ async function displayCustomerInfo(event) {
                             <div class="box">
                                 <h3>Order #${order.order_id}</h3>
                                 <p><strong>Delivery Date:</strong> ${order.delivery_date}</p>
-                                <p><strong>Pickup Pharmacy Name:</strong> ${order.name}</p>
+                                <p><strong>Pickup Pharmacy Name:</strong> ${order.pharmacy_name}</p>
                                 <p><strong>Prescribing Doctor:</strong> Dr. ${order.doctor_first_name}</p>
                                 <div class="prescription-container">
                                     ${order.prescriptions.length > 0 ? order.prescriptions.map(prescription => `

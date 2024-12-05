@@ -185,6 +185,7 @@ def get_customer_info():
             CALL GetCustomerOrdersMain(%s, %s);
             """, (customer_id[0], customer_id[1]))
 
+        print(customer_orders)
 
         for order in customer_orders:
             order_number = order['order_id']
