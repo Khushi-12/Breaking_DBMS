@@ -60,7 +60,13 @@ class sqlConnector:
             finally:
                 self.connection = None
 
-
+    def callproc(self, procname, params=None):
+        with self.connection.cursor() as cursor:
+            cursor.callproc(procname, params)
+            results = []
+            for result in cursor.stored_results():
+                results.extend(result.fetchall())
+            return results
 
 
 

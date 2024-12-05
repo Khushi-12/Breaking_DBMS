@@ -20,7 +20,7 @@ customer_credentials = {
     'password': 'password123'
 }
 
-def get_con():
+def get_con(): 
     con = sql_connector.sqlConnector()
     con.connect(username, password, "localhost", "chemical_database")
     return con
@@ -201,32 +201,12 @@ def get_customer_info():
 @app.route('/get_doctor_info', methods=['GET'])
 def get_doctor_info():
     doctor_id = request.args.get('id').split()
+    # print(type(doctor_id[0]),doctor_id[1])
     con = get_con()
     try:
-        doctor_query = f"""
-            SELECT 
-                do.first_name,
-                do.last_name,
-                do.email,
-                do.phone,
-                do.specialty,
-                do.office_name,
-                do.office_address_street_name,
-                do.office_address_street_num,
-                do.office_address_town,
-                do.office_address_state,
-                do.office_address_zipcode,
-                c.name,
-                c.institution,
-                c.expiration_date
-            FROM chemical_database.doctor do
-            JOIN obtains_doctor ON do.first_name = obtains_doctor.first_name
-                AND do.last_name = obtains_doctor.last_name
-            JOIN certification c ON obtains_doctor.certification_name = c.name
-            WHERE do.first_name = '{doctor_id[0]}' AND do.last_name = '{doctor_id[1]}';
-        """
+        doctor_query = "CALL GetDoctorDetails(%s, %s)"
+        doctor_rows = con.query(doctor_query, (doctor_id[0], doctor_id[1]))
 
-        doctor_rows = con.query(doctor_query)
 
         if not doctor_rows:
             return jsonify({"error": "Doctor not found"}), 404
@@ -264,16 +244,19 @@ def get_medication_info():
 
     med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.scientific_name = '{med_id}';")
 
-    uses = con.query(f"SELECT * FROM medication med JOIN used_for uf ON med.scientific_name = uf.scientific_name JOIN uses u ON uf.use_id = u.use_id WHERE med.scientific_name = '{med_id}';")
+    # uses = con.query(f"SELECT * FROM medication med JOIN used_for uf ON med.scientific_name = uf.scientific_name JOIN uses u ON uf.use_id = u.use_id WHERE med.scientific_name = '{med_id}';")
+    uses_query = "CALL GetMedicationDetails(%s)"
+    uses = con.query(uses_query, (med_id))
 
-    chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
-
+    # chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
+    chemicals_query = "CALL GetMedicationDetailsComposedOf(%s)"
+    chemicals = con.query(chemicals_query, (med_id))
     med =med[0]
     med["uses"] = uses
 
     for chemInd in range(len(chemicals)):
         chemName = chemicals[chemInd]['chemical_scientific_name']
-        hazards = con.query(f"SELECT * FROM chemical che JOIN hazardous hazs ON che.scientific_name = hazs.scientific_name JOIN hazard haz ON hazs.hazard_id = haz.hazard_id WHERE che.scientific_name = '{chemName}';")
+        hazards = con.query("CALL GetchemicalDetails(%s)",(med_id))
         
         chemicals[chemInd]["hazards"] = hazards
 
@@ -297,26 +280,10 @@ def get_pharmacy_info():
     pharmacist_id = request.args.get('name').split()
     con = get_con()
     try:
-        query = f"""
-            SELECT pharmacist.first_name, pharmacist.last_name,
-               pharmacy_store.name AS pharmacy_store_name,
-               pharmacy_store.address_street_name AS address_street_name,
-               pharmacy_store.address_street_num AS address_street_num,
-               pharmacy_store.address_town AS address_town,
-               pharmacy_store.address_state AS address_state,
-               pharmacy_store.address_zipcode AS address_zipcode,
-               certification.name AS certification_name,
-               certification.institution,
-               certification.expiration_date AS expiration_date
-            FROM pharmacist
-            JOIN pharmacy_store ON pharmacist.pharmacy_id = pharmacy_store.pharmacy_id
-            JOIN obtains_pharmacist ON pharmacist.first_name = obtains_pharmacist.first_name
-                AND pharmacist.last_name = obtains_pharmacist.last_name
-            JOIN certification ON obtains_pharmacist.certification_name = certification.name
-            WHERE pharmacist.first_name = '{pharmacist_id[0]}' AND pharmacist.last_name = '{pharmacist_id[1]}';
-        """
+        pharmacist_query ="CALL GetPharmacistDetails(%s,%s);"
+        
 
-        pharmacist_data = con.query(query)
+        pharmacist_data = con.query(pharmacist_query, (pharmacist_id[0],pharmacist_id[1]))
 
         if not pharmacist_data:
             return jsonify({"error": "No data found for the selected pharmacist"}), 404
@@ -344,70 +311,6 @@ def get_pharmacy_info():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/get_orders', methods=['GET'])
-def get_orders_for_customer():
-
-    #doctor_id = request.args.get('id').split()
-
-    #doctor = con.query(f"SELECT * FROM chemical_database.doctor do WHERE do.first_name = '{doctor_id[0]}' and do.last_name = '{doctor_id[1]}';")
-
-    #doctor[0]["phone"] = addDashesToPhoneNumber(doctor[0]["phone"])
- 
-    orders = [
-        {
-            "first_name" : "John",
-            "last_name" : "Carter",
-            "phone" : "456-345-0982",
-            "email" : "johnCart@gmail.com",
-            "orders" : [
-                {
-                    "order_id" : 1244, 
-                    "expiration_date" : "2024-12-01",
-                    "doctor_first_name" : "Johnson",
-                    "prescriptions" : [
-                        {
-                            "val" : 1,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 50,
-                            "dosage" : 130
-                        },
-                        {
-                            "val" : 2,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 130
-
-                        }
-                    ]
-
-                },
-                {
-                    "order_id" : 1346, 
-                    "expiration_date" : "2024-07-05",
-                    "doctor_first_name" : "Jein",
-                    "prescriptions" : [
-
-                    ]
-                },
-                {
-                    "order_id" : 5434, 
-                    "expiration_date" : "2024-04-09",
-                    "doctor_first_name" : "Gene",
-                    "prescriptions" : [
-                        {
-                            "val" : 3,
-                            "expiration_date" : "2025-12-01",
-                            "quantity" : 100,
-                            "dosage" : 50
-                        }
-                    ]
-                }
-            ]
-
-        }
-    ]
-
-    return jsonify(orders)
 
 
     
@@ -536,11 +439,7 @@ def get_customer_infos():
     customer_id = request.args.get('id').split()
     con = get_con()
     try:
-        customer = con.query(f"""
-            SELECT * FROM chemical_database.customer cu
-            JOIN chemical_database.insurance_company ic ON cu.insurance_name = ic.name
-            WHERE cu.first_name = %s AND cu.last_name = %s;
-        """, (customer_id[0], customer_id[1]))
+        customer = con.query("CALL GetCustomerInfo(%s, %s)",(customer_id[0],customer_id[1]))
 
         if not customer:
             return jsonify({"error": "Customer not found"}), 404
@@ -549,12 +448,7 @@ def get_customer_infos():
         customer = customer[0]
 
         customer_orders = con.query(f"""
-            SELECT o.*, ps.name, ps.address_street_name, ps.address_street_num, ps.address_town, ps.address_state, ps.address_zipcode
-            FROM orders o
-            JOIN picks_up pi ON o.order_id = pi.order_id
-            JOIN customer cu ON pi.customer_id = cu.insurance_id
-            JOIN pharmacy_store ps ON pi.pharmacy_id = ps.pharmacy_id
-            WHERE cu.first_name = %s AND cu.last_name = %s;
+            CALL GetCustomerOrders(%s,%s)
         """, (customer_id[0], customer_id[1]))
 
         for order in customer_orders:
