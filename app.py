@@ -82,29 +82,61 @@ def pharmacist_dashboard():
 
 @app.route('/customer_dashboard')
 def customer_dashboard():
-    # Retrieve the customer's email from the URL parameters
     customer_email = request.args.get('email')
 
     if not customer_email:
-        # If no email is provided, redirect to the login page
         return redirect(url_for('customer_login_page'))
 
     con = get_con()
     try:
-        # Fetch the customer’s data based on their email
         customer_info = con.query("""
             SELECT * FROM chemical_database.customer
             WHERE email = %s;
         """, (customer_email,))
-
         if customer_info:
-            # Pass customer data to the template
-            customer_data = customer_info[0]
-            return render_template('customer_dash.html', customer=customer_data)
+            customer_info = customer_info[0]
+            customer = con.query("""
+                SELECT cu.*, ic.contact
+                FROM chemical_database.customer cu
+                JOIN chemical_database.insurance_company ic ON cu.insurance_name = ic.name
+                WHERE cu.first_name = %s AND cu.last_name = %s;
+            """, (customer_info['first_name'], customer_info['last_name']))
+
+            if not customer:
+                return jsonify({"error": "Customer not found"}), 404
+
+            customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
+            customer = customer[0]
+
+            customer_orders = con.query("""
+                SELECT o.*, ps.name AS pharmacy_name, d.first_name AS doctor_first_name, d.last_name AS doctor_last_name
+                FROM orders o
+                JOIN picks_up pi ON o.order_id = pi.order_id
+                JOIN customer cu ON pi.customer_id = cu.insurance_id
+                JOIN pharmacy_store ps ON ps.pharmacy_id = pi.pharmacy_id
+                JOIN doctor d ON o.doctor_first_name = d.first_name AND o.doctor_last_name = d.last_name
+                WHERE cu.first_name = %s AND cu.last_name = %s;
+            """, (customer_info['first_name'], customer_info['last_name']))
+
+            for order in customer_orders:
+                order_number = order['order_id']
+                prescriptions = con.query("""
+                    SELECT pre.*, med.brand_name, med.scientific_name
+                    FROM prescription pre
+                    JOIN contains con ON pre.val = con.prescription_id
+                    JOIN medication med ON pre.scientific_name = med.scientific_name
+                    WHERE con.order_id = %s;
+                """, (order_number,))
+                order["prescriptions"] = prescriptions
+
+            customer["orders"] = customer_orders
+
+            return render_template('customer_dash.html', customer=customer)
         else:
             return jsonify({"error": "Customer not found"}), 404
     finally:
         con.close()
+
 
 
 @app.route('/customers')
