@@ -43,15 +43,6 @@ def login():
 def customer_login_page():
     return render_template('customer_login.html')
 
-# @app.route('/customer_login', methods=['POST'])
-# def customer_login():
-#     username = request.form['username']
-#     password = request.form['password']
-    
-#     if username == customer_credentials['username'] and password == customer_credentials['password']:
-#         return redirect(url_for('customer_dashboard'))
-#     else:
-#         return jsonify({"message": "Invalid Credentials, Login Unsuccessful"}), 401
 
 @app.route('/customer_login', methods=['POST'])
 def customer_login():
@@ -66,8 +57,7 @@ def customer_login():
             WHERE email = %s;
         """, (username,))
 
-        if customer and password == "password123":  # Replace with actual password check
-            # Redirect to customer dashboard with the email as a query parameter
+        if customer and password == "password123":  
             return redirect(url_for('customer_dashboard', email=username))
         else:
             # Invalid credentials
@@ -198,6 +188,36 @@ def get_customer_info():
     finally:
         con.close()
 
+@app.route('/get_customer_infos', methods=['GET'])
+def get_customer_infos():
+    customer_id = request.args.get('id').split()
+    con = get_con()
+    try:
+        customer = con.query("CALL GetCustomerInfo(%s, %s)",(customer_id[0],customer_id[1]))
+
+        if not customer:
+            return jsonify({"error": "Customer not found"}), 404
+
+        customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
+        customer = customer[0]
+
+        customer_orders = con.query(f"""
+            CALL GetCustomerOrdersMain(%s,%s)
+        """, (customer_id[0], customer_id[1]))
+
+        for order in customer_orders:
+            order_number = order['order_id']
+            prescriptions = con.query("""
+                    CALL GetPrescriptionDetails(%s);
+                    """, (order_number,))
+            order["prescriptions"] = prescriptions
+
+        customer["orders"] = customer_orders
+
+        return jsonify(customer)
+    finally:
+        con.close()
+
 @app.route('/get_doctor_info', methods=['GET'])
 def get_doctor_info():
     doctor_id = request.args.get('id').split()
@@ -244,13 +264,14 @@ def get_medication_info():
 
     med = con.query(f"SELECT * FROM chemical_database.medication med WHERE med.scientific_name = '{med_id}';")
 
-    # uses = con.query(f"SELECT * FROM medication med JOIN used_for uf ON med.scientific_name = uf.scientific_name JOIN uses u ON uf.use_id = u.use_id WHERE med.scientific_name = '{med_id}';")
+    
     uses_query = "CALL GetMedicationDetails(%s)"
     uses = con.query(uses_query, (med_id))
 
-    # chemicals = con.query(f"SELECT * FROM medication med JOIN composed_of cof ON med.scientific_name = cof.scientific_name JOIN chemical che ON cof.chemical_scientific_name = che.scientific_name WHERE med.scientific_name = '{med_id}';")
+    
     chemicals_query = "CALL GetMedicationDetailsComposedOf(%s)"
     chemicals = con.query(chemicals_query, (med_id))
+
     med =med[0]
     med["uses"] = uses
 
@@ -434,37 +455,7 @@ def modify_pharm():
     finally:
         con.close()
 
-@app.route('/get_customer_infos', methods=['GET'])
-def get_customer_infos():
-    customer_id = request.args.get('id').split()
-    con = get_con()
-    try:
-        customer = con.query("CALL GetCustomerInfo(%s, %s)",(customer_id[0],customer_id[1]))
 
-        if not customer:
-            return jsonify({"error": "Customer not found"}), 404
-
-        customer[0]["phone"] = addDashesToPhoneNumber(customer[0]["phone"])
-        customer = customer[0]
-
-        customer_orders = con.query(f"""
-            CALL GetCustomerOrders(%s,%s)
-        """, (customer_id[0], customer_id[1]))
-
-        for order in customer_orders:
-            order_number = order['order_id']
-            prescriptions = con.query("""
-                SELECT * FROM prescription pre
-                JOIN contains con ON pre.val = con.prescription_id
-                WHERE order_id = %s;
-            """, (order_number,))
-            order["prescriptions"] = prescriptions
-
-        customer["orders"] = customer_orders
-
-        return jsonify(customer)
-    finally:
-        con.close()
 
 @app.route('/delete', methods =['POST','GET'])
 def delete():
