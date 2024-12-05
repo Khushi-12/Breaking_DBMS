@@ -959,3 +959,147 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+use chemical_database;
+
+DROP PROCEDURE IF EXISTS GetCustomerInfo;
+
+DELIMITER $$
+
+CREATE PROCEDURE GetCustomerInfo(
+    IN p_first_name VARCHAR(255),
+    IN p_last_name VARCHAR(255)
+)
+BEGIN
+    SELECT cu.*, ic.contact
+    FROM chemical_database.customer cu
+    JOIN chemical_database.insurance_company ic 
+        ON cu.insurance_name = ic.name
+    WHERE cu.first_name = p_first_name
+      AND cu.last_name = p_last_name;
+END$$
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetCustomerOrdersCDash;
+DELIMITER $$
+
+CREATE PROCEDURE GetCustomerOrdersCDash(
+    IN p_first_name VARCHAR(255),
+    IN p_last_name VARCHAR(255)
+)
+BEGIN
+    SELECT o.*, 
+           ps.name AS pharmacy_name, 
+           d.first_name AS doctor_first_name, 
+           d.last_name AS doctor_last_name
+    FROM orders o
+    JOIN picks_up pi ON o.order_id = pi.order_id
+    JOIN customer cu ON pi.customer_id = cu.insurance_id
+    JOIN pharmacy_store ps ON ps.pharmacy_id = pi.pharmacy_id
+    JOIN doctor d ON o.doctor_first_name = d.first_name 
+                 AND o.doctor_last_name = d.last_name
+    WHERE cu.first_name = p_first_name 
+      AND cu.last_name = p_last_name;
+END$$
+
+DELIMITER ;
+
+
+
+DROP PROCEDURE IF EXISTS GetPrescriptionDetails;
+DELIMITER $$
+
+CREATE PROCEDURE GetPrescriptionDetails(
+    IN p_order_id INT
+)
+BEGIN
+    SELECT pre.*, 
+           med.brand_name, 
+           med.scientific_name
+    FROM prescription pre
+    JOIN contains con ON pre.val = con.prescription_id
+    JOIN medication med ON pre.scientific_name = med.scientific_name
+    WHERE con.order_id = p_order_id;
+END$$
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetCustomerOrdersMain;
+DELIMITER $$
+
+CREATE PROCEDURE GetCustomerOrdersMain(
+    IN p_first_name VARCHAR(255),
+    IN p_last_name VARCHAR(255)
+)
+BEGIN
+    SELECT o.*, 
+           ps.name AS pharmacy_name
+    FROM orders o
+    JOIN picks_up pi ON o.order_id = pi.order_id
+    JOIN customer cu ON pi.customer_id = cu.insurance_id
+    JOIN pharmacy_store ps ON ps.pharmacy_id = pi.pharmacy_id
+    WHERE cu.first_name = p_first_name 
+      AND cu.last_name = p_last_name;
+END$$
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetDoctorDetails;
+DELIMITER $$
+
+CREATE PROCEDURE GetDoctorDetails(
+    IN p_first_name VARCHAR(255),
+    IN p_last_name VARCHAR(255)
+)
+BEGIN
+    SELECT 
+        do.first_name,
+        do.last_name,
+        do.email,
+        do.phone,
+        do.specialty,
+        do.office_name,
+        do.office_address_street_name,
+        do.office_address_street_num,
+        do.office_address_town,
+        do.office_address_state,
+        do.office_address_zipcode,
+        c.name,
+        c.institution,
+        c.expiration_date
+    FROM chemical_database.doctor do
+    JOIN obtains_doctor ON do.first_name = obtains_doctor.first_name
+        AND do.last_name = obtains_doctor.last_name
+    JOIN certification c ON obtains_doctor.certification_name = c.name
+    WHERE do.first_name = p_first_name AND do.last_name = p_last_name;
+END $$
+
+
+
+DROP PROCEDURE IF EXISTS GetMedicationDetails;
+DELIMITER $$
+
+CREATE PROCEDURE GetMedicationDetails(
+    IN p_med_id VARCHAR(255)
+)
+BEGIN
+    SELECT DISTINCT
+        *       -- Select all columns from medication
+	-- Select specific columns from uses
+    FROM
+        medication med
+    JOIN
+        used_for uf ON med.scientific_name = uf.scientific_name
+    JOIN
+        uses u ON uf.use_id = u.use_id
+    WHERE
+        med.scientific_name = p_med_id;
+END$$
+
+DELIMITER ;
+
