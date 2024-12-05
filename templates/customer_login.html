@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharmacy Database Login</title>
+    <title>Customer Login - Pharmacy Database</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -89,8 +89,8 @@
 </head>
 <body>
     <div class="container">
-        <h2>Pharmacy Database System</h2>
-        <form action="/login" method="POST">
+        <h2>Customer Login</h2>
+        <form action="/customer_login" method="POST">
             <div class="input-field">
                 <i class="fas fa-user"></i>
                 <input type="text" name="username" placeholder="    Username" required>
@@ -102,7 +102,7 @@
             <button type="submit" class="button">Login</button>
         </form>
         <div class="redirect-link">
-            <p>Not a pharmacist? <a href="/customer_login">Login as a customer</a></p>
+            <p>Not a customer? <a href="/">Login as a pharmacist</a></p>
         </div>
     </div>
 </body>

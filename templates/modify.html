@@ -183,7 +183,7 @@
     <script>
         // Go back to the main page
         function goBack() {
-            window.location.href = '/user'; // Replace '/user' with the main page URL
+            window.location.href = '/pharmacist_dashboard'; // Replace '/user' with the main page URL
         }
 
         // Function to format phone numbers
@@ -300,7 +300,7 @@
                 .then(data => {
                     if (data.success) {
                         alert("Pharmacy information updated successfully!");
-                        window.location.href = '/user'; // Redirect to main page
+                        window.location.href = '/pharmacist_dashboard'; // Redirect to main page
                     } else {
                         alert("Error updating pharmacy information: " + data.error);
                     }

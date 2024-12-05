@@ -50,26 +50,26 @@ CREATE TABLE customer(
 );
 
 INSERT INTO customer VALUES 
-(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2180-11-11', 'keverdeen12@gmail.com', 1111111111,'Blue Cross Blue Shield'),
-(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2179-06-03', 'pmellark44@gmail.com', 2222222222,'Health Net'),
-(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2145-01-27', 'coriosnow@gmail.com', 3333333333,'Health Net'),
-(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2185-05-17', 'primdeen11@gmail.com', 1111111212,'Harvard Pilgrim Health Care'),
-(111112345, 'Lucygray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '2145-09-21', 'lgraybaird@gmail.com', 4444444444,'Centene Corporation'),
-(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '2175-02-19', 'finnodair@gmail.com', 5555555555,'Aetna'),
-(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '2157-12-31', 'etrinket2020@gmail.com', 6666666666, 'Cigna'),
-(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '2155-08-14', 'hayaber@gmail.com', 7777777777,'Health Net'),
-(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '2142-04-02', 'tigrissnow@gmail.com', 8888888888,'EmblemHealth'),
-(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '2177-11-06', 'jomason@gmail.com', 9999999999,'EmblemHealth'),
-(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2179-12-15', 'galehawthorne53@gmail.com', 1112221111,'Humana'),
-(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-09-02', 'caesarflickerman@gmail.com', 1113331111,'Blue Cross Blue Shield'),
-(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '2143-10-10', 'pheavensbee@gmail.com', 1114441111,'Independence Blue Cross'),
-(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '2151-10-02', 'lflickerman@gmail.com', 111555111,'Cigna'),
-(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-11-08', 'lee.kri@northeastern.edu', 7163414340,'CareFirst BlueCross BlueShield'),
+(123456789, 'Katniss', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2002-11-11', 'keverdeen12@gmail.com', 1111111111,'Blue Cross Blue Shield'),
+(112345678, 'Peeta', 'Mellark', 'Baker St', 454, 'District 12', 'Panem', 12345, '2001-06-03', 'pmellark44@gmail.com', 2222222222,'Health Net'),
+(111234567, 'Coriolanus', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '1957-01-27', 'coriosnow@gmail.com', 3333333333,'Health Net'),
+(111123456, 'Primrose', 'Everdeen', 'Jay St', 123, 'District 12', 'Panem', 12345, '2007-05-17', 'primdeen11@gmail.com', 1111111212,'Harvard Pilgrim Health Care'),
+(111112345, 'Lucy-Gray', 'Baird', 'Covey Rd', 100, 'District 12', 'Panem', 12345, '1957-09-21', 'lgraybaird@gmail.com', 4444444444,'Centene Corporation'),
+(111111234, 'Finnick', 'Odair', 'Sugar St', 2, 'District 4', 'Panem', 44444, '1995-02-19', 'finnodair@gmail.com', 5555555555,'Aetna'),
+(111111123, 'Effie', 'Trinket', 'Mahogany Dr', 12, 'Capitol', 'Panem', 94582, '1986-12-31', 'etrinket2020@gmail.com', 6666666666, 'Cigna'),
+(111111112, 'Haymitch', 'Abernathy', 'Sunrise St', 75, 'District 12', 'Panem', 12345, '1989-08-14', 'hayaber@gmail.com', 7777777777,'Health Net'),
+(111111111, 'Tigris', 'Snow', 'Presidental Rd', 52, 'Capitol', 'Panem', 94582, '1954-04-02', 'tigrissnow@gmail.com', 8888888888,'EmblemHealth'),
+(234567891, 'Johanna', 'Mason', 'Spear Dr', 290, 'District 7', 'Panem', 37104, '1997-11-06', 'jomason@gmail.com', 9999999999,'EmblemHealth'),
+(223456789, 'Gale', 'Hawthorne', 'Hunter Dr', 111, 'District 12', 'Panem', 12345, '2000-12-15', 'galehawthorne53@gmail.com', 1112221111,'Humana'),
+(222345678, 'Caesar', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '1973-09-02', 'caesarflickerman@gmail.com', 1113331111,'Blue Cross Blue Shield'),
+(222234567, 'Plutarch', 'Heavensbee', 'Director Cr', 372, 'Capitol', 'Panem', 94582, '1977-10-10', 'pheavensbee@gmail.com', 1114441111,'Independence Blue Cross'),
+(222223456, 'Lucretius', 'Flickerman', 'Lucky Rd', 939, 'Capitol', 'Panem', 94582, '1931-10-02', 'lflickerman@gmail.com', 111555111,'Cigna'),
+(222222345, 'Kristen', 'Lee', 'Leek Rd', 484, 'Mahopac', 'New York', 48294, '2002-08-11', 'lee.kri@northeastern.edu', 7163414340,'CareFirst BlueCross BlueShield'),
 (222222234, 'Alana', 'Baldari', 'Nitrile Dr', 391, 'Long Island', 'New York', 18492, '2001-01-28', 'ajbald@gmail.com', 7819592378,'Blue Cross Blue Shield'),
 (222222223, 'Laurie', 'King', 'Cross Dr', 131, 'Worcester', 'Massachusetts', 01610, '1970-05-27', 'lking@gmail.com', 8681932849,'Oscar Health'),
 (222222293, 'Jeremy', 'Rosenholtz', 'Delicate St', 9, 'Winchester', 'Massachusetts', 82014, '1955-10-17', 'jrosenholtz@gmail.com', 8198320392,'Anthem Blue Cross'),
 (333333333, 'Adelle', 'Feeley', 'Swift Dr', 45, 'Worcester', 'Massachusetts', 01610, '2002-08-27', 'adellefeeley@gmail.com', 7819292378,'Oscar Health'), 
-(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '2175-03-03', 'scrane@gmail.com', 7189297823,'Independence Blue Cross');
+(323232323, 'Seneca', 'Crane', 'Maker St', 45, 'Capitol', 'Panem', 94582, '1990-03-03', 'scrane@gmail.com', 7189297823,'Independence Blue Cross');
 
 
 CREATE TABLE pharmacy_store(
@@ -369,21 +369,21 @@ CREATE TABLE prescription(
 );
 
 INSERT INTO prescription (dosage, expiration_date, quantity, scientific_name, brand_name) VALUES
-(500, '2190-12-31', 50, 'Metformin', 'Glucophage'),
-(50, '2190-06-03', 30, 'Simvastatin', 'Zocor'),
-(400, '2192-01-17', 100,'Simvastatin', 'Zocor'),
-(3.5, '2191-10-27', 25, 'Folic Acid','Folacare'),
-(3.5, '2191-10-27', 40, 'Loratadine', 'Claritin'),
-(250, '2195-02-15', 15, 'Ascorbic Acid', 'C-1000'),
-(100, '2193-11-10', 60,'Ketamine', 'Ketalar'),
-(200, '2194-07-22', 35,'Ibuprofen', 'Advil'),
-(5, '2193-08-14', 20, 'Ascorbic Acid', 'C-1000'),
-(10, '2196-09-30', 45,'Ibuprofen', 'Advil'),
-(750, '2192-05-19', 30,'Paracetamol','Tylenol'),
-(125, '2194-04-18', 55,'Loratadine', 'Claritin'),
-(600, '2197-01-05', 70,'Metformin', 'Glucophage'),
-(50, '2193-01-29', 25,'Ketamine', 'Ketalar'),
-(400, '2195-03-23', 20,'Ibuprofen', 'Advil');
+(500, '2027-12-31', 50, 'Metformin', 'Glucophage'),
+(50, '2026-06-03', 30, 'Simvastatin', 'Zocor'),
+(400, '2025-01-17', 100,'Simvastatin', 'Zocor'),
+(3.5, '2025-10-27', 25, 'Folic Acid','Folacare'),
+(3.5, '2026-10-27', 40, 'Loratadine', 'Claritin'),
+(250, '2026-02-15', 15, 'Ascorbic Acid', 'C-1000'),
+(100, '2025-11-10', 60,'Ketamine', 'Ketalar'),
+(200, '2024-07-22', 35,'Ibuprofen', 'Advil'),
+(5, '2024-08-14', 20, 'Ascorbic Acid', 'C-1000'),
+(10, '2025-09-30', 45,'Ibuprofen', 'Advil'),
+(750, '2026-05-19', 30,'Paracetamol','Tylenol'),
+(125, '2028-04-18', 55,'Loratadine', 'Claritin'),
+(600, '2027-01-05', 70,'Metformin', 'Glucophage'),
+(50, '2027-01-29', 25,'Ketamine', 'Ketalar'),
+(400, '2028-03-23', 20,'Ibuprofen', 'Advil');
 
 
 CREATE TABLE uses(
@@ -480,39 +480,38 @@ CREATE TABLE in_network ( -- pharmacy store to insurance_company
 
 INSERT INTO in_network (insurance_company_name, pharmacy_id)
 VALUES
-('UnitedHealth Group', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('UnitedHealth Group', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Anthem Blue Cross', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Anthem Blue Cross', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-('Aetna', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-('Aetna', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Cigna', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('Cigna', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-('Humana', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Humana', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Centene Corporation', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('Centene Corporation', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-('Oscar Health', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Oscar Health', 'Greenfield Drugs', 'Broadway', 101, 'New York', 'New York', '10001'),
-('Blue Cross Blue Shield', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028'),
-('Blue Cross Blue Shield', 'Cedar Pharmacy', 'Main St', 123, 'Springfield', 'Illinois', '62701'),
-('CareFirst BlueCross BlueShield', 'Pine Health Pharmacy', 'Oak Ave', 45, 'Lincoln', 'Nebraska', '68502'),
-('CareFirst BlueCross BlueShield', 'Maple Pharmacy', 'Fifth Ave', 550, 'Chicago', 'Illinois', '60611'),
-('Harvard Pilgrim Health Care', 'Riverbend Pharmacy', 'River Rd', 320, 'Denver', 'Colorado', '80202'),
-('Harvard Pilgrim Health Care', 'Sunset Pharmacy', 'Sunset Blvd', 2134, 'Los Angeles', 'California', '90028');
-
-Select * from in_network
-where pharmacy_store_name = 'Cedar Pharmacy';
+    ('UnitedHealth Group', 1),
+    ('UnitedHealth Group', 2),
+    ('Anthem Blue Cross', 3),
+    ('Anthem Blue Cross', 4),
+    ('Aetna', 5),
+    ('Aetna', 6),
+    ('Cigna', 1),
+    ('Cigna', 4),
+    ('Humana', 2),
+    ('Humana', 3),
+    ('Centene Corporation', 6),
+    ('Centene Corporation', 5),
+    ('Oscar Health', 3),
+    ('Oscar Health', 2),
+    ('Blue Cross Blue Shield', 4),
+    ('Blue Cross Blue Shield', 6),
+    ('CareFirst BlueCross BlueShield', 1),
+    ('CareFirst BlueCross BlueShield', 3),
+    ('Harvard Pilgrim Health Care', 5),
+    ('Harvard Pilgrim Health Care', 4);
 
 
-CREATE TABLE insured_by ( -- customer to insurance company
+CREATE TABLE insured_by ( 
     insurance_id INT NOT NULL,
     company_name VARCHAR(30) NOT NULL,
-    policy_number VARCHAR(30) NOT NULL, -- can this be randomly generated? idk
+    policy_number VARCHAR(30) NOT NULL,  -- Policy number can be randomly generated, more on that later
     PRIMARY KEY (insurance_id, company_name),
-    FOREIGN KEY (insurance_id) REFERENCES customer(insurance_id),
+    FOREIGN KEY (insurance_id) REFERENCES customer(insurance_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (company_name) REFERENCES insurance_company(name)
 );
+
+
 
 INSERT INTO insured_by (insurance_id, company_name, policy_number) 
 VALUES 

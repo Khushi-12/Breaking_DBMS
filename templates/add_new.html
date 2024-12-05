@@ -201,7 +201,7 @@
 
     <script>
      function goBack() {
-            window.location.href = '/user'; // Replace '/' with the main page URL
+            window.location.href = '/pharmacist_dashboard'; // Replace '/' with the main page URL
         }
     const certificationsContainer = document.getElementById("certifications-container");
     const addCertificationButton = document.getElementById("add-certification-button");
@@ -311,7 +311,7 @@
                     if (data.success) {
                         alert("Doctor information has been saved successfully!");
                         // Optionally, redirect to another page or clear the form
-                        window.location.href = '/user'; // Redirect to main page
+                        window.location.href = '/pharmacist_dashboard'; // Redirect to main page
                     } else {
                         alert("Error saving doctor information: " + data.error);
                     }

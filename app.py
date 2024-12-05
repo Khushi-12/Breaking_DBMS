@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+
 from src import sql_connector
 from dotenv import load_dotenv
 import os
@@ -8,6 +9,16 @@ username = os.environ['USER_NAME']
 password = os.environ['PASSWORD']
 
 app = Flask(__name__)
+
+pharmacist_credentials = {
+    'username': 'admin',
+    'password': 'password123'
+}
+
+customer_credentials = {
+    'username': 'cust',
+    'password': 'password123'
+}
 
 def get_con():
     con = sql_connector.sqlConnector()
@@ -20,18 +31,81 @@ def intro():
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    username_input = data.get('username')
-    password_input = data.get('password')
-
-    if username_input == 'admin' and password_input == 'password123':
-        return jsonify({"message": "Valid Credentials"}), 200
+    username = request.form['username']
+    password = request.form['password']
+    
+    if username == pharmacist_credentials['username'] and password == pharmacist_credentials['password']:
+        return redirect(url_for('pharmacist_dashboard'))
     else:
         return jsonify({"message": "Invalid Credentials, Login Unsuccessful"}), 401
 
-@app.route('/user')
-def user():
+@app.route('/customer_login')
+def customer_login_page():
+    return render_template('customer_login.html')
+
+# @app.route('/customer_login', methods=['POST'])
+# def customer_login():
+#     username = request.form['username']
+#     password = request.form['password']
+    
+#     if username == customer_credentials['username'] and password == customer_credentials['password']:
+#         return redirect(url_for('customer_dashboard'))
+#     else:
+#         return jsonify({"message": "Invalid Credentials, Login Unsuccessful"}), 401
+
+@app.route('/customer_login', methods=['POST'])
+def customer_login():
+    username = request.form['username']
+    password = request.form['password']
+
+    con = get_con()
+    try:
+        # Query the database to check if the email exists
+        customer = con.query("""
+            SELECT * FROM chemical_database.customer
+            WHERE email = %s;
+        """, (username,))
+
+        if customer and password == "password123":  # Replace with actual password check
+            # Redirect to customer dashboard with the email as a query parameter
+            return redirect(url_for('customer_dashboard', email=username))
+        else:
+            # Invalid credentials
+            return jsonify({"message": "Invalid Credentials, Login Unsuccessful"}), 401
+    finally:
+        con.close()
+
+
+@app.route('/pharmacist_dashboard')
+def pharmacist_dashboard():
     return render_template('main.html')
+
+@app.route('/customer_dashboard')
+def customer_dashboard():
+    # Retrieve the customer's email from the URL parameters
+    customer_email = request.args.get('email')
+
+    if not customer_email:
+        # If no email is provided, redirect to the login page
+        return redirect(url_for('customer_login_page'))
+
+    con = get_con()
+    try:
+        # Fetch the customer’s data based on their email
+        customer_info = con.query("""
+            SELECT * FROM chemical_database.customer
+            WHERE email = %s;
+        """, (customer_email,))
+
+        if customer_info:
+            # Pass customer data to the template
+            customer_data = customer_info[0]
+            return render_template('customer_dash.html', customer=customer_data)
+        else:
+            return jsonify({"error": "Customer not found"}), 404
+    finally:
+        con.close()
+
 
 @app.route('/customers')
 def display_customer():
@@ -532,3 +606,5 @@ def get_pharmacies():
 
 if __name__ == '__main__':
     app.run()
+
+

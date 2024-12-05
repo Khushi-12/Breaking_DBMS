@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="top-bar">
+        <div>
+            <!-- Logout Button -->
+            <button onclick="window.location.href='/'">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="left-box">
+            <!-- Button for "Customers" (Can be used for additional features) -->
+            <button onclick="displayCustomers()">Customers</button>
+        </div>
+
+        <div class="right-box" id="display-area">
+            <!-- Display Customer Info -->
+            <h2>Welcome, {{ customer.first_name }} {{ customer.last_name }}!</h2>
+            
+            <!-- Display Customer's Personal Info -->
+            <p><strong>DOB:</strong> {{ customer.dob }}</p>
+            <p><strong>Email:</strong> {{ customer.email }}</p>
+            <p><strong>Phone:</strong> {{ customer.phone }}</p>
+            
+            <!-- Display Customer's Address Info -->
+            <p><strong>Address:</strong> {{ customer.address_street_name }} {{ customer.address_street_num }},
+                {{ customer.address_town }}, {{ customer.address_state }} {{ customer.address_zipcode }}</p>
+            
+            <!-- Display Customer's Insurance Info -->
+            <p><strong>Insurance #:</strong> {{ customer.insurance_id }}</p>
+            <p><strong>Insurance Name:</strong> {{ customer.insurance_name }}</p>
+            <p><strong>Insurance Contact:</strong> {{ customer.contact }}</p>
+            
+            <!-- Add More Customer Info Here if Needed -->
+        </div>
+    </div>
+
+    <!-- Optional: Adding Customer Orders in Tabs -->
+    <div class="tabs">
+        <button class="tab-button active" data-tab="tab1">Info</button>
+        <button class="tab-button" data-tab="tab2">Orders</button>
+    </div>
+
+    <div class="tab-content" id="tab1">
+        <!-- Displaying Personal Information (Already Above) -->
+    </div>
+
+    <div class="tab-content hidden" id="tab2">
+        <div class="scroll-container">
+            <!-- Loop through Customer's Orders if Available -->
+            {% if customer.orders %}
+                {% for order in customer.orders %}
+                    <div class="box">
+                        <h3>Order #{{ order.order_id }}</h3>
+                        <p><strong>Delivery Date:</strong> {{ order.delivery_date }}</p>
+                        <p><strong>Pickup Pharmacy Name:</strong> {{ order.name }}</p>
+                        <p><strong>Prescribing Doctor:</strong> Dr. {{ order.doctor_first_name }}</p>
+                        
+                        <!-- Loop through Prescriptions within an Order -->
+                        <div class="prescription-container">
+                            {% if order.prescriptions %}
+                                {% for prescription in order.prescriptions %}
+                                    <div class="prescription-box">
+                                        <h4>Prescription {{ prescription.val }}</h4>
+                                        <p><strong>Brand Name:</strong> {{ prescription.brand_name }}</p>
+                                        <p><strong>Name:</strong> {{ prescription.scientific_name }}</p>
+                                        <p><strong>Quantity:</strong> {{ prescription.quantity }}</p>
+                                        <p><strong>Dosage:</strong> {{ prescription.dosage }} mg</p>
+                                        <p><strong>Expiration Date:</strong> {{ prescription.expiration_date }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No prescriptions for this order.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No orders found for this customer.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/single_customer.js') }}"></script>
+    <script>
+        // Setup tab switching
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const activeTab = tab.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.querySelector(`#${activeTab}`).classList.remove('hidden');
+
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    tab.classList.add('active');
+                });
+            });
+        }
+
+        // Call setupTabs when the page loads
+        window.onload = setupTabs;
+    </script>
+</body>
+
+</html>
